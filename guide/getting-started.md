@@ -2,7 +2,8 @@
 
 ## Requirements
 
-- PHP 8.3+
+- PHP 8.4+
+- A [Flux UI Pro](/reference/flux-ui) licence
 - Laravel 13
 - Node.js (for building assets)
 - A local dev domain that supports subdomains, e.g. [Laravel Herd](https://herd.laravel.com) with `*.yourapp.test`
@@ -10,8 +11,12 @@
 ## Install
 
 ```bash
-laravel new my-app --using=lianmaymesi/laravel-multidomain-starter
+composer create-project atrium-php/skeleton my-app
+cd my-app
+php artisan atrium:install                      # or --pick to choose the modules
 ```
+
+Atrium itself lives in `vendor/atrium-php/*` and upgrades with `composer update` + `php artisan atrium:upgrade` — see [Customising without forking](/guide/customising) and [Upgrading](/guide/upgrading).
 
 ## Configure your domain
 
