@@ -23,9 +23,9 @@ Atrium's own variables, on top of Laravel's standard ones (database, mail, queue
 
 | Var | Default | |
 |---|---|---|
-| `MODULE_ACTIVITY`, `MODULE_BACKUP`, `MODULE_CURRENCY`, `MODULE_LANGUAGE`, `MODULE_MAINTENANCE`, `MODULE_MEDIA` | `true` | Switch a [module](/guide/modules) off with `false` |
+| `MODULE_ACTIVITY`, `MODULE_BACKUP`, `MODULE_CURRENCY`, `MODULE_LANGUAGE`, `MODULE_MAINTENANCE`, `MODULE_MEDIA` | `true` | Switch a [module](/packages/) off with `false` |
 | `MODULE_API`, `MODULE_BILLING` | `false` | Switch on with `true` |
-| `APP_MAINTENANCE` | `false` | Global maintenance switch — every portal, backoffice included ([Maintenance Mode](/guide/maintenance-mode)) |
+| `APP_MAINTENANCE` | `false` | Global maintenance switch — every portal, backoffice included ([Maintenance Mode](/packages/maintenance)) |
 | `MEDIA_DISK`, `MEDIA_IMAGE_DRIVER` | `local`, `gd` | Media module storage and image driver |
 | `API_RATE_LIMIT` | `60` | API module: requests per minute per token |
 | `BACKUP_ENABLED` | `false` | Backup module: actually run scheduled backups |

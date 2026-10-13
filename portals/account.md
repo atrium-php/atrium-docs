@@ -57,7 +57,7 @@ From [Profile](#profile), with the current password.
 
 `/settings` → `atrium::accounts.settings`
 
-- **Preferred language** — with the Language module on and two or more active languages. It decides the language on app, account and backoffice, overriding the URL (see [Localization & RTL](/guide/localization)). Saving reloads the page so direction and everything else update.
+- **Preferred language** — with the Language module on and two or more active languages. It decides the language on app, account and backoffice, overriding the URL (see [Localization & RTL](/packages/language)). Saving reloads the page so direction and everything else update.
 - **Timezone** — always shown. Dates across the app display in it; empty uses the app's default timezone.
 
 ## Scheduled cleanup

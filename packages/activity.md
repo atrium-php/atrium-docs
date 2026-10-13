@@ -1,4 +1,13 @@
-# Activity Log
+# Activity
+
+| | |
+|---|---|
+| Package | `atrium-php/activity` — module `activity`, on by default (`MODULE_ACTIVITY`) |
+| Namespace | `Atrium\Activity\` |
+| Depends on | core, spatie/laravel-activitylog |
+| Permissions | `activity.view`, `activity.comment` |
+| Pages | Backoffice → Activity Log (`/activity`) |
+| Config | `activitylog` (spatie's) |
 
 A permanent audit trail — who changed what, and when — shown as a timeline with a discussion thread (comments and like/dislike) on every entry. Nothing is ever deleted: there's no delete action, route or scheduled pruning.
 

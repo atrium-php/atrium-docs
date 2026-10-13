@@ -81,7 +81,7 @@ Each module owns its own (seeded whether the module is on or off, so role assign
 
 ### Super-Admin-only permissions
 
-Admin's seeded set leaves out `permissions.create/edit/delete`, `modules.manage`, and whatever modules declare Super-Admin-only (`languages.*` and `translations.common` from the Language module). Your modules do the same with `superAdminOnlyPermissions()` in their provider.
+Admin's seeded set leaves out `permissions.create/edit/delete`, `modules.manage`, and whatever modules declare Super-Admin-only: `api.manage`, `backups.manage`, `billing.manage`, `languages.*` and `translations.common`. Your modules do the same with `superAdminOnlyPermissions()` in their provider.
 
 Each backoffice page checks its permissions on load and on every action, and the sidebar only shows links the user can open.
 

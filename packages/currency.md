@@ -1,6 +1,15 @@
-# Currency & Money
+# Currency
 
-Money handling is in core; currencies, rates and their backoffice pages are the **Currency module** (`atrium-php/currency`). Everything stays out of the way until you activate a second currency.
+| | |
+|---|---|
+| Package | `atrium-php/currency` — module `currency`, on by default (`MODULE_CURRENCY`) |
+| Namespace | `Atrium\Currency\` |
+| Depends on | core |
+| Permissions | `currencies.view`; managing currencies uses core's `settings.edit` |
+| Pages | Backoffice → Currencies (`/currencies`); currency fields on Backoffice → Settings |
+| Schedule | exchange rates daily at 01:00 |
+
+Money handling (`Money`, `MoneyCast`) is in core; currencies, rates and their pages are this module. Everything stays out of the way until you activate a second currency.
 
 ## Money is always an integer
 

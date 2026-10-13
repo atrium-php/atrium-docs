@@ -1,6 +1,15 @@
-# Maintenance Mode
+# Maintenance
 
-The **Maintenance module** (`atrium-php/maintenance`) gives you two independent switches, both showing the same branded maintenance page (rendered like the [error pages](/guide/error-pages), with `"maintenance"` as the pseudo status code):
+| | |
+|---|---|
+| Package | `atrium-php/maintenance` — module `maintenance`, on by default (`MODULE_MAINTENANCE`) |
+| Namespace | `Atrium\Maintenance\` |
+| Depends on | core |
+| Permissions | `maintenance.view`, `maintenance.update` |
+| Pages | Backoffice → Maintenance (`/maintenance`) |
+| Config | `maintenance` — `APP_MAINTENANCE`, `exempt_portals` |
+
+Two independent switches, both showing the same branded maintenance page (rendered like the [error pages](/guide/error-pages), with `"maintenance"` as the pseudo status code):
 
 1. **Global** — `APP_MAINTENANCE=true`. Every portal, backoffice included, shows the maintenance page. No CLI access needed: change the env var and deploy.
 2. **Per portal** — Backoffice → Maintenance. Staff take a single portal (landing, app, or one of your own) down without touching the others.

@@ -29,18 +29,18 @@ Inside, every page and action checks its own permission, and the sidebar only li
 
 ## Module pages
 
-Each appears while its [module](/guide/modules) is on:
+Each appears while its [module](/packages/) is on (users also get Account → Billing and Account → API tokens from those modules):
 
 | Page | Path | Module |
 |---|---|---|
-| [Activity log](/guide/activity-log) | `/activity` | activity |
-| [Languages](/guide/localization), [Translations](/guide/localization#translations) | `/languages`, `/translations/{scope?}` | language |
-| [Currencies](/guide/currency) | `/currencies` | currency |
-| [Maintenance](/guide/maintenance-mode) | `/maintenance` | maintenance |
-| Media library | `/media` | media |
-| Backups | `/backups` | backup |
-| Billing | `/billing` | billing |
-| API tokens | `/api-tokens` | api |
+| [Activity log](/packages/activity) | `/activity` | activity |
+| [Languages](/packages/language), [Translations](/packages/language#translations) | `/languages`, `/translations/{scope?}` | language |
+| [Currencies](/packages/currency) | `/currencies` | currency |
+| [Maintenance](/packages/maintenance) | `/maintenance` | maintenance |
+| [Media Library](/packages/media) | `/media` | media |
+| [Backups](/packages/backup) | `/backups` | backup |
+| [Billing](/packages/billing) | `/billing` | billing |
+| [API Access](/packages/api) | `/api` | api |
 
 ## Settings
 

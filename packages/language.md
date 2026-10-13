@@ -1,6 +1,16 @@
-# Localization & RTL
+# Language
 
-Multiple languages with automatic RTL, managed from the database — no lang files to edit to add a language, and invisible until a second language is active. This is the **Language module** (`atrium-php/language`); timezones are core.
+| | |
+|---|---|
+| Package | `atrium-php/language` — module `language`, on by default (`MODULE_LANGUAGE`) |
+| Namespace | `Atrium\Language\` |
+| Depends on | core, spatie/laravel-translation-loader, mcamara/laravel-localization |
+| Permissions | `languages.view/create/edit/delete` (Super Admin only), `translations.landing`, `translations.portal`, `translations.common` (Super Admin only) |
+| Pages | Backoffice → Languages (`/languages`), Translations (`/translations/{scope?}`); URL mode and Google Translate key on Settings |
+| API | `languages:read`, `languages:write` endpoints when the [API module](/packages/api) is on |
+| Config | `translation-loader` (spatie's) |
+
+Localization and RTL: multiple languages managed from the database — no lang files to edit to add a language, and invisible until a second language is active. (Timezones are [core](/packages/core#timezones).)
 
 ## Languages (Backoffice → Languages)
 
@@ -63,16 +73,6 @@ app(Languages::class)->activeCodes();       // ['en', 'ar']
 app(Languages::class)->currentDirection();  // 'rtl'
 ```
 
-## Timezones (core)
-
-Everything is stored in UTC; conversion happens only when displaying, through a Carbon macro:
-
-```php
-$user->created_at->forUser()->translatedFormat('l, d F Y H:i');
-```
-
-`forUser()` uses the user's `users.timezone`, else the app default (Backoffice → Settings → Default timezone, `settings.edit`), else `config('app.timezone')`. Users pick their own on Account → Settings — always shown, even with one language.
-
 ## Translations (Backoffice → Translations) {#translations}
 
 Every `__('...')` string and validation message can get a database translation, with no change to your views: the database wins when a row exists, otherwise the normal string is used. You only add rows for what you translate. (Backed by `spatie/laravel-translation-loader`.)
@@ -112,3 +112,15 @@ It never overwrites or deletes; an Admin without `translations.common` syncs onl
 With a Google Translate API key set (Backoffice → Settings, stored encrypted, never shown again) and a language other than English selected, **Translate with Google** fills the blank rows of the current scope in one batch. Each result passes the same placeholder check — a translation that lost a `:token` is skipped. Existing translations are never overwritten, and nothing runs unless an admin clicks.
 
 Get a key from the [Google Cloud Console](https://console.cloud.google.com/apis/credentials) after enabling the Cloud Translation API.
+
+## API endpoints
+
+With the [API module](/packages/api) on, the Language module adds endpoints under `/v1` — the complete example of a module API (resource, form requests, pagination):
+
+| Method | Path | Ability |
+|---|---|---|
+| `GET` | `/v1/languages`, `/v1/languages/{code}` | `languages:read` |
+| `POST` | `/v1/languages` | `languages:write` |
+| `PATCH`, `DELETE` | `/v1/languages/{code}` | `languages:write` |
+
+The token's user also needs the matching `languages.*` permission — a token never grants more than its user has.

@@ -1,19 +1,26 @@
-# Modules
+# Packages
 
-Atrium is `atrium-php/core` plus optional modules. Each first-party module is its own Composer package (`atrium-php/{module}`, type `atrium-module`); the skeleton installs all of them.
+Atrium is a set of Composer packages, released together under one version number:
+
+| Package | What it is | |
+|---|---|---|
+| [`atrium-php/core`](/packages/core) | Portals, auth, account, roles and permissions, settings, feature flags, health checks, the module system | always on |
+| [`atrium-php/skeleton`](/packages/skeleton) | The app a new project starts from (`composer create-project`) | your project |
+
+And eight modules — each its own package of type `atrium-module`, all installed by the skeleton:
 
 | Module | Package | What it adds | On by default |
 |---|---|---|---|
-| `activity` | `atrium-php/activity` | [Activity log](/guide/activity-log): who changed what, with comments and reactions | yes |
-| `api` | `atrium-php/api` | Versioned JSON API with Sanctum personal access tokens | no |
-| `backup` | `atrium-php/backup` | Scheduled database and file backups, on-demand runs and downloads | yes (backups run once `BACKUP_ENABLED=true`) |
-| `billing` | `atrium-php/billing` | Subscriptions through Stripe Checkout and the Billing Portal (Cashier) | no |
-| `currency` | `atrium-php/currency` | [Currencies, exchange rates and money formatting](/guide/currency) | yes |
-| `language` | `atrium-php/language` | [Languages, RTL, URL locales and database translations](/guide/localization) | yes |
-| `maintenance` | `atrium-php/maintenance` | [Per-portal maintenance mode](/guide/maintenance-mode) with a branded page | yes |
-| `media` | `atrium-php/media` | Media library: uploads, image conversions and attachments | yes |
+| `activity` | [`atrium-php/activity`](/packages/activity) | Activity log: who changed what, with comments and reactions | yes |
+| `api` | [`atrium-php/api`](/packages/api) | Versioned JSON API with Sanctum tokens and an access policy | no |
+| `backup` | [`atrium-php/backup`](/packages/backup) | Scheduled database and file backups, on-demand runs and downloads | yes (runs once `BACKUP_ENABLED=true`) |
+| `billing` | [`atrium-php/billing`](/packages/billing) | Stripe subscriptions: plans, Checkout, Billing Portal, webhooks | no |
+| `currency` | [`atrium-php/currency`](/packages/currency) | Currencies, exchange rates and money formatting | yes |
+| `language` | [`atrium-php/language`](/packages/language) | Languages, RTL, URL locales and database translations | yes |
+| `maintenance` | [`atrium-php/maintenance`](/packages/maintenance) | Per-portal maintenance mode with a branded page | yes |
+| `media` | [`atrium-php/media`](/packages/media) | Media library: uploads, image sizes, attachments to any model | yes |
 
-Core itself always runs: portals, auth, account, roles and permissions, settings, feature flags, health checks and the module system.
+Every module depends only on core — never on another module — and core never depends on a module.
 
 ## Switching a module on or off
 

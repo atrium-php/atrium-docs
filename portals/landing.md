@@ -14,7 +14,7 @@ A hero and a feature grid describing Atrium. Sign-in and create-account buttons 
 
 ## Language switcher
 
-In the header, `<x-language::locale-switcher />` — hidden until two languages are active. Landing follows the URL's language (`?lang=` or `/xx`, whichever [URL mode](/guide/localization#url-mode) is on), even for signed-in visitors. See [Localization & RTL](/guide/localization).
+In the header, `<x-language::locale-switcher />` — hidden until two languages are active. Landing follows the URL's language (`?lang=` or `/xx`, whichever [URL mode](/packages/language#url-mode) is on), even for signed-in visitors. See [Localization & RTL](/packages/language).
 
 ## Error and maintenance pages
 

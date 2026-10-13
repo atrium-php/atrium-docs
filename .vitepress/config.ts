@@ -8,6 +8,7 @@ export default defineConfig({
     themeConfig: {
         nav: [
             { text: 'Guide', link: '/guide/getting-started' },
+            { text: 'Packages', link: '/packages/' },
             { text: 'Portals', link: '/portals/landing' },
             { text: 'Reference', link: '/reference/config' },
         ],
@@ -17,7 +18,6 @@ export default defineConfig({
                 text: 'Guide',
                 items: [
                     { text: 'Getting Started', link: '/guide/getting-started' },
-                    { text: 'Modules', link: '/guide/modules' },
                     { text: 'Customising without forking', link: '/guide/customising' },
                     { text: 'Upgrading', link: '/guide/upgrading' },
                     { text: 'Build (and sell) a module', link: '/guide/build-a-module' },
@@ -25,12 +25,24 @@ export default defineConfig({
                     { text: 'Cross-Subdomain SSO', link: '/guide/sso-sessions' },
                     { text: 'make:subdomain Command', link: '/guide/make-subdomain-command' },
                     { text: 'Roles & Permissions', link: '/guide/roles-and-permissions' },
-                    { text: 'Activity Log', link: '/guide/activity-log' },
-                    { text: 'Localization & RTL', link: '/guide/localization' },
-                    { text: 'Currency & Money', link: '/guide/currency' },
                     { text: 'Theming', link: '/guide/theming' },
                     { text: 'Error Pages', link: '/guide/error-pages' },
-                    { text: 'Maintenance Mode', link: '/guide/maintenance-mode' },
+                ],
+            },
+            {
+                text: 'Packages',
+                items: [
+                    { text: 'Overview', link: '/packages/' },
+                    { text: 'Core', link: '/packages/core' },
+                    { text: 'Skeleton', link: '/packages/skeleton' },
+                    { text: 'Activity', link: '/packages/activity' },
+                    { text: 'API', link: '/packages/api' },
+                    { text: 'Backup', link: '/packages/backup' },
+                    { text: 'Billing', link: '/packages/billing' },
+                    { text: 'Currency', link: '/packages/currency' },
+                    { text: 'Language', link: '/packages/language' },
+                    { text: 'Maintenance', link: '/packages/maintenance' },
+                    { text: 'Media', link: '/packages/media' },
                 ],
             },
             {

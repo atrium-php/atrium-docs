@@ -32,7 +32,7 @@ Atrium catches every HTTP exception before Laravel's own error views and renders
 2. Atrium's `atrium::errors.{set}.page`;
 3. the shared page — so a portal whose own page doesn't exist yet never 500s.
 
-JSON requests are left alone and get Laravel's normal JSON error body. The [maintenance page](/guide/maintenance-mode) goes through the same dispatcher as the pseudo code `"maintenance"`.
+JSON requests are left alone and get Laravel's normal JSON error body. The [maintenance page](/packages/maintenance) goes through the same dispatcher as the pseudo code `"maintenance"`.
 
 ## Changing the design
 

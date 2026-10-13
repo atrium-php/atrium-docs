@@ -41,7 +41,7 @@ Per-route throttles: `login`, `register`, `downloads`, `links` — each `max` at
 
 ## `modules` (your project)
 
-`config/modules.php` is yours: one `MODULE_*` switch per module. See [Modules](/guide/modules).
+`config/modules.php` is yours: one `MODULE_*` switch per module. See [Modules](/packages/).
 
 ## Module config
 
@@ -49,7 +49,7 @@ Modules bring their own config the same way — merged under the module's name, 
 
 | File | Module | |
 |---|---|---|
-| `maintenance` | maintenance | `global` (`APP_MAINTENANCE`), `exempt_portals` — see [Maintenance Mode](/guide/maintenance-mode) |
+| `maintenance` | maintenance | `global` (`APP_MAINTENANCE`), `exempt_portals` — see [Maintenance Mode](/packages/maintenance) |
 | `activitylog` | activity | spatie/laravel-activitylog's config |
 | `backup` | backup | spatie/laravel-backup's config (`BACKUP_*`) |
 | `sanctum` | api | Sanctum's config |

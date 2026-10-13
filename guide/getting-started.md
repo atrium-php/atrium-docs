@@ -67,7 +67,7 @@ composer dev                  # server, queue worker and Vite together
 
 ## Next steps
 
-- [Modules](/guide/modules) — what ships, and switching modules on and off.
+- [Packages](/packages/) — core, the skeleton and every module, and switching modules on and off.
 - [Customising without forking](/guide/customising) — the extension points.
 - [Roles & Permissions](/guide/roles-and-permissions) — Super Admin, Admin and portal roles.
 - [make:subdomain](/guide/make-subdomain-command) — add a portal of your own.
