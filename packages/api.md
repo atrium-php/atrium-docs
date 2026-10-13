@@ -36,7 +36,7 @@ Whatever the token, **it never grants more than its user's permissions** — abi
 - **All tokens** — owner, abilities, issuer (*Self* or the admin), last use, expiry; search and revoke any.
 - **Revoke all** — an emergency stop.
 - **Audit** — creating and revoking tokens and policy changes go on the [activity log](/packages/activity) (log `api`).
-- **Account deletion** revokes the account's tokens when the deletion is carried out (after its 30-day cancel window).
+- **Account deletion** — requesting it revokes the account's tokens at once, and while the deletion is pending the API refuses every token of the account (403), even one an admin issues in the meantime. Cancelling the deletion lifts the block; revoked tokens must be created again.
 
 ## Endpoints
 

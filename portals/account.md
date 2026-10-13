@@ -41,7 +41,7 @@ Inline-edit sections, one open at a time:
 
 From [Profile](#profile), with the current password.
 
-- Requesting deletion **signs you out everywhere** and schedules deletion **30 days** later; an email confirms the date.
+- Requesting deletion **signs you out everywhere and revokes your API tokens**, and schedules deletion **30 days** later; an email confirms the date.
 - **To cancel**, sign in again within those 30 days — signing in (or passing the 2FA challenge) cancels it and sends a confirmation.
 - After 30 days the account is **anonymised**, not hard-deleted, so foreign keys and the audit trail stay intact: the name becomes "Deleted User", the email an unreachable placeholder, phone, 2FA and password are wiped. Atrium fires `AccountDeleting` before and `UserAnonymized` after — listen to them to clean up your own data.
 
