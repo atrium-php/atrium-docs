@@ -1,8 +1,8 @@
-# Laravel Multidomain Starter — Docs
+# Atrium — Docs
 
-VitePress docs site for [laravel-multidomain-starter](https://github.com/lianmaymesi/laravel-multidomain-starter).
+VitePress site for [Atrium](https://github.com/atrium-php/atrium), a free, modular, upgradable Laravel platform for multi-portal apps.
 
-Live at: https://lianmaymesi.github.io/laravel-multidomain-starter-docs/
+Live at: https://atrium-php.github.io/atrium-docs/
 
 ## Local development
 

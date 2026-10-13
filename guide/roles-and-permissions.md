@@ -1,105 +1,94 @@
 # Roles & Permissions
 
-Built on `spatie/laravel-permission`, with two permanent system roles, a `slug`/`name` split on every role, and real per-page permission enforcement across the backoffice's Access Control (Roles, Permissions, Users) and Maintenance pages.
+Built on `spatie/laravel-permission`, with two permanent system roles, a `slug`/`name` split on every role, and real per-page permission checks across the backoffice.
 
 ## System roles
 
-Every fresh install seeds two roles via `Database\Seeders\RolePermissionSeeder`:
+`atrium:install` seeds two roles:
 
-| Role | Slug | Privilege |
+| Role | Slug | Can |
 |---|---|---|
-| Super Admin | `super-admin` | Every ability, always — see [Gate bypass](#gate-bypass) below. |
-| Admin | `admin` | Everything except managing the Permission catalog and touching portal roles — see [What Admin can't do](#what-admin-can-t-do). |
+| Super Admin | `super-admin` | Everything, always — see [Gate bypass](#gate-bypass) |
+| Admin | `admin` | Everything except the [Super-Admin-only permissions](#super-admin-only-permissions) and editing portal or system roles |
 
-Both are created with `locked = true` on the `roles` table. A locked role can **never be edited or deleted by anyone, including Super Admin** — this is enforced as a hard rule in `resources/views/pages/backoffice/roles/⚡roles/roles.php` (`guardMutable()`), not a permission, so it can't be granted away.
+Both are **locked**: nobody, Super Admin included, can edit or delete them. That's a hard rule in the Roles page, not a permission, so it can't be granted away.
 
-```
-                    Gate::allows($ability)?
-                            │
-                 ┌──────────┴──────────┐
-          user is Super Admin      anyone else
-                 │                      │
-          always true             resolved normally via
-       (Gate::before bypass,       Spatie's hasPermissionTo()
-        AuthServiceProvider)
-```
+The first Super Admin user comes from `ADMIN_NAME` / `ADMIN_EMAIL` / `ADMIN_PASSWORD` in `.env` (an empty password is generated and printed once by `atrium:install`).
 
 ## Gate bypass
 
-`App\Providers\AuthServiceProvider::boot()` registers:
+Atrium registers, in order:
+
+1. a **licence** check — an ability a [paid module](/guide/build-a-module#selling-it) restricts while its licence isn't valid is denied, for Super Admin too;
+2. the **Super Admin bypass** — `true` for every other ability, current and future.
+
+Everyone else falls through to Spatie, which resolves any ability string to `hasPermissionTo()` — so there are no `Gate::define()` calls for permissions. Use them as usual: `Gate::allows('roles.edit')`, `@can('roles.edit')`, `can:roles.edit` middleware, `$this->authorize(...)`.
+
+Portal access is separate from the Gate. The `portal:{key}` middleware lets a user in when they are Super Admin, or:
 
 ```php
-Gate::before(fn (User $user, string $ability) => $user->hasRoleSlug(Role::SUPER_ADMIN) ? true : null);
-```
-
-Returning `null` for everyone else falls through to Spatie's own `Gate::before`, which resolves any ability string straight to `hasPermissionTo()` — so no `Gate::define()` calls exist anywhere for the permissions below. Super Admin also holds every `Permission` row directly (synced in the seeder), belt-and-suspenders alongside the bypass, so a report or query that reads permissions directly (rather than going through `Gate`) still sees the full set.
-
-This bypass only covers `Gate::allows()`/`@can` checks — it doesn't touch `App\Http\Middleware\EnsurePortalAccess`, which never calls `Gate`. So Super Admin's access to *every portal* (including role-scoped ones like `blog`, without holding that role) is a separate, explicit bypass at the top of that middleware:
-
-```php
-$hasAccess = $user->hasRoleSlug(Role::SUPER_ADMIN) || match ($portal) {
-    'staff' => $user->isStaff(),
-    'user' => ! $user->isStaff(),
-    default => $user->hasRoleSlug($portal),
+match ($portal) {
+    'staff' => $user->isStaff(),       // backoffice
+    'user'  => ! $user->isStaff(),     // app
+    default => $user->hasRoleSlug($portal),   // a portal of your own, e.g. portal:blog
 };
 ```
 
+Anyone else is redirected to their own portal (`$user->redirect()`).
+
 ## Portal roles: `slug` vs `name`
 
-A portal role (one scaffolded by `make:subdomain`, e.g. for a `blog` subdomain) now has:
+A portal role (one [`make:subdomain`](/guide/make-subdomain-command) creates, e.g. `blog`) has:
 
-- `slug` — the lowercase-hyphen portal key (`blog`), matched by the `portal:{slug}` middleware (`App\Http\Middleware\EnsurePortalAccess`) and `User::redirect()`.
-- `name` — a Title Case label for display (`Blog`), generated with `Str::headline($slug)`.
+- `slug` — the portal key (`blog`), matched by `portal:blog` and by the post-login redirect;
+- `name` — the label (`Blog`).
 
-```php
-// App\Console\Commands\MakeSubdomainCommand
-$role = Role::firstOrCreate(
-    ['slug' => $name, 'guard_name' => 'web'],
-    ['name' => Str::headline($name)],
-);
-```
-
-`App\Models\Role::isPortalRole()` checks `array_key_exists($this->slug, config('multidomain.sub_domains'))`. Only **Super Admin** may edit or delete a portal role — Admin gets read + assign-to-user only, since renaming or deleting a portal role would break the subdomain it drives.
+A role is a portal role when its slug is a key of `config('multidomain.sub_domains')` (`Role::isPortalRole()`). Only Super Admin may edit or delete one — renaming it would break its portal. Admin can view it and assign it to users.
 
 ## What Admin can't do
 
-- **Create, edit, or delete Permissions.** The Permissions catalog (`backoffice.permissions.index`) is Super-Admin-only; Admin's seeded permission set omits `permissions.create`, `permissions.edit`, and `permissions.delete`.
-- **Edit or delete a portal role**, or either system role (see above).
-- **Grant a permission it doesn't itself hold.** The permission-assignment page (below) scopes the selectable list to `auth()->user()->getAllPermissions()` for anyone who isn't Super Admin — this is what stops an Admin-created role from being escalated with, say, `permissions.create`, without a separate explicit check.
+- Create, edit or delete **permissions** (the catalog is Super-Admin-only).
+- Edit or delete a **portal role** or a **system role**.
+- **Grant a permission it doesn't hold itself** — the permission page only lists what the acting user has, so an Admin-made role can't be escalated.
+- Anything [Super-Admin-only](#super-admin-only-permissions).
 
-Everything else — creating roles, editing/deleting roles it created, assigning any (non-Super-Admin) role to a user — Admin can do freely.
-
-## Super Admin visibility
-
-The Super Admin role itself is invisible to everyone except Super Admin users: hidden from the Roles list and from the Users page's role-assignment checkboxes for any other viewer. `Users::save()` also re-filters the submitted role ids server-side against that same allow-list, so a tampered request can't smuggle in the Super Admin role id.
+The Super Admin role itself is hidden from everyone but Super Admins, in the Roles list and in user role assignment, and the server re-checks submitted role ids so it can't be smuggled in.
 
 ## Permissions
 
-All permissions use a `module.action` dot-case convention, defined once in `RolePermissionSeeder::PERMISSIONS`:
+Permissions are `module.action` strings. Core owns:
 
 ```
-maintenance.view          maintenance.update          settings.edit
-roles.view                roles.create               roles.edit
-roles.delete              roles.assign-permissions
-permissions.view          permissions.create          permissions.edit
-permissions.delete
-users.view                users.assign-roles
-languages.view            languages.create            languages.edit
-languages.delete          currencies.view
-translations.landing      translations.portal          translations.common
+settings.edit        modules.manage       feature-flags.manage   health.view
+roles.view           roles.create         roles.edit             roles.delete
+roles.assign-permissions
+permissions.view     permissions.create   permissions.edit       permissions.delete
+users.view           users.assign-roles
 ```
 
-`languages.*` and `translations.common` are Super-Admin-only, same mechanism as `permissions.*` above (added to `RolePermissionSeeder::ADMIN_EXCLUDED_PERMISSIONS`). `translations.landing`/`translations.portal`, `settings.edit` (the backoffice Settings page — timezone, Google Translate key, and which currencies are active/primary), and `currencies.view` (the read-only Currencies reference page) are ordinary permissions Admin can hold. See [Localization & RTL](/guide/localization) and [Currency & Money](/guide/currency) for what each one gates.
+Each module owns its own (seeded whether the module is on or off, so role assignments survive switching it):
 
-Each backoffice page checks its own module's abilities on mount and on every mutating action (`abort_unless(Gate::allows('roles.edit'), 403)`, etc.), and the sidebar nav (`resources/views/layouts/backoffice.blade.php`) wraps each link in `@can(...)` so a user never sees a link to a page they can't open.
+| Module | Permissions |
+|---|---|
+| activity | `activity.view`, `activity.comment` |
+| api | `api.manage` |
+| backup | `backups.manage` |
+| billing | `billing.view`, `billing.manage` |
+| currency | `currencies.view` |
+| language | `languages.view/create/edit/delete`, `translations.landing`, `translations.portal`, `translations.common` |
+| maintenance | `maintenance.view`, `maintenance.update` |
+| media | `media.view`, `media.manage` |
+
+### Super-Admin-only permissions
+
+Admin's seeded set leaves out `permissions.create/edit/delete`, `modules.manage`, and whatever modules declare Super-Admin-only (`languages.*` and `translations.common` from the Language module). Your modules do the same with `superAdminOnlyPermissions()` in their provider.
+
+Each backoffice page checks its permissions on load and on every action, and the sidebar only shows links the user can open.
 
 ## Assigning permissions to a role
 
-Editing a role's name and managing its permissions are now two separate screens. From the Roles list, "Manage Permissions" opens a dedicated page:
+Roles → **Manage Permissions** opens a page per role (`backoffice.roles.permissions`). Permissions are grouped by module prefix; each is a switch that grants or revokes immediately. The page refuses locked roles, and portal roles for anyone but Super Admin.
 
-```
-Route::livewire('roles/{role}/permissions', 'pages::backoffice.roles.permissions')
-    ->name('roles.permissions');
-```
+## Your own permissions
 
-Permissions are grouped by their dot-case module prefix (Roles, Permissions, Users, Maintenance) and each one is a switch — toggling it calls `givePermissionTo()`/`revokePermissionTo()` immediately, no Save button. The list of permissions shown is scoped to what the acting user can grant (see [What Admin can't do](#what-admin-can-t-do)), and the page 403s outright for a locked role or, for anyone but Super Admin, a portal role.
+A module declares its permissions in its provider's `permissions()`; `atrium:install` / `db:seed` creates them and gives them to Admin (unless Super-Admin-only). See [Build (and sell) a module](/guide/build-a-module#the-module-contract).

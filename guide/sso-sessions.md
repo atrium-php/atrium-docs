@@ -1,6 +1,6 @@
 # Cross-Subdomain SSO
 
-With portals split across subdomains, users would need to log in separately on each one unless the session cookie is shared. This starter kit shares one session cookie by default.
+With portals on separate subdomains, users would have to sign in on each one unless they share the session cookie. Atrium shares it through Laravel's own `SESSION_DOMAIN`.
 
 ## The setting
 
@@ -8,22 +8,16 @@ With portals split across subdomains, users would need to log in separately on e
 SESSION_DOMAIN=.yourapp.test
 ```
 
-Laravel's `config/session.php` already normalizes a wildcard form (`*.yourapp.test`) to the leading-dot form browsers expect:
-
-```php
-'domain' => env('SESSION_DOMAIN')
-    ? Str::replaceStart('*.', '.', (string) env('SESSION_DOMAIN'))
-    : null,
-```
-
-No app code changes are needed — just set the env var. With it set, logging in on `auth.yourapp.test` keeps you authenticated when you navigate to `app.yourapp.test`, `account.yourapp.test`, etc.
+The leading dot makes the cookie valid on `yourapp.test` and every subdomain. Signing in on `auth.yourapp.test` then keeps you signed in on `app.`, `account.` and `backoffice.yourapp.test`. A new project's `.env.example` already sets it for `yourapp.test` — change it along with `APP_MAIN_DOMAIN`.
 
 ## Single-domain mode
 
-If [`APP_SINGLE_DOMAIN=true`](/guide/single-vs-multi-domain), leave `SESSION_DOMAIN=null`. A host-only cookie is correct there — there's only one host.
+With [`APP_SINGLE_DOMAIN=true`](/guide/single-vs-multi-domain), leave `SESSION_DOMAIN=null`: a host-only cookie is right when there's one host.
 
-## Verifying it works
+## Checking it works
 
-1. Log in at `auth.yourapp.test/login`.
-2. Navigate directly to `app.yourapp.test`.
-3. You should land on the dashboard, not get redirected back to login.
+1. Sign in at `auth.yourapp.test/login`.
+2. Open `app.yourapp.test` (or `backoffice.yourapp.test` as staff).
+3. You land on the dashboard instead of being sent back to sign in.
+
+If you're sent back to sign in, check that `SESSION_DOMAIN` matches `APP_MAIN_DOMAIN` with a leading dot, and clear the browser's old cookies for the domain.

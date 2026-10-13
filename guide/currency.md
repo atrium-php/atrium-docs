@@ -1,17 +1,20 @@
 # Currency & Money
 
-Optional — useful if you're building something that needs prices (an e-commerce starter angle), not required for the rest of the app. Everything here stays invisible/no-op until you activate a second currency.
+Money handling is in core; currencies, rates and their backoffice pages are the **Currency module** (`atrium-php/currency`). Everything stays out of the way until you activate a second currency.
 
 ## Money is always an integer
 
-Every amount is stored as an integer in the smallest unit of its currency — cents, paisa, halala — never a float. `App\Support\Money` is an immutable value object pairing that integer with the currency code it belongs to:
+Every amount is an integer in the currency's smallest unit — cents, paisa, halala — never a float. `Atrium\Core\Support\Money` pairs that integer with its currency code:
 
 ```php
-$price = new Money(3000, 'USD'); // $30.00
-$price->format(); // "$30.00"
+use Atrium\Core\Support\Money;
+
+$price = new Money(3000, 'USD');   // $30.00
+$price->format();                  // "$30.00"
+$price->convertTo('EUR');          // a new Money, at the current rate
 ```
 
-`App\Casts\MoneyCast` attaches this to any integer column on your own models:
+`Atrium\Core\Casts\MoneyCast` puts it on any integer column of your models:
 
 ```php
 protected function casts(): array
@@ -20,27 +23,43 @@ protected function casts(): array
 }
 ```
 
-`currency` here is the name of a sibling column on the same row holding *that record's own* currency code — not a global setting. **This is important**: once a record (e.g. an order) is saved with a currency, it keeps that currency forever. Exchange rate refreshes only ever update the `currencies` table's own rate column — they never rewrite an amount already stored against a specific currency on another model. Omit the cast argument to always fall back to the app's primary currency instead (fine for something that's never meant to hold a historical, immutable price).
+`currency` is a sibling column on the same row holding **that record's own** currency code. Once a record (an order, an invoice) is saved in a currency it keeps it: rate updates never rewrite stored amounts. Leave the argument out to always use the primary currency (fine for values that are never a historical price).
 
-## Currencies (Backoffice → Currencies)
+`Money` and `MoneyCast` are `@api` and work with the Currency module off: formatting then falls back to `"USD 30.00"` (code, two decimals) and conversion returns the amount unchanged.
 
-`App\Models\Currency` mirrors `Language` closely: `code` (ISO 4217), `name`, `symbol`, `decimal_digits` (2 for most currencies, 0 for JPY/KRW/VND, 3 for BHD/KWD/OMR/JOD), `is_active`, `is_primary`, `order`, plus `exchange_rate`/`rate_synced_at`. `database/seeders/CurrencySeeder.php` seeds ~40 common ISO 4217 currencies — only **USD ships active + primary**, matching how `Language` ships with nothing active until an admin opts in.
+## Currencies
 
-`/currencies` is **read-only** — a reference table of every seeded currency, its formatting rule, and its current rate against the primary currency. It has no management actions.
+The module seeds 44 ISO 4217 currencies — code, name, symbol, `decimal_digits` (2 for most, 0 for JPY/KRW/VND, 3 for BHD/KWD/OMR/JOD), plus an exchange rate. Only **USD** ships active and primary.
 
-## Managing currencies (Backoffice → Settings)
+- **Backoffice → Currencies** (`currencies.view`) — read-only reference: every currency, its formatting and its rate against the primary currency.
+- **Backoffice → Settings** (`settings.edit`) — which currencies are active and which is primary: pick one from the list and **Add**, remove with the tag's ×. The primary can't be removed until another is primary. Nothing is saved until the page's **Save**.
+- **Refresh rates** on the Settings page updates rates immediately.
 
-Which currencies are active and which one is primary is managed from the **Settings** page, not a dedicated CRUD screen — a tag picker: pick a currency from the dropdown and click **Add**, it appears as a tag; click the **×** on a tag to remove it (the primary currency's tag can't be removed that way — pick a different primary first). None of this touches the database until you click the page's one **Save** button, same as every other setting on the page.
+## Exchange rates
 
-- **Refresh rates** is a separate, immediate action (not deferred to Save) — calls `App\Services\ExchangeRateService::refresh()`.
-- A daily scheduled job (`routes/console.php`, `App\Jobs\RefreshExchangeRates`, 01:00) keeps rates current automatically.
+Rates come from [Frankfurter](https://frankfurter.dev) (free, ECB-based, no API key), relative to the primary currency. A scheduled job refreshes them daily at 01:00 — keep Laravel's scheduler running.
 
-## Exchange rates — Frankfurter, no API key
+Conversion uses the primary currency as the pivot and is for display and quoting only; it never changes amounts stored on other models.
 
-`ExchangeRateService` calls [Frankfurter.app](https://frankfurter.dev) (free, ECB-based, no signup) for every active currency's rate relative to the primary currency, storing the result on each `Currency` row. `CurrencyService::convert()` does the minor-units math through the primary currency as the pivot — this is a **display/quoting conversion only**; it's never used to mutate money already stored on another model (see [above](#money-is-always-an-integer)).
+## Formatting and conversion in your code
 
-Want a paid provider instead (Fixer, OpenExchangeRates) for more accuracy? Swap the implementation in `ExchangeRateService` — the Settings-page "Refresh rates" flow and the scheduled job don't need to change.
+Use the contract, not the module's classes:
 
-## Formatting
+```php
+use Atrium\Core\Contracts\Currencies;
 
-`CurrencyService::format(int $minorUnits, ?string $code = null)` — `{symbol}{number_format(...)}` using the currency's own `decimal_digits`, falling back to `"{$code} "` if no symbol is set. No `ext-intl` dependency (this starter doesn't require it) — formatting is done manually rather than via `NumberFormatter`.
+$currencies = app(Currencies::class);
+$currencies->format(3000, 'EUR');            // "€30.00"
+$currencies->convert(3000, 'USD', 'EUR');    // minor units
+$currencies->primaryCode();                  // "USD"
+```
+
+Formatting is `{symbol}{amount}` with the currency's own decimal digits (`"{code} "` when there's no symbol); it doesn't need `ext-intl`.
+
+## Your own rate source or formatting
+
+Bind your own implementation of `Atrium\Core\Contracts\Currencies` in a service provider — Atrium, its modules and `Money` all resolve the contract:
+
+```php
+$this->app->bind(Currencies::class, MyCurrencies::class);
+```

@@ -1,17 +1,17 @@
 # Maintenance Mode
 
-Two independent layers, both rendering the same branded maintenance page (see [Error Pages](/guide/error-pages) — it's dispatched the same way, with `"maintenance"` as the pseudo status code):
+The **Maintenance module** (`atrium-php/maintenance`) gives you two independent switches, both showing the same branded maintenance page (rendered like the [error pages](/guide/error-pages), with `"maintenance"` as the pseudo status code):
 
-1. **Global env switch** — `APP_MAINTENANCE`. An absolute kill switch: every portal, **backoffice included**, shows the maintenance page. No CLI access required, just flip the env var and deploy.
-2. **Per-portal toggle** — controlled from Backoffice → Maintenance. Staff can take any single independent portal down (landing, app, or any custom stub) without touching the others.
+1. **Global** — `APP_MAINTENANCE=true`. Every portal, backoffice included, shows the maintenance page. No CLI access needed: change the env var and deploy.
+2. **Per portal** — Backoffice → Maintenance. Staff take a single portal (landing, app, or one of your own) down without touching the others.
 
-Four portals never appear in that per-portal list — `maintenance.exempt_portals` — for two different reasons:
+Four portals never appear in the per-portal list:
 
-- **`backoffice`** — staff always need a way in to flip things back.
-- **`account` and `auth`** — supportive portals for app/backoffice/any user-facing portal, not independent destinations of their own. Taking one down in isolation would just strand users mid-login or mid-account-task on whichever portal sent them there.
-- **`api`** — not a UI portal at all; there's nothing for a maintenance page to render.
+- **`backoffice`** — staff always need a way in to switch things back.
+- **`account`** and **`auth`** — they serve the other portals; taking one down alone would strand users mid-sign-in.
+- **`api`** — not a UI portal; there's no page to show.
 
-The global switch overrides every exemption above — if `APP_MAINTENANCE=true`, all four go down too.
+The global switch overrides every exemption.
 
 ```
                     APP_MAINTENANCE=true?
@@ -19,14 +19,14 @@ The global switch overrides every exemption above — if `APP_MAINTENANCE=true`,
                  ┌──────────┴──────────┐
                 yes                    no
                  │                      │
-      EVERY portal down       portal in exempt_portals?
-   (backoffice/account/auth/   (backoffice, account,
-       api included)              auth, api)
+       every portal down        portal exempt?
+                                (backoffice, account,
+                                 auth, api)
                                         │
                              ┌──────────┴──────────┐
                             yes                     no
                              │                       │
-                    always passes through   per-portal toggle on?
+                       passes through        per-portal switch on?
                                                       │
                                            ┌──────────┴──────────┐
                                           yes                    no
@@ -34,30 +34,27 @@ The global switch overrides every exemption above — if `APP_MAINTENANCE=true`,
                                   maintenance page          passes through
 ```
 
-## Enforcement
+## How it's enforced
 
-`App\Http\Middleware\CheckMaintenance` is appended globally to the `web` middleware group in `bootstrap/app.php` — it covers every current and future portal automatically, no per-route-file edit needed when you scaffold a new one with `make:subdomain`.
+The module appends its middleware to the `web` group, so every portal — including ones you add with `make:subdomain` — is covered with no route edits. With the module switched off, neither switch applies.
 
-```php
-// bootstrap/app.php
-$middleware->web(append: [
-    CheckMaintenance::class,
-]);
-```
+## Configuration
 
-Config lives in `config/maintenance.php`:
+Atrium's defaults:
 
 ```php
 'global' => (bool) env('APP_MAINTENANCE', false),
 'exempt_portals' => ['backoffice', 'account', 'auth', 'api'],
 ```
 
-## Per-portal toggle (Backoffice → Maintenance)
+To change the exempt list, create `config/maintenance.php` in your project with the keys you want to change — a project file wins over the module's.
 
-Backed by the `portal_settings` table (`App\Models\PortalSetting`) — one row per portal, with `maintenance_mode` and an optional custom `message` shown on that portal's maintenance page instead of the generic copy. Reads are cached for 5 minutes (`Cache::remember`, key `portal-setting:{portal}`) and busted on every save, so the toggle takes effect on the next request either way.
+## Per-portal switch (Backoffice → Maintenance)
 
-The backoffice page (`resources/views/pages/backoffice/⚡maintenance/`) lists every portal in `config('multidomain.sub_domains')` except those in `maintenance.exempt_portals`, with a switch and a message field per row.
+One row per portal in `config('multidomain.sub_domains')` minus the exempt ones, each with a switch and an optional message shown on that portal's maintenance page instead of the default text. Permissions: `maintenance.view`, `maintenance.update`.
 
-## Native Laravel maintenance mode
+Settings are cached for 5 minutes per portal and the cache is cleared on save, so a change takes effect on the next request. When `APP_MAINTENANCE` is on, the page shows a banner explaining that it overrides every switch.
 
-`php artisan down` / `php artisan up` still work exactly as normal Laravel — this starter kit doesn't touch that mechanism. It's a separate, CLI-only, whole-app switch. For per-portal granularity or an env-driven (no-CLI) toggle, use the system on this page instead.
+## Laravel's own maintenance mode
+
+`php artisan down` / `up` work exactly as in any Laravel app — a separate, CLI-only switch for the whole application. Use the switches on this page for per-portal or env-driven maintenance.

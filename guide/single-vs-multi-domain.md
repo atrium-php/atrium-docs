@@ -1,33 +1,34 @@
 # Single vs Multi Domain
 
-By default, this starter kit splits its portals across subdomains: `auth.`, `account.`, `app.`, `backoffice.`, and the main domain for `landing`. Some apps want that separation (different teams, different caching/CDN rules, a cleaner mental model for "which area am I in"). Others don't need it.
+By default Atrium puts each portal on its own subdomain of `APP_MAIN_DOMAIN`: `auth.`, `account.`, `app.`, `backoffice.`, and the bare domain for landing. Some apps want that separation (different caching/CDN rules, a clear sense of "which area am I in"). Others don't.
 
 ## The toggle
 
 ```sh
-APP_SINGLE_DOMAIN=false   # default: split subdomains
-APP_SINGLE_DOMAIN=true    # everything on APP_MAIN_DOMAIN
+APP_SINGLE_DOMAIN=false   # default: one subdomain per portal
+APP_SINGLE_DOMAIN=true    # every portal on APP_MAIN_DOMAIN
 ```
 
-This is read in `config/multidomain.php`:
+Atrium resolves each portal's host into `config('multidomain.sub_domains')` and registers every portal's routes with `Route::domain(...)` on that host. With the toggle on, every portal gets the same host, and the portals that would otherwise clash move under a path:
 
-```php
-'sub_domains' => (bool) env('APP_SINGLE_DOMAIN', false)
-    ? array_fill_keys(['app', 'backoffice', 'landing', 'account', 'auth', 'api'], env('APP_MAIN_DOMAIN'))
-    : [
-        'app' => 'app.'.env('APP_MAIN_DOMAIN'),
-        // ...
-    ],
-```
+| Portal | Multi-domain | Single-domain |
+|---|---|---|
+| landing | `yourapp.test/` | `yourapp.test/` |
+| auth | `auth.yourapp.test/login` | `yourapp.test/login` |
+| app | `app.yourapp.test/` | `yourapp.test/app` |
+| account | `account.yourapp.test/` | `yourapp.test/account` |
+| backoffice | `backoffice.yourapp.test/` | `yourapp.test/backoffice` |
 
-`routes/web.php` never changes — its `Route::domain(config('multidomain.sub_domains.app'))` groups just all resolve to the same host when the toggle is on. Laravel registers each group independently and matches whichever one fits the request.
+Always link with `route('app.dashboard')` and friends, never hard-coded URLs, so links work in both modes.
 
-## Known limitation: route collisions
+Use `config('multidomain.sub_domains.app')` (not a hard-coded host) wherever your own code needs a portal's domain, so it works in both modes.
 
-When every portal shares one host, the route **URIs** across portals must not collide. For example, `landing`'s `/` and `account`'s `/` both being registered on the same domain means only the first-registered one is reachable — the others are silently shadowed.
+## Route collisions
 
-This is a deliberate simplicity tradeoff: keeping the toggle at the config level (rather than rewriting route registration logic) means zero behavioral surprises when subdomains are split, at the cost of you being responsible for keeping paths distinct if you opt into single-domain mode. If you hit a collision, prefix routes in the colliding portal's route file (e.g. `Route::prefix('app')->group(...)`).
+On one host, route **URIs** across portals must not collide. Atrium's own portals stay apart through the prefixes above; your own routes are your responsibility — prefix them (`Route::prefix('blog')->group(...)`) if they clash.
 
-## SESSION_DOMAIN interaction
+`make:subdomain` refuses to run while `APP_SINGLE_DOMAIN=true`, because a new portal's `/` would collide.
 
-In single-domain mode, leave `SESSION_DOMAIN=null` — everything is host-only anyway. See [Cross-Subdomain SSO](/guide/sso-sessions) for the multi-domain case.
+## Sessions
+
+In single-domain mode leave `SESSION_DOMAIN=null` — there's only one host. See [Cross-Subdomain SSO](/guide/sso-sessions) for the multi-domain case.

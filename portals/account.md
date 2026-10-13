@@ -1,78 +1,70 @@
 # Account
 
-Authenticated self-service area, served on `account.APP_MAIN_DOMAIN`, wrapped in `auth` middleware.
+Self-service for every signed-in user, on `account.APP_MAIN_DOMAIN` (`/account` in [single-domain mode](/guide/single-vs-multi-domain)).
 
-- Route file: `routes/account.php`
-- Layout: `resources/views/layouts/accounts.blade.php`
-- Pages: `resources/views/pages/accounts/` — profile, security, data export, 2FA setup
-- CSS/JS: `resources/css/account.css`, `resources/js/account.js`
+| | |
+|---|---|
+| Pages | `atrium::accounts.*` — profile, security, export, settings, 2FA setup |
+| Layout | `atrium::layouts.accounts` |
+| CSS / JS | `resources/css/account.css`, `resources/js/account.js` (your copies) |
 
-Both end users and staff can access this portal — there's no `portal:*` middleware restriction here, unlike `app`/`backoffice`.
+End users and staff both use this portal — there's no `portal:*` restriction, unlike app and backoffice.
 
 ## Profile
 
-`/` → `pages::accounts.index`
+`/` → `atrium::accounts.index`
 
 Inline-edit sections, one open at a time:
 
-- **Name** — saves immediately, no re-verification.
-- **Email** — doesn't change on save. See [Changing your email address](/portals/auth#changing-your-email-address) for the pending/verify-link flow. You can cancel a pending change or resend the link from here.
-- **Phone** — only shown if phone verification is enabled. Saving clears the current verification, sends a fresh OTP, and redirects to `/verify-phone`.
-- **Delete account** — requires re-entering your current password. See [Account deletion](#account-deletion) below.
+- **Name** — saves immediately.
+- **Email** — doesn't change on save: see [Changing your email address](/portals/auth#changing-your-email-address). A pending change can be cancelled or its link resent from here.
+- **Phone** — only with phone verification on. Saving clears the verification, sends a new code and redirects to `/verify-phone`.
+- **Delete account** — asks for the current password. See [Account deletion](#account-deletion).
 
 ## Security
 
-`/security` → `pages::accounts.security`
+`/security` → `atrium::accounts.security`
 
-**Password** — change your password with current-password confirmation.
+**Password** — change it, confirming the current one.
 
-**Login sessions** — every active session for your account, read straight from the `sessions` table: device/browser (parsed from the user-agent), IP, last-active time, with the current session flagged. Two actions:
-
-- **Log out** a single other session.
-- **Log out other sessions** — logs out everything except the device you're on now.
-
-Both rotate your `remember_token`, so a "remember me" cookie sitting in a logged-out browser can't silently log itself back in. If your *current* browser also has a remember cookie, it's transparently reissued so you stay logged in.
+**Sign-in sessions** — every active session: device and browser, IP, last activity, with the current one marked. Sign out one other session, or all other sessions. Both rotate the `remember_token`, so a "remember me" cookie in a signed-out browser can't sign itself back in; your current browser's cookie is reissued so you stay signed in.
 
 ## Data export
 
-`/export` → `pages::accounts.export`
+`/export` → `atrium::accounts.export`
 
-- **Request an export** — queues a background job that builds a zip (`profile.csv` + `sessions.csv`) and emails you a link when it's ready.
-- **Download** — clicking the link takes you back to this page, where you re-enter your current password to generate a one-time download token (valid 60 seconds). The actual file is served from `GET /export/{token}` on the account domain (registered directly in `routes/web.php`, not `routes/account.php` — deliberately outside `auth` middleware, since the link may be opened from an email client with no active session).
-- Exports expire and get pruned automatically **7 days** after they're generated.
-- Downloads are capped at **3 per 24 hours** per account.
+- **Request an export** — a queued job builds a zip (`profile.csv`, `sessions.csv`) and emails a link.
+- **Download** — the link brings you back here; re-enter your password to get a one-time download token (valid 60 seconds). The file is served from `GET /export/{token}` on the account domain, outside the `auth` middleware, because the link may be opened from an email client with no session.
+- Exports expire and are pruned **7 days** after they're built; downloads are capped at **3 per 24 hours**.
 
 ## Account deletion
 
-Triggered from the [Profile](#profile) page, re-entering your password.
+From [Profile](#profile), with the current password.
 
-- Requesting deletion **immediately logs you out everywhere** (all sessions revoked) and schedules permanent deletion **30 days** out. You get an email confirming the date.
-- **To cancel**: just log back in during those 30 days — logging in (or completing a 2FA challenge) automatically cancels a pending deletion and sends you a cancellation email. There's no separate "cancel" button once you're logged out, since requesting deletion ends your session immediately.
-- After 30 days, a scheduled job processes the request: your account isn't hard-deleted (so foreign keys/audit trails stay intact) — it's **anonymized** instead. Name becomes "Deleted User", email becomes an unreachable placeholder, phone/2FA/password are wiped, and the request is marked completed.
+- Requesting deletion **signs you out everywhere** and schedules deletion **30 days** later; an email confirms the date.
+- **To cancel**, sign in again within those 30 days — signing in (or passing the 2FA challenge) cancels it and sends a confirmation.
+- After 30 days the account is **anonymised**, not hard-deleted, so foreign keys and the audit trail stay intact: the name becomes "Deleted User", the email an unreachable placeholder, phone, 2FA and password are wiped. Atrium fires `AccountDeleting` before and `UserAnonymized` after — listen to them to clean up your own data.
 
 ## Two-factor authentication
 
-`/two-factor-setup` (requires `auth`, `phone.verified`)
+`/two-factor-setup` (needs `auth`, `phone.verified`)
 
-- **Setup** — scan a QR code with any TOTP authenticator app (Google Authenticator, Authy, etc.), confirm with a 6-digit code. On success, 8 single-use recovery codes are generated — save these somewhere safe.
-- **Manage** — once enabled, this page lets you view/hide recovery codes, regenerate a fresh set (invalidating the old ones), reconfigure (new QR code), or disable 2FA entirely.
-- Recovery codes are consumed permanently once used at the [2FA challenge](/portals/auth#two-factor-authentication) during login.
+- **Set up** — scan the QR code with any TOTP app, confirm with a 6-digit code, and save the 8 single-use recovery codes.
+- **Manage** — show or hide recovery codes, regenerate them, reconfigure, or turn 2FA off.
+- Recovery codes are used up at the [2FA challenge](/portals/auth#two-factor-authentication).
 
-## Preferred language
+## Settings
 
-`/settings` → `pages::accounts.settings`
+`/settings` → `atrium::accounts.settings`
 
-Only shown once 2+ languages are active (see [Localization & RTL](/guide/localization)). Whatever you pick here is authoritative on `app`, `account`, and `backoffice` from then on — it overrides everything else, including `?lang=` if you happen to have it in the URL, and there's no switcher on those three portals for exactly that reason. Saving redirects (full page load, not a Livewire SPA swap) so `<html dir>` and everything else baked into the initial render picks up the change immediately.
-
-## Timezone
-
-Same `/settings` page, its own card — always shown (not gated behind anything, unlike Preferred language). Picks a `users.timezone` value used to display every date/time you see across the app in your local time instead of the server's UTC storage; falls back to the backoffice's global default timezone if left unset. See [Localization & RTL → Timezones](/guide/localization#timezones) for how conversion works under the hood. Saving here just flashes a status message — no redirect needed, since it doesn't affect anything baked into the initial render the way locale does.
+- **Preferred language** — with the Language module on and two or more active languages. It decides the language on app, account and backoffice, overriding the URL (see [Localization & RTL](/guide/localization)). Saving reloads the page so direction and everything else update.
+- **Timezone** — always shown. Dates across the app display in it; empty uses the app's default timezone.
 
 ## Scheduled cleanup
 
-Two jobs run daily (`routes/console.php`), no setup needed beyond a working queue + scheduler:
+Atrium schedules two daily jobs — keep the queue worker and scheduler running:
 
-| Job | Schedule | What it does |
+| Job | When | What |
 |---|---|---|
-| `ProcessPendingAccountDeletions` | 02:00 daily | Finds deletion requests past their 30-day date and processes them |
-| `PruneAccountExports` | 03:00 daily | Deletes expired export files + their DB rows |
+| `ProcessPendingAccountDeletions` | 02:00 | Anonymises accounts whose 30 days are up |
+| `PruneAccountExports` | 03:00 | Deletes expired export files and rows |

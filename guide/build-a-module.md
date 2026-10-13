@@ -11,7 +11,7 @@ php artisan atrium:make-package acme/invoices
 This creates `packages/acme/invoices`, a Composer package of type `atrium-module`:
 
 ```
-composer.json                       type atrium-module; requires atrium-php/core ^1.0; extra.atrium
+composer.json                       type atrium-module; requires the atrium-php/core you run; extra.atrium
 src/InvoicesServiceProvider.php     extends ModuleProvider
 routes/backoffice.php               its pages, inside Atrium's backoffice
 resources/views/livewire/⚡index     a first page
@@ -43,7 +43,7 @@ Your provider extends `Atrium\Core\Support\Modules\ModuleProvider`:
 | `userNeeds()` | Traits/interfaces `App\Models\User` must have (checked by `atrium:doctor`) |
 | `licenseGate()`, `whenUnlicensed()` | Licensing (below) |
 
-Keep `"atrium-php/core": "^1.0"` (or the range you test against) in `composer.json`, so Composer refuses an Atrium upgrade your module doesn't support yet. Depend on Atrium through Composer and use only its `@api` classes. Never copy Atrium code into your package.
+`atrium:make-package` sets the `atrium-php/core` range to the version the project runs (`^1.2`, or `^1.0@alpha` on a pre-release). Keep it at the range you test against, so Composer refuses an Atrium upgrade your module doesn't support yet. If the project installs Atrium from a private repository (internal pre-releases), the package gets that repository entry too, so its own `composer install` and CI work; its workflow reads it with an `ATRIUM_GITHUB_TOKEN` secret. Depend on Atrium through Composer and use only its `@api` classes. Never copy Atrium code into your package.
 
 ## Selling it
 

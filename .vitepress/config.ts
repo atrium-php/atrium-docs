@@ -17,6 +17,7 @@ export default defineConfig({
                 text: 'Guide',
                 items: [
                     { text: 'Getting Started', link: '/guide/getting-started' },
+                    { text: 'Modules', link: '/guide/modules' },
                     { text: 'Customising without forking', link: '/guide/customising' },
                     { text: 'Upgrading', link: '/guide/upgrading' },
                     { text: 'Build (and sell) a module', link: '/guide/build-a-module' },
@@ -33,7 +34,7 @@ export default defineConfig({
                 ],
             },
             {
-                text: 'Portals (example apps)',
+                text: 'Portals',
                 items: [
                     { text: 'Landing', link: '/portals/landing' },
                     { text: 'Auth', link: '/portals/auth' },
@@ -46,6 +47,7 @@ export default defineConfig({
                 text: 'Reference',
                 items: [
                     { text: 'Config', link: '/reference/config' },
+                    { text: 'Commands', link: '/reference/commands' },
                     { text: 'Env Vars', link: '/reference/env-vars' },
                     { text: 'Flux UI Pro', link: '/reference/flux-ui' },
                 ],

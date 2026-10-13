@@ -1,29 +1,63 @@
 # Environment Variables
 
-## Multidomain
+Atrium's own variables, on top of Laravel's standard ones (database, mail, queue, …) in `.env.example`.
 
-| Var | Default | Purpose |
+## Portals
+
+| Var | Default | |
 |---|---|---|
-| `APP_MAIN_DOMAIN` | `localhost` | Base domain (e.g. `yourapp.test`) |
-| `APP_SINGLE_DOMAIN` | `false` | Collapse all portals onto one host |
-| `SESSION_DOMAIN` | `null` | Shared session cookie domain for SSO, e.g. `.yourapp.test`. Leave `null` in single-domain mode |
-| `APP_MAINTENANCE` | `false` | Global maintenance kill switch — takes down every portal, backoffice included. See [Maintenance Mode](/guide/maintenance-mode) |
+| `APP_MAIN_DOMAIN` | `localhost` | The domain every portal's host comes from (e.g. `yourapp.test`) |
+| `APP_SINGLE_DOMAIN` | `false` | All portals on one host — see [Single vs Multi Domain](/guide/single-vs-multi-domain) |
+| `SESSION_DOMAIN` | `null` | Shared session cookie for [SSO](/guide/sso-sessions), e.g. `.yourapp.test`; `null` in single-domain mode |
 
-## Demo auth feature
+## Install
 
-Not required by the starter kit core — only relevant if you keep the phone-verification / OTP demo flow. See the [Auth portal](/portals/auth) for how each is used.
-
-| Var | Default | Purpose |
+| Var | Default | |
 |---|---|---|
-| `PHONE_VERIFICATION_ENABLED` | `false` | Turn the phone/OTP flow on. Off by default — leave off if you don't need it |
-| `PHONE_COUNTRY_MODE` | `single` | `single` (fixed code) or `multi` (free-text code) |
-| `PHONE_DEFAULT_COUNTRY_CODE` | `+91` | Fixed country code used in `single` mode |
-| `EMAIL_VERIFICATION_GRACE_DAYS` | `7` | Days before unverified email hard-blocks access |
-| `OTP_EXPIRES_MINUTES` | `10` | How long a generated OTP stays valid (also shown in the SMS/email text sent to the user) |
-| `TWILIO_ACCOUNT_SID` | — | Twilio account SID, required to actually send OTP SMS |
-| `TWILIO_AUTH_TOKEN` | — | Twilio auth token |
-| `TWILIO_PHONE_NUMBER` | — | Sending number for OTP SMS |
+| `ADMIN_NAME` | `Admin` | The Super Admin `atrium:install` creates |
+| `ADMIN_EMAIL` | `admin@example.com` | |
+| `ADMIN_PASSWORD` | empty | Empty: generated and printed once |
+| `DEMO_PASSWORD` | empty | Password for `atrium:install --demo` accounts (empty: generated) |
 
-Without Twilio credentials set, SMS sends fail silently (logged, not thrown) — fine for local dev where you don't need real texts, but phone verification won't be reachable by an actual user until these are set.
+## Modules
 
-See `.env.example` for the full list of standard Laravel env vars (database, mail, queue, etc.) — unchanged from a standard Laravel install.
+| Var | Default | |
+|---|---|---|
+| `MODULE_ACTIVITY`, `MODULE_BACKUP`, `MODULE_CURRENCY`, `MODULE_LANGUAGE`, `MODULE_MAINTENANCE`, `MODULE_MEDIA` | `true` | Switch a [module](/guide/modules) off with `false` |
+| `MODULE_API`, `MODULE_BILLING` | `false` | Switch on with `true` |
+| `APP_MAINTENANCE` | `false` | Global maintenance switch — every portal, backoffice included ([Maintenance Mode](/guide/maintenance-mode)) |
+| `MEDIA_DISK`, `MEDIA_IMAGE_DRIVER` | `local`, `gd` | Media module storage and image driver |
+| `API_RATE_LIMIT` | `60` | API module: requests per minute per token |
+| `BACKUP_ENABLED` | `false` | Backup module: actually run scheduled backups |
+| `BACKUP_DISKS`, `BACKUP_NOTIFY_MAIL`, `BACKUP_ARCHIVE_PASSWORD` | | Where backups go, who is told, archive encryption |
+| `STRIPE_KEY`, `STRIPE_SECRET`, `STRIPE_WEBHOOK_SECRET`, `CASHIER_CURRENCY` | | Billing module (Laravel Cashier) |
+| `BILLING_STARTER_PRICE`, `BILLING_PRO_PRICE`, `BILLING_TRIAL_DAYS` | | Billing module plans |
+
+## Health
+
+| Var | Default | |
+|---|---|---|
+| `HEALTH_TOKEN` | empty | Unlocks per-check detail on `/health` |
+| `HEALTH_CACHE_SECONDS` | `30` | How long a health report is reused |
+| `HEALTH_NOTIFY_MAIL` | empty | Who is emailed when a check fails |
+
+## Feature flags
+
+| Var | |
+|---|---|
+| `PENNANT_KILLED` | Comma-separated flag names forced off everywhere (kill switch) |
+
+## Sign-in flow
+
+See the [Auth portal](/portals/auth) for how each is used.
+
+| Var | Default | |
+|---|---|---|
+| `PHONE_VERIFICATION_ENABLED` | `false` | The phone/OTP flow on or off |
+| `PHONE_COUNTRY_MODE` | `single` | `single` (fixed code) or `multi` (users type their own) |
+| `PHONE_DEFAULT_COUNTRY_CODE` | `+91` | The code used in `single` mode |
+| `EMAIL_VERIFICATION_GRACE_DAYS` | `7` | Days before an unverified email blocks access |
+| `OTP_EXPIRES_MINUTES` | `10` | How long a code is valid (also shown in the SMS/email) |
+| `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_PHONE_NUMBER` | | Needed to actually send SMS codes |
+
+Without Twilio credentials, SMS sending fails quietly (logged) — fine locally, but phone verification can't work for real users until they're set.

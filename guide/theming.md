@@ -1,37 +1,52 @@
 # Theming
 
-All visual theming is Tailwind v4 CSS, shared across every portal via two files that each portal's CSS entry imports identically:
+Two ways to change the look: **Backoffice → Settings** for brand basics without touching code, and the **portal CSS** in your project for everything else.
+
+## Brand settings (no code)
+
+Backoffice → Settings (`settings.edit`):
+
+- **Brand name** — page titles, headers, emails, SMS and the 2FA issuer (default: `APP_NAME`).
+- **Logo URL** and **favicon URL** — empty uses Atrium's logo (`resources/assets`) and no favicon.
+- **Accent colour** — recolours the brand blue (buttons, links, accents) in every portal.
+- **"Powered by Atrium"** credit — on by default, switch it off here.
+
+An agency can ship Atrium under its own or a client's brand this way. In code, read them through `Atrium\Core\Support\Brand` (`@api`).
+
+## The portal CSS
+
+Each portal has a Tailwind v4 CSS entry in your project — `resources/css/{app,account,auth,backoffice,landing,errors}.css`, plus one per portal you add with [`make:subdomain`](/guide/make-subdomain-command). They all import the same two files:
 
 ```
-resources/css/theme.css              — brand colors
-resources/css/partials/edge-design.css — the "edge design" (zero-radius) system
+resources/css/theme.css                 brand colours and font
+resources/css/partials/edge-design.css  the square "edge design"
 ```
 
-Every portal (`app.css`, `account.css`, `auth.css`, `backoffice.css`, `landing.css`, and any portal scaffolded via [`make:subdomain`](/guide/make-subdomain-command)) imports both, so a change here is instant and consistent app-wide — no per-portal theme drift.
+So a change there applies to every portal at once. Run `npm run build` (or `npm run dev`) afterwards.
 
-## Brand colors
+These files are **copies of Atrium's** that a new project starts with. Edit them freely: `atrium-overrides.json` remembers each one, `atrium:upgrade` refreshes the ones you never touched, and `atrium:overrides` lists the ones you edited whose original Atrium has since changed (see [Customising](/guide/customising#your-copies-of-atrium-files)).
+
+Each portal's CSS also scans Atrium's views in `vendor/atrium-php/*` (the `@source` lines), so classes used by Atrium's pages are always built — keep those lines when you edit.
+
+## Brand colours
 
 `theme.css` uses Tailwind's `@theme` block to:
 
-- Remap Flux's `zinc` gray scale onto `slate` (Flux components use `zinc` internally; this reassigns which actual color that resolves to).
-- Define a custom brand blue ramp (`--color-blue-50` … `--color-blue-950`) and brand red ramp, used both as regular Tailwind utilities (`bg-blue-500`, `text-red-400`, etc.) and as Flux's accent color (`--color-accent`).
-- Set the font to "Instrument Sans".
+- map Flux's `zinc` grays onto `slate` (Flux uses `zinc` internally);
+- define the brand **blue** and **red** ramps (`--color-blue-50` … `--color-blue-950`, same for red), used both as utilities (`bg-blue-500`) and as Flux's accent (`--color-accent`), with a `.dark` override;
+- set the font to "Instrument Sans".
 
-To rebrand, replace the hex values in the blue/red ramps — every button, badge, and accent color across all portals follows automatically. There's a `.dark` override block for the accent color in dark mode.
+To rebrand in code, replace the hex values of the blue/red ramps. (The accent colour setting above overrides the middle of the blue ramp at runtime.)
 
-## Edge design (zero border-radius)
+## Edge design (square corners)
 
-`edge-design.css` forces every corner in the app to be square — no rounded buttons, cards, inputs, badges, avatars, or checkboxes anywhere, in any portal.
+`edge-design.css` makes every corner square — buttons, cards, inputs, badges, avatars, checkboxes — in every portal. Flux components don't all use `rounded-*` classes (some, like the avatar, set their radius through a CSS variable), so the file overrides radius two ways:
 
-This exists because Flux components don't all use plain `rounded-*` classes internally — some (like `flux:avatar`) set their radius through a CSS custom property instead, which a naive `.rounded-lg { border-radius: 0 }` override won't catch. So the file overrides radius two ways:
+1. by Flux's `data-flux-*` attributes (`[data-flux-card]`, `[data-flux-button]`, …);
+2. by Tailwind `rounded-*` class names, for your own markup.
 
-1. **By Flux's own `data-flux-*` attributes** (`[data-flux-card]`, `[data-flux-button]`, `[data-flux-avatar]`, etc.) — catches components that don't use a matching utility class name.
-2. **By literal Tailwind `rounded-*` class name** (`.rounded-lg`, `.rounded-2xl`, `.rounded-full`, …) — catches custom markup in the app's own Blade views.
+It also adds hard-offset shadows on primary/danger buttons, a brand-tinted avatar background, uppercase field labels and a slim scrollbar.
 
-If you add a new Flux component type to the app and it still shows rounded corners, check what CSS variable or class it uses internally (`vendor/livewire/flux/stubs/resources/views/flux/{component}/`) and add a matching override here.
+If a new Flux component still shows rounded corners, find the class or variable it uses (`vendor/livewire/flux*/stubs/resources/views/flux/{component}/`) and add a matching override.
 
-Also in this file: hard-offset (non-blurred) drop shadows on primary/danger buttons that shift on hover/active, a brand-tinted avatar background (instead of Flux's default gray), uppercase/letterspaced field labels, and a hidden-but-functional scrollbar.
-
-### Turning edge design off
-
-Delete the `@import "./partials/edge-design.css";` line from any portal's CSS file (or all of them) to fall back to Flux's normal rounded-corner defaults for that portal.
+**Turning it off:** delete `@import "./partials/edge-design.css";` from one portal's CSS file, or all of them.

@@ -1,18 +1,36 @@
 # App
 
-The main authenticated application, served on `app.APP_MAIN_DOMAIN`.
+Your application's signed-in area, on `app.APP_MAIN_DOMAIN` (`/app` in [single-domain mode](/guide/single-vs-multi-domain)).
 
-- Route file: `routes/app.php`
-- Layout: `resources/views/layouts/app.blade.php`
-- Pages: `resources/views/pages/app/`
-- CSS/JS: `resources/css/app.css`, `resources/js/app.js`
+| | |
+|---|---|
+| Page | `atrium::app.dashboard` at `/` (route `app.dashboard`) |
+| Layout | `atrium::layouts.app` |
+| CSS / JS | `resources/css/app.css`, `resources/js/app.js` (your copies) |
 
 ## Dashboard
 
-`/` → `pages::app.dashboard`
+**Placeholder content**, not real data: stat cards, a 7-day chart and a recent-activity feed standing in for whatever your product does. Replace it with your own Livewire component:
 
-**This is placeholder demo content**, not real data — hard-coded stat cards (revenue, active users, open orders, conversion rate), a fake 7-day activity chart, and a fake recent-activity feed, all meant to stand in for whatever your actual product does. Replace `resources/views/pages/app/⚡dashboard/dashboard.php` and its Blade view with your own logic.
+```php
+// AppServiceProvider::register()
+Platform::component('atrium::app.dashboard', \App\Livewire\Dashboard::class);
+```
 
-## Access control
+Add your other pages as ordinary routes in `routes/web.php`, inside the app portal's domain:
 
-Wrapped in `['auth', 'phone.verified', 'email.grace', 'portal:user']`. The `portal:user` alias is `App\Http\Middleware\EnsurePortalAccess` — it redirects staff users to `backoffice.dashboard` instead, keeping end-users and staff in their own portal. This is the core, reusable mechanism (see [Config Reference](/reference/config)); `phone.verified` and `email.grace` are demo-specific and live in `App\Http\Middleware\Demo\`.
+```php
+Route::domain(config('multidomain.sub_domains.app'))->name('app.')
+    ->middleware(['auth', 'phone.verified', 'email.grace', 'portal:user'])
+    ->group(function () {
+        Route::livewire('projects', \App\Livewire\Projects::class)->name('projects');
+    });
+```
+
+In [single-domain mode](/guide/single-vs-multi-domain) add `->prefix('app')` (when `config('multidomain.single_domain')` is true) so your URLs sit next to Atrium's under `/app`.
+
+## Access
+
+Atrium wraps the portal in `['auth', 'phone.verified', 'email.grace', 'portal:user']`. `portal:user` sends staff to the backoffice, keeping end users and staff in their own portals (see [Roles & Permissions](/guide/roles-and-permissions#gate-bypass)). `phone.verified` and `email.grace` belong to the [verification flow](/portals/auth): the first passes straight through while phone verification is off, the second blocks only once a user's email-verification grace period has run out.
+
+To add middleware to every app route Atrium registers: `Platform::routeMiddleware(MyMiddleware::class, 'app')`.
