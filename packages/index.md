@@ -4,10 +4,11 @@ Atrium is a set of Composer packages, released together under one version number
 
 | Package | What it is | |
 |---|---|---|
-| [`atrium-php/core`](/packages/core) | Portals, auth, account, roles and permissions, settings, feature flags, health checks, the module system | always installed |
+| [`atrium-php/core`](/packages/core) | Portals, auth, account, the role and permission models, settings, feature flags, health checks, the module system | always installed |
+| [`atrium-php/access-control`](/packages/access-control) | The Roles, Permissions and Users pages — a required module | always installed |
 | [`atrium-php/skeleton`](/packages/skeleton) | The app a new project starts from (`composer create-project`) | your project |
 
-And eight modules — each its own package of type `atrium-module`. A new project has **none of them**: install the ones you need from Backoffice → Modules or with `php artisan module:install` — see [Modules](/guide/modules).
+And eight optional modules — each its own package of type `atrium-module`. A new project has **none of them**: install the ones you need from Backoffice → Modules or with `php artisan module:install` — see [Modules](/guide/modules).
 
 | Module | Package | What it adds | On once installed |
 |---|---|---|---|

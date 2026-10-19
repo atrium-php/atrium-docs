@@ -4,7 +4,7 @@
 |---|---|
 | Package | `atrium-php/skeleton` (type `project`) |
 | Use | `composer create-project atrium-php/skeleton my-app` — see [Getting Started](/guide/getting-started) |
-| Requires | `atrium-php/core` only, and `livewire/flux-pro` ([Flux UI Pro](/reference/flux-ui)). Modules are added later — see [Modules](/guide/modules) |
+| Requires | `atrium-php/core`, `atrium-php/access-control` (required module) and `livewire/flux-pro` ([Flux UI Pro](/reference/flux-ui)). Modules are added later — see [Modules](/guide/modules) |
 
 The skeleton is a thin Laravel app. After `create-project` it's **your project** — Atrium itself stays in `vendor/atrium-php/*` and upgrades with `composer update` + `php artisan atrium:upgrade`.
 

@@ -39,6 +39,7 @@ export default defineConfig({
                     { text: 'Overview', link: '/packages/' },
                     { text: 'Core', link: '/packages/core' },
                     { text: 'Skeleton', link: '/packages/skeleton' },
+                    { text: 'Access Control', link: '/packages/access-control' },
                     { text: 'Activity', link: '/packages/activity' },
                     { text: 'API', link: '/packages/api' },
                     { text: 'Backup', link: '/packages/backup' },

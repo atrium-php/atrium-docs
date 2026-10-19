@@ -25,7 +25,7 @@ npm install && npm run build
 
 `atrium:install` migrates, seeds the roles and the **Super Admin** (`ADMIN_EMAIL`, default `admin@example.com`) and prints the generated password once. It's safe to run again.
 
-A new project has **core only**: the portals, sign-in, accounts, roles, settings, feature flags and health checks. Modules — activity log, API, backups, billing, currencies, languages, maintenance, media — are added afterwards, from **Backoffice → Modules** or `php artisan module:install`. See [Modules](/guide/modules).
+A new project has **core and [Access Control](/packages/access-control)**: the portals, sign-in, accounts, roles, permissions and users, settings, feature flags and health checks. Optional modules — activity log, API, backups, billing, currencies, languages, maintenance, media — are added afterwards, from **Backoffice → Modules** or `php artisan module:install`. See [Modules](/guide/modules).
 
 ## What you own, what Atrium owns
 

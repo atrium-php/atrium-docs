@@ -23,9 +23,6 @@ Inside, every page and action checks its own permission, and the sidebar only li
 | Page | Path | Permission |
 |---|---|---|
 | Dashboard — users, staff, roles, permissions, newest users | `/` | staff |
-| Roles, and each role's permissions | `/roles`, `/roles/{role}/permissions` | `roles.*` |
-| Permissions catalog | `/permissions` | `permissions.*` (Super Admin only to change) |
-| Users and their roles | `/users` | `users.view`, `users.assign-roles` |
 | Settings — timezone, brand, module settings | `/settings` | `settings.edit` |
 | Modules — install, switch on and off, uninstall, back up and restore modules; licence keys ([Modules](/guide/modules)) | `/modules` | `modules.manage` (Super Admin) |
 | Feature flags | `/feature-flags` | `feature-flags.manage` |
@@ -37,6 +34,9 @@ Each appears while its [module](/packages/) is on (users also get Account → Bi
 
 | Page | Path | Module |
 |---|---|---|
+| [Roles](/packages/access-control), each role's permissions | `/roles`, `/roles/{role}/permissions` | access-control (always installed) |
+| [Permissions catalog](/packages/access-control) | `/permissions` | access-control |
+| [Users](/packages/access-control) and their roles | `/users` | access-control |
 | [Activity log](/packages/activity) | `/activity` | activity |
 | [Languages](/packages/language), [Translations](/packages/language#translations) | `/languages`, `/translations/{scope?}` | language |
 | [Currencies](/packages/currency) | `/currencies` | currency |
@@ -56,4 +56,4 @@ Your own modules add fields with `Module::contribute('settings.fields', [new Set
 
 From a module (recommended): a `routes/backoffice.php` in the module is loaded inside the backoffice group, and `Module::contribute('backoffice.nav', [...])` adds the sidebar link. `php artisan make:module` and `atrium:make-package` scaffold both.
 
-To change an existing page, see [Customising](/guide/customising) — `Platform::component('atrium::backoffice.users', ...)` swaps it for your own.
+To change an existing page, see [Customising](/guide/customising) — `Platform::component('access-control::users', ...)` swaps it for your own.

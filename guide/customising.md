@@ -8,7 +8,7 @@ An Atrium project never edits files under `vendor/atrium-php/`. That's what keep
 |---|---|
 | A setting or a feature switch | `.env`, `config/*.php`, Backoffice → Settings, Backoffice → Modules |
 | The user model (columns, relations, traits) | Edit `App\Models\User`. It extends `Atrium\Core\Models\User` and is registered with `Platform::useUserModel()` in `AppServiceProvider`. |
-| A page | `Platform::component('atrium::backoffice.users', App\Livewire\Users::class)`. Same URL, route name and middleware. |
+| A page | `Platform::component('access-control::users', App\Livewire\Users::class)` (core's pages are `atrium::…`, a module's `{module}::…`). Same URL, route name and middleware. |
 | Middleware around Atrium's routes | `Platform::routeMiddleware(MyMiddleware::class)` for every portal, or `…, 'backoffice')` for one |
 | A layout, component or error page | `php artisan atrium:override atrium::layouts.backoffice` (one view), or `php artisan vendor:publish --tag=atrium-views` |
 | Atrium's own config | `vendor:publish --tag=atrium-config`, or create `config/multidomain.php` etc. A project file wins. |
@@ -26,7 +26,7 @@ Call `Platform::` methods from a service provider's `register()`:
 public function register(): void
 {
     Platform::useUserModel(User::class);
-    Platform::component('atrium::backoffice.users', \App\Livewire\Users::class);
+    Platform::component('access-control::users', \App\Livewire\Users::class);
     Platform::routeMiddleware(\App\Http\Middleware\AuditTrail::class, 'backoffice');
 }
 ```

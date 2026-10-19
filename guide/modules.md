@@ -1,9 +1,10 @@
 # Modules
 
-Atrium's optional features are **modules**: each its own Composer package, installed only when a project wants it. A new project starts with core alone.
+Atrium's optional features are **modules**: each its own Composer package, installed only when a project wants it. A new project starts with core and the one required module, Access Control.
 
 | Module | Package | What it adds |
 |---|---|---|
+| [Access Control](/packages/access-control) | `atrium-php/access-control` | Roles, permissions and the users list — **required**: always installed, always on |
 | [Activity](/packages/activity) | `atrium-php/activity` | Audit trail of who changed what, with comments and reactions |
 | [API](/packages/api) | `atrium-php/api` | Token-authenticated JSON API with a Super Admin access policy |
 | [Backups](/packages/backup) | `atrium-php/backup` | Scheduled database and file backups |
@@ -91,7 +92,7 @@ You get an email when it's done. The module stays listed as *Not installed*, wit
 | **optional** | offered, ticked by default | API, Currency, Maintenance |
 | **none** | nothing worth keeping | Backup |
 
-**Required modules** — a package can mark itself as never uninstallable; it has no *Uninstall* action.
+**Required modules** — a package can mark itself required (`"required": true` under `extra.atrium`): it has no switch and no *Uninstall* action, and stays on whatever `.env` or an override says. Atrium's own: Access Control.
 
 ::: warning Servers deployed from git
 Removing a module's code changes `composer.json` and `composer.lock` **on that server**. Make the same change in your repository (`composer remove atrium-php/<module>`), or the next deploy brings the package back. Its data stays uninstalled; the Modules page shows the code as still installed with a *Remove code* button. Set `MODULE_REMOVE_CODE=false` to keep packages installed after an uninstall and remove them through your normal deploy instead. See [Deploying](/guide/deploying).
