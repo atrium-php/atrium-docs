@@ -3,7 +3,7 @@
 Atrium's config ships inside its packages and is merged into your app. A new project has none of these files; Atrium's defaults apply. To change one, copy it into the project:
 
 ```bash
-php artisan vendor:publish --tag=atrium-config    # config/multidomain.php, rate-limits.php, health.php, module-*.php
+php artisan vendor:publish --tag=atrium-config    # config/multidomain.php, rate-limits.php, module-*.php
 ```
 
 or create a file of the same name with only the keys you change — **a project file wins** over Atrium's, key by key. Published copies are tracked in `atrium-overrides.json` (see [Customising](/guide/customising#your-copies-of-atrium-files)).
@@ -28,7 +28,7 @@ or create a file of the same name with only the keys you change — **a project 
 
 Per-route throttles: `login`, `register`, `downloads`, `links` — each `max` attempts per `decay` seconds.
 
-## `health` (core)
+## `health` (Health module)
 
 | Key | Env | |
 |---|---|---|
@@ -73,6 +73,7 @@ Modules bring their own config the same way — merged under the module's name, 
 | `maintenance` | maintenance | `global` (`APP_MAINTENANCE`), `exempt_portals` — see [Maintenance Mode](/packages/maintenance) |
 | `activitylog` | activity | spatie/laravel-activitylog's config |
 | `backup` | backup | spatie/laravel-backup's config (`BACKUP_*`) |
+| `health` | health | See [`health`](#health-health-module) above |
 | `sanctum` | api | Sanctum's config |
 | `translation-loader` | language | spatie/laravel-translation-loader's config |
 

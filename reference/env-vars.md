@@ -48,6 +48,8 @@ Read only once the module is installed. Each module's page lists its own.
 
 ## Health
 
+Read by the [Health module](/packages/health).
+
 | Var | Default | |
 |---|---|---|
 | `HEALTH_TOKEN` | empty | Unlocks per-check detail on `/health` |

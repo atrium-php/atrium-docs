@@ -76,7 +76,7 @@ These are whole-site backups. To bring back **one module's** data after uninstal
 
 ## Monitoring
 
-- A **health check** on Backoffice → System health and `/health`: a warning while backups are off or none exists yet, failed when the newest is too old or a destination is unhealthy.
+- A **health check** on Backoffice → System health and `/health` (with the [Health module](/packages/health)): a warning while backups are off or none exists yet, failed when the newest is too old or a destination is unhealthy.
 - **Emails** to `BACKUP_NOTIFY_MAIL` (falls back to `HEALTH_NOTIFY_MAIL`) when a backup or cleanup fails, or the monitor finds a problem (newest backup older than a day, or over the storage cap). Successful runs send nothing.
 
 ## Environment

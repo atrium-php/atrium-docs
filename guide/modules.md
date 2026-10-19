@@ -10,6 +10,8 @@ Atrium's optional features are **modules**: each its own Composer package, insta
 | [Backups](/packages/backup) | `atrium-php/backup` | Scheduled database and file backups |
 | [Billing](/packages/billing) | `atrium-php/billing` | Stripe subscriptions |
 | [Currencies](/packages/currency) | `atrium-php/currency` | Currencies, exchange rates and money formatting |
+| [Feature flags](/packages/feature-flags) | `atrium-php/feature-flags` | The backoffice page to switch feature flags |
+| [System health](/packages/health) | `atrium-php/health` | `/health` endpoint for monitors, System health page, status-change emails |
 | [Languages](/packages/language) | `atrium-php/language` | Languages, RTL, URL locales and database translations |
 | [Maintenance](/packages/maintenance) | `atrium-php/maintenance` | Per-portal maintenance mode |
 | [Media](/packages/media) | `atrium-php/media` | Media library with uploads, image sizes and attachments |
@@ -89,8 +91,8 @@ You get an email when it's done. The module stays listed as *Not installed*, wit
 | Backup policy | Meaning | Modules |
 |---|---|---|
 | **required** | always backed up; the uninstall stops if the backup fails | Activity, Billing, Language, Media (with files) |
-| **optional** | offered, ticked by default | API, Currency, Maintenance |
-| **none** | nothing worth keeping | Backup |
+| **optional** | offered, ticked by default | API, Currency, Feature Flags, Maintenance |
+| **none** | nothing worth keeping | Backup, Health |
 
 **Required modules** — a package can mark itself required (`"required": true` under `extra.atrium`): it has no switch and no *Uninstall* action, and stays on whatever `.env` or an override says. Atrium's own: Access Control.
 

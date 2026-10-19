@@ -25,8 +25,6 @@ Inside, every page and action checks its own permission, and the sidebar only li
 | Dashboard — users, staff, roles, permissions, newest users | `/` | staff |
 | Settings — timezone, brand, module settings | `/settings` | `settings.edit` |
 | Modules — install, switch on and off, uninstall, back up and restore modules; licence keys ([Modules](/guide/modules)) | `/modules` | `modules.manage` (Super Admin) |
-| Feature flags | `/feature-flags` | `feature-flags.manage` |
-| System health | `/system-health` | `health.view` |
 
 ## Module pages
 
@@ -43,6 +41,8 @@ Each appears while its [module](/packages/) is on (users also get Account → Bi
 | [Maintenance](/packages/maintenance) | `/maintenance` | maintenance |
 | [Media Library](/packages/media) | `/media` | media |
 | [Backups](/packages/backup) | `/backups` | backup |
+| [Feature flags](/packages/feature-flags) | `/feature-flags` | feature-flags |
+| [System health](/packages/health) | `/system-health` | health |
 | [Billing](/packages/billing) | `/billing` | billing |
 | [API Access](/packages/api) | `/api` | api |
 

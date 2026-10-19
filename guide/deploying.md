@@ -25,7 +25,7 @@ Point the main domain and every portal subdomain (`auth.`, `account.`, `app.`, `
 Both are required.
 
 - **Queue worker** (Supervisor, systemd, Forge, Cloud…): `php artisan queue:work`. Module installs, uninstalls, restores and backups, account data exports and deletions, and notification mail run on it. Use a real queue connection (`database`, `redis`), never `sync`.
-- **Scheduler**: `* * * * * php /path/to/app/artisan schedule:run` in cron. Health notifications, pending account deletions and module jobs (exchange rates, backups, …) depend on it. The health check warns when its heartbeat is missing.
+- **Scheduler**: `* * * * * php /path/to/app/artisan schedule:run` in cron. Health notifications, pending account deletions and module jobs (exchange rates, backups, …) depend on it. The [Health module](/packages/health) warns when its heartbeat is missing.
 
 ## Modules on a server
 
@@ -48,11 +48,11 @@ A typical git-based flow: try the module on staging from the Modules page, then 
 
 ## Health checks
 
-- `GET /up` — liveness, for the load balancer.
-- `GET /health` — readiness: 200 when ok or warning, 503 when something failed. Send `X-Health-Token: <HEALTH_TOKEN>` for each check's detail. Point an uptime monitor at it.
-- `HEALTH_NOTIFY_MAIL=ops@example.com` — an email when the overall status changes.
+- `GET /up` — liveness, for the load balancer. Every project has it.
+- `GET /health` — readiness, with the [Health module](/packages/health): 200 when ok or warning, 503 when something failed. Send `X-Health-Token: <HEALTH_TOKEN>` for each check's detail. Point an uptime monitor at it.
+- `HEALTH_NOTIFY_MAIL=ops@example.com` — an email when the overall status changes (Health module).
 
-See [Core → Health checks](/packages/core#health-checks).
+See [Health](/packages/health).
 
 ## Keep `.env` safe
 

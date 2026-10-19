@@ -45,6 +45,8 @@ export default defineConfig({
                     { text: 'Backup', link: '/packages/backup' },
                     { text: 'Billing', link: '/packages/billing' },
                     { text: 'Currency', link: '/packages/currency' },
+                    { text: 'Feature Flags', link: '/packages/feature-flags' },
+                    { text: 'Health', link: '/packages/health' },
                     { text: 'Language', link: '/packages/language' },
                     { text: 'Maintenance', link: '/packages/maintenance' },
                     { text: 'Media', link: '/packages/media' },

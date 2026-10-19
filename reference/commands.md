@@ -47,5 +47,5 @@ See [Customising without forking](/guide/customising).
 
 | Command | |
 |---|---|
-| `health:check` | Run the health checks (as on Backoffice → System health) |
+| `health:check` | Run the health checks (as on Backoffice → System health) — [Health module](/packages/health) |
 | `atrium:license {module?} {key?}` | Without arguments: every licensed module and its status. With a module: set its key; `--check` asks the licence server again, `--forget` removes the key |

@@ -6,7 +6,7 @@
 | Namespace | `Atrium\Core\` |
 | Always on | yes — not a module, can't be switched off |
 | Depends on | Laravel 13, Livewire 4, Flux (free), spatie/laravel-permission, Laravel Pennant, Laravel Scout, google2fa, Twilio SDK |
-| Config | `multidomain`, `rate-limits`, `health` — see [Config Reference](/reference/config) |
+| Config | `multidomain`, `rate-limits`, `module-backups`, `module-lifecycle` — see [Config Reference](/reference/config) |
 
 Everything every Atrium project has, whichever modules are on.
 
@@ -17,7 +17,7 @@ Everything every Atrium project has, whichever modules are on.
 - **Account self-service** — profile, sessions, data export, account deletion with a 30-day cancel window and anonymisation.
 - **[Roles & Permissions](/guide/roles-and-permissions)** — Super Admin and Admin, portal roles, per-page permission checks.
 - **Settings** — Backoffice → Settings, built from a registry modules add fields to; white-label brand settings ([Theming](/guide/theming)).
-- **[Feature flags](#feature-flags)** and **[health checks](#health-checks)**.
+- **[Feature flags](#feature-flags)** and the **[health check](#health-checks)** contract.
 - **[Error pages](/guide/error-pages)**, the audit trail producer (`Auditable`, `Audit` — recorded by the [Activity module](/packages/activity)), [timezones](#timezones).
 - **The module system** — discovery, switches, the Modules page, licensing — see [Packages](/packages/) and [Build (and sell) a module](/guide/build-a-module).
 - **Install and upgrade tooling** — `atrium:install`, `atrium:upgrade`, `atrium:doctor`, copies tracking ([Commands](/reference/commands)).
@@ -85,31 +85,14 @@ Flags::active(NewCurrencyPicker::class);   // current portal / signed-in user
 @flag(\App\Features\NewCurrencyPicker::class) ... @endflag
 ```
 
-Backoffice → Feature flags (`feature-flags.manage`) switches them per portal or user. `PENNANT_KILLED=a,b` forces flags off everywhere. The skeleton ships two examples in `app/Features`.
+`PENNANT_KILLED=a,b` forces flags off everywhere. The skeleton ships two examples in `app/Features`. To switch flags from the backoffice, per portal or user, install the [Feature Flags module](/packages/feature-flags).
 
 ## Health checks
 
-- `GET /health` on every host — overall status, 200 when ok or warning, 503 when anything failed; per-check detail with `HEALTH_TOKEN`.
-- `GET /up` — Laravel's liveness check.
-- `php artisan health:check` and Backoffice → System health (`health.view`).
-
-The public gets only `{"status": …}`; send `X-Health-Token: <HEALTH_TOKEN>` (or `?token=`) to see each check. `health:check --json` for scripts, `--strict` to exit 1 on warnings too.
-
-| Check | Looks at |
-|---|---|
-| Database | Connection, latency, migrations a deploy forgot to run |
-| Cache | Round-trip |
-| Queue | Backlog, stuck jobs (is a worker running?), failed jobs, `sync` driver in production |
-| Storage | Write / read / delete on each disk |
-| Scheduler | Heartbeat — is `schedule:run` in cron? |
-| Disk space | Free space |
-| Portals | Every configured portal has a host and routes |
-| Environment | Debug in production, app key, config/route cache, HTTPS |
-
-Modules add theirs (backups, billing, maintenance). Add your own:
+Core defines what a health check is — `Atrium\Core\Support\Health\Check`, returning a `Result` with a `Status` — and the `health.checks` extension point, so any module can ship a check:
 
 ```php
-Module::contribute('health.checks', [MyCheck::class]);   // implements Atrium\Core\Support\Health\Check
+Module::contribute('health.checks', [MyCheck::class]);
 ```
 
-`HEALTH_NOTIFY_MAIL` (comma-separated) gets an email whenever the overall status changes (ok → failed, failed → ok, …); the scheduler checks every five minutes.
+The [Health module](/packages/health) runs them: `/health`, `php artisan health:check`, Backoffice → System health and status-change emails. Without it, `/up` (Laravel's liveness check) is still there.

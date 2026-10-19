@@ -56,10 +56,10 @@ The Super Admin role itself is hidden from everyone but Super Admins, in the Rol
 
 ## Permissions
 
-Permissions are `module.action` strings. Core owns:
+Permissions are `module.action` strings. Core and the required Access Control module own:
 
 ```
-settings.edit        modules.manage       feature-flags.manage   health.view
+settings.edit        modules.manage
 roles.view           roles.create         roles.edit             roles.delete
 roles.assign-permissions
 permissions.view     permissions.create   permissions.edit       permissions.delete
@@ -75,6 +75,8 @@ Each module owns its own (seeded whether the module is on or off, so role assign
 | backup | `backups.manage` |
 | billing | `billing.view`, `billing.manage` |
 | currency | `currencies.view` |
+| feature-flags | `feature-flags.manage` |
+| health | `health.view` |
 | language | `languages.view/create/edit/delete`, `translations.landing`, `translations.portal`, `translations.common` |
 | maintenance | `maintenance.view`, `maintenance.update` |
 | media | `media.view`, `media.manage` |
