@@ -43,6 +43,83 @@ Your provider extends `Atrium\Core\Support\Modules\ModuleProvider`:
 | `userNeeds()` | Traits/interfaces `App\Models\User` must have (checked by `atrium:doctor`) |
 | `licenseGate()`, `whenUnlicensed()` | Licensing (below) |
 
+## Uninstall, backup and restore
+
+Projects can uninstall your module from Backoffice → Modules, which backs its data up, deletes it, and removes the package — and later restore it from that backup ([Modules](/guide/modules)). Atrium does the work; your provider declares what the module owns:
+
+```php
+use Atrium\Core\Support\Modules\BackupPolicy;
+use Atrium\Core\Support\Modules\OwnedData;
+
+protected function ownedData(): OwnedData
+{
+    return new OwnedData(
+        tables: ['invoices', 'invoice_lines'],          // every table your migrations create
+        settings: ['invoices.prefix'],                  // app_settings keys you write
+        morphTypes: [Invoice::class],                   // rows elsewhere pointing at these go too
+        features: ['invoice-reminders'],               // Pennant flags you define
+        storage: ['local' => ['invoices']],             // folders you own, per disk
+        files: ['invoices' => ['disk', 'pdf_path']],    // files tracked in your rows
+        searchable: [Invoice::class],                   // Scout models: index emptied / rebuilt
+    );
+}
+
+protected function backupPolicy(): BackupPolicy
+{
+    // none(): nothing worth keeping · optional(): offered, the default · required(): always
+    return BackupPolicy::required(files: true, excludeTables: ['invoice_webhook_log'], neverRestore: []);
+}
+
+protected function uninstallBlockers(): array
+{
+    return [UnpaidInvoices::class];   // implements Atrium\Core\Contracts\UninstallBlocker
+}
+
+protected function afterRestore(): void
+{
+    // Rebuild derived data (caches, thumbnails) once the rows and files are back.
+}
+```
+
+- An `UninstallBlocker`'s `check(): ?string` returns why the module can't go right now, or `null`. It's shown in the impact report and checked again just before the uninstall.
+- Restores import your rows with their original ids, then run any migrations newer than the backup — write migrations that work on existing data, as for any upgrade.
+- Tables in `neverRestore` are backed up but stay empty after a restore (tokens, secrets).
+- `"required": true` under `extra.atrium` makes a module impossible to uninstall.
+
+## On the Modules page before it's installed
+
+Atrium's own modules appear under *Available* even in projects that don't have them. Yours can too: the project lists it in `config/module-lifecycle.php`, and *Install* runs `composer require` for it:
+
+```php
+'catalog' => [
+    ['module' => 'invoices', 'package' => 'acme/invoices', 'label' => 'Invoices',
+     'description' => 'Invoices and payments.', 'icon' => 'document-text'],
+],
+```
+
+The package must be installable from that project (Packagist, or a repository in its `composer.json`).
+
+## Testing
+
+Atrium tests its own modules with `Atrium\Core\Testing\TestCase` (`@api`), an [Orchestra Testbench](https://packages.tools/testbench) test case that boots core plus the modules a suite names, configured like a new project:
+
+```php
+abstract class TestCase extends \Atrium\Core\Testing\TestCase
+{
+    protected ?array $modules = ['invoices'];
+
+    // When your userNeeds() asks for a trait: a test user model that has it.
+    protected function userModel(): string
+    {
+        return Fixtures\User::class;   // extends Atrium\Core\Testing\User
+    }
+}
+```
+
+It finds modules among the packages Composer installed, so run the suite from a workspace or project that requires your package (with a path repository while developing). Helpers: `disableModules()`, `enableModules()`, and from `Platform::path('testing/helpers.php')` `superAdminActor()`, `adminActor()`, `staffUser()`, `backofficeUrl()`.
+
+## Versions and the public API
+
 `atrium:make-package` sets the `atrium-php/core` range to the version the project runs (`^1.2`, or `^1.0@alpha` on a pre-release). Keep it at the range you test against, so Composer refuses an Atrium upgrade your module doesn't support yet. If the project installs Atrium from a private repository (internal pre-releases), the package gets that repository entry too, so its own `composer install` and CI work; its workflow reads it with an `ATRIUM_GITHUB_TOKEN` secret. Depend on Atrium through Composer and use only its `@api` classes. Never copy Atrium code into your package.
 
 ## Selling it

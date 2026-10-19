@@ -4,10 +4,22 @@
 
 | Command | |
 |---|---|
-| `atrium:install` | First-run setup: module switches, app key, migrations, roles and the Super Admin, module defaults. Safe to re-run. `--modules=a,b` or `--pick` to choose modules, `--demo` for demo accounts (never in production), `--fresh` to start over, `--force` for production. Alias: `app:setup`. |
-| `atrium:upgrade` | After `composer update`: migrations, one-off upgrade steps, refresh of untouched copies, cache clear — see [Upgrading](/guide/upgrading). `--force` in deploy scripts. |
+| `atrium:install` | First-run setup: app key, migrations, roles and the Super Admin, defaults. Safe to re-run. `--modules=a,b` or `--pick` to choose which installed modules are switched on, `--demo` for demo accounts (never in production), `--fresh` to start over, `--force` for production. Alias: `app:setup`. |
+| `atrium:upgrade` | After `composer update`: migrations, one-off upgrade steps, finishing the install of newly added module packages, refresh of untouched copies, cache clear — see [Upgrading](/guide/upgrading). `--force` in deploy scripts. |
 | `atrium:doctor` | Checks the project: versions, pending work, stale copies, module switches, the user model. Exits 1 when something is broken. |
 | `about` | Laravel's `about`, with installed Atrium versions and modules. |
+
+## Modules
+
+See [Modules](/guide/modules).
+
+| Command | |
+|---|---|
+| `module:install {module}` | Install a module: `composer require` its package when the code isn't here (`--constraint=^1.2`; a package name works too), then its tables, data and permissions. For a module uninstalled earlier with backups, asks *fresh* or *restore* — `--fresh`, `--restore=latest\|<timestamp>`. `--force` in production. |
+| `module:uninstall {module} --pretend` | The impact report: tables and row counts, files, settings, permissions and roles, linked rows, dependents, backup policy, blockers. Changes nothing. |
+| `module:uninstall {module}` | Back up per policy, delete its data, then `composer remove` its package. `--cascade` also uninstalls modules that require it, `--no-backup` skips an optional backup, `--keep-code` leaves the package, `--remove-code` deletes a project module's folder (not in production), `--force` skips typing the name. |
+| `module:restore {module}` | Bring an uninstalled module back from a backup — the newest, or `--backup=<path\|timestamp>`. |
+| `module:backups {module}` | List a module's backups. `--create` backs it up now, `--prune` deletes backups past the retention. |
 
 ## Copies of Atrium files
 

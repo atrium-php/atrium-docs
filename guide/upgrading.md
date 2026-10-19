@@ -6,6 +6,8 @@ Atrium's packages (`atrium-php/core`, the modules, `atrium-php/skeleton`) are re
 - **1.x.0**: new features, never breaking anything tagged `@api`. Anything due for removal is deprecated first.
 - **x.0.0**: may break `@api`. Every change is listed in [UPGRADE.md](https://github.com/atrium-php/atrium/blob/main/UPGRADE.md).
 
+Release notes and a public changelog start with 1.0.
+
 ## Every upgrade
 
 ```bash
@@ -17,7 +19,7 @@ php artisan atrium:doctor
 
 `atrium:upgrade`:
 
-1. Runs migrations (core and every installed module).
+1. Runs migrations (core and every installed module), and finishes the install of a module package you added with `composer require`: its data is seeded and Super Admin and Admin get its permissions.
 2. Runs the release's one-off **upgrade steps**, each once, in version order, recorded in `platform_upgrades`. A step that fails stops the run and stays pending for next time.
 3. Refreshes your **untouched copies** of Atrium files (see [Customising](./customising#your-copies-of-atrium-files)) and lists the ones you customised whose originals changed.
 4. Clears caches.

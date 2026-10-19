@@ -93,7 +93,20 @@ Backoffice → Feature flags (`feature-flags.manage`) switches them per portal o
 - `GET /up` — Laravel's liveness check.
 - `php artisan health:check` and Backoffice → System health (`health.view`).
 
-Core checks the database, cache, queue, scheduler, storage, disk space, environment and portals; modules add theirs (backups, billing, maintenance). Add your own:
+The public gets only `{"status": …}`; send `X-Health-Token: <HEALTH_TOKEN>` (or `?token=`) to see each check. `health:check --json` for scripts, `--strict` to exit 1 on warnings too.
+
+| Check | Looks at |
+|---|---|
+| Database | Connection, latency, migrations a deploy forgot to run |
+| Cache | Round-trip |
+| Queue | Backlog, stuck jobs (is a worker running?), failed jobs, `sync` driver in production |
+| Storage | Write / read / delete on each disk |
+| Scheduler | Heartbeat — is `schedule:run` in cron? |
+| Disk space | Free space |
+| Portals | Every configured portal has a host and routes |
+| Environment | Debug in production, app key, config/route cache, HTTPS |
+
+Modules add theirs (backups, billing, maintenance). Add your own:
 
 ```php
 Module::contribute('health.checks', [MyCheck::class]);   // implements Atrium\Core\Support\Health\Check

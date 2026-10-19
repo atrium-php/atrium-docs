@@ -2,19 +2,30 @@
 
 | | |
 |---|---|
-| Package | `atrium-php/backup` — module `backup`, on by default (`MODULE_BACKUP`); backups only run with `BACKUP_ENABLED=true` |
+| Package | `atrium-php/backup` — module `backup`, on once installed; backups only run with `BACKUP_ENABLED=true` |
 | Namespace | `Atrium\Backup\` |
 | Depends on | core, spatie/laravel-backup |
 | Permissions | `backups.manage` (Super Admin only — a backup is the whole database) |
 | Pages | Backoffice → Backups (`/backups`) |
 | Schedule | clean 01:00, back up 01:30, monitor 09:00 (daily) |
 | Config | `backup` (spatie's, preset by Atrium) |
+| Uninstall | no module backup (policy **none**) — the backups on your disks are not touched |
 
 Database and file backups through spatie/laravel-backup, with a backoffice page, a health check and a nightly schedule.
 
+## Install
+
+```bash
+php artisan module:install backup
+```
+
+Or Backoffice → Modules → *Available* → *Install*. Then turn backups on in `.env` (below). Its `.env` keys are listed under [Environment](#environment).
+
+Uninstalling takes no module backup (policy **none**: the module keeps no data of its own) and leaves the backup archives on your disks alone.
+
 ## Turning backups on
 
-The module is on by default but **does nothing until you set**:
+Once installed the module is on, but **does nothing until you set**:
 
 ```sh
 BACKUP_ENABLED=true
@@ -44,6 +55,24 @@ BACKUP_ARCHIVE_PASSWORD=…      # encrypt the zip
 ## Retention
 
 Spatie's default strategy: every backup for 7 days, one per day for 16 days, one per week for 8 weeks, one per month for 4 months, one per year for 2 years — and the oldest are deleted when backups use more than `BACKUP_MAX_STORAGE_MB` (5000).
+
+## Restoring
+
+A backup that has never been restored isn't proven. Rehearse this on a staging copy after setup and every few months.
+
+1. **Pick and fetch** a backup: download it from Backoffice → Backups, or run `php artisan backup:list` and fetch `<disk>/<BACKUP_NAME>/<Y-m-d-H-i-s>.zip`.
+2. **Unzip** it, with `BACKUP_ARCHIVE_PASSWORD` if it was set. Inside are `db-dumps/<driver>-<database>.sql` and `private/…` / `public/…`.
+3. **Stop traffic and jobs**: `php artisan down`, and stop the queue workers.
+4. **Restore the database** into an empty database:
+   - MySQL / MariaDB: `mysql -u <user> -p <database> < db-dumps/mysql-<database>.sql` (`mariadb-…` for MariaDB)
+   - PostgreSQL: `psql -U <user> -d <database> -f db-dumps/postgresql-<database>.sql`
+   - SQLite: `sqlite3 database/database.sqlite < db-dumps/sqlite-<database>.sql`
+5. **Restore files**: copy `private/` and `public/` back into `storage/app/`, then `php artisan storage:link`.
+6. **Bring it back**: `php artisan atrium:upgrade --force` (migrations newer than the backup), restart the workers, `php artisan up`, then `php artisan health:check`.
+
+The same `APP_KEY` is required — without it, 2FA secrets and encrypted settings can't be read. Keep `.env` in your secrets manager, not only on the server.
+
+These are whole-site backups. To bring back **one module's** data after uninstalling it, use its [module backup](/guide/modules#backups-and-restore) instead.
 
 ## Monitoring
 

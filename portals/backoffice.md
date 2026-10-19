@@ -23,7 +23,7 @@ Inside, every page and action checks its own permission, and the sidebar only li
 | Permissions catalog | `/permissions` | `permissions.*` (Super Admin only to change) |
 | Users and their roles | `/users` | `users.view`, `users.assign-roles` |
 | Settings — timezone, brand, module settings | `/settings` | `settings.edit` |
-| Modules — switch modules on and off, licence keys | `/modules` | `modules.manage` (Super Admin) |
+| Modules — install, switch on and off, uninstall, back up and restore modules; licence keys ([Modules](/guide/modules)) | `/modules` | `modules.manage` (Super Admin) |
 | Feature flags | `/feature-flags` | `feature-flags.manage` |
 | System health | `/system-health` | `health.view` |
 

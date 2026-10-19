@@ -2,15 +2,42 @@
 
 | | |
 |---|---|
-| Package | `atrium-php/api` — module `api`, **off by default** (`MODULE_API=true` to switch on) |
+| Package | `atrium-php/api` — module `api`, **off once installed** — switch it on on Backoffice → Modules |
 | Namespace | `Atrium\Api\` |
 | Depends on | core, Laravel Sanctum |
 | Permissions | `api.manage` (Super Admin only) |
 | Pages | Backoffice → API Access (`/api`); Account → API tokens (`/api-tokens`) for users the policy allows |
-| User model | implements `Laravel\Sanctum\Contracts\HasApiTokens`, uses `Laravel\Sanctum\HasApiTokens` (the skeleton's has both) |
+| User model | implements `Laravel\Sanctum\Contracts\HasApiTokens`, uses `Laravel\Sanctum\HasApiTokens` — add both when you install it |
 | Config | `api` (below), `sanctum` |
+| Uninstall | backup optional; tokens are **never restored** |
 
 A versioned, token-authenticated JSON API on its own subdomain: `https://api.yourapp.test/v1`, or `/api/v1` in [single-domain mode](/guide/single-vs-multi-domain). Sanctum personal access tokens only — a portal session never authenticates an API request.
+
+## Install
+
+```bash
+php artisan module:install api
+```
+
+Or Backoffice → Modules → *Available* → *Install*. Then:
+
+1. Add Sanctum to your user model:
+
+   ```php
+   use Laravel\Sanctum\Contracts\HasApiTokens as HasApiTokensContract;
+   use Laravel\Sanctum\HasApiTokens;
+
+   class User extends \Atrium\Core\Models\User implements HasApiTokensContract
+   {
+       use HasApiTokens;
+   }
+   ```
+
+2. Switch the module on (Backoffice → Modules) and point the `api.` subdomain at `public/` like the other portals.
+
+`.env`: `API_RATE_LIMIT` (requests per minute, default 60), and Sanctum's `SANCTUM_TOKEN_PREFIX`.
+
+Uninstalling backs up the access policy and token metadata when you keep the backup (policy **optional**), but **tokens are never restored** — after a restore, users create new ones. Remove the two lines from your user model before the module's code is removed.
 
 ## Who gets API access
 

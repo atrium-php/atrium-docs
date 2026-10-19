@@ -2,12 +2,13 @@
 
 | | |
 |---|---|
-| Package | `atrium-php/activity` — module `activity`, on by default (`MODULE_ACTIVITY`) |
+| Package | `atrium-php/activity` — module `activity`, on once installed |
 | Namespace | `Atrium\Activity\` |
 | Depends on | core, spatie/laravel-activitylog |
 | Permissions | `activity.view`, `activity.comment` |
 | Pages | Backoffice → Activity Log (`/activity`) |
 | Config | `activitylog` (spatie's) |
+| Uninstall | backup **required** — the log is the audit trail |
 
 A permanent audit trail — who changed what, and when — shown as a timeline with a discussion thread (comments and like/dislike) on every entry. Nothing is ever deleted: there's no delete action, route or scheduled pruning.
 
@@ -15,6 +16,16 @@ Two parts:
 
 - **Core** produces the trail: models using the `Auditable` trait, plus `Audit::trail()` for anything else, fire an `Atrium\Core\Events\Audited` event. Core itself stores nothing and needs no package.
 - **The Activity module** (`atrium-php/activity`) records those events into the `activity_log` table (through `spatie/laravel-activitylog`) and provides the timeline UI. With the module off, nothing is recorded.
+
+## Install
+
+```bash
+php artisan module:install activity
+```
+
+Or Backoffice → Modules → *Available* → *Install*. Nothing else to set up; `.env` keys are optional (`ACTIVITY_LOGGER_ENABLED`, `ACTIVITY_LOGGER_TABLE_NAME`, `ACTIVITY_LOGGER_DB_CONNECTION` — spatie's).
+
+Uninstalling always backs the log up first (policy **required**): the log, its comments and reactions come back with *Install & restore*, and the search index is rebuilt. See [Modules](/guide/modules#uninstall).
 
 ## What's tracked
 
@@ -26,7 +37,7 @@ Models put their own attribute changes on the trail with `Atrium\Core\Concerns\A
 | Role | `name`, `slug`, `locked` |
 | Permission | `name` |
 | AppSetting (Backoffice → Settings) | `key` — which setting changed, never its value |
-| ModuleSetting (Backoffice → Modules) | `module`, `enabled` |
+| Module (Backoffice → Modules) | `module`, `state`, `enabled` |
 | PortalSetting (Maintenance) | `maintenance_mode`, `message` |
 | Currency | `code`, `name`, `symbol`, `decimal_digits`, `is_primary`, `is_active`, `exchange_rate`, `order` |
 | Language | `code`, `name`, `native_name`, `direction`, `is_primary`, `is_active`, `order` |

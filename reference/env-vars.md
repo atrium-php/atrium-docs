@@ -23,8 +23,21 @@ Atrium's own variables, on top of Laravel's standard ones (database, mail, queue
 
 | Var | Default | |
 |---|---|---|
-| `MODULE_ACTIVITY`, `MODULE_BACKUP`, `MODULE_CURRENCY`, `MODULE_LANGUAGE`, `MODULE_MAINTENANCE`, `MODULE_MEDIA` | `true` | Switch a [module](/packages/) off with `false` |
-| `MODULE_API`, `MODULE_BILLING` | `false` | Switch on with `true` |
+| `MODULE_{KEY}` | the package's default | Switch an installed [module](/guide/modules#enable-and-disable) on or off — only once `config/modules.php` has an entry reading it |
+| `MODULE_REMOVE_CODE` | `true` | Uninstalling a module also removes its package with Composer |
+| `MODULE_COMPOSER` | `composer` | The Composer command the queue worker runs |
+| `COMPOSER_HOME` | `storage/framework/composer` | Composer's home for the web server / queue worker |
+| `MODULE_MAINTENANCE_WINDOW` | `true` | Maintenance mode while Composer changes `vendor/` |
+| `MODULE_BACKUPS_DISK` | `FILESYSTEM_DISK` | Where module backups go |
+| `MODULE_BACKUPS_PASSWORD` | `BACKUP_ARCHIVE_PASSWORD`, else from `APP_KEY` | Module backup encryption |
+| `MODULE_BACKUPS_KEEP`, `MODULE_BACKUPS_MAX_AGE_DAYS` | `1`, `90` | Module backup retention |
+
+## Module settings
+
+Read only once the module is installed. Each module's page lists its own.
+
+| Var | Default | |
+|---|---|---|
 | `APP_MAINTENANCE` | `false` | Global maintenance switch — every portal, backoffice included ([Maintenance Mode](/packages/maintenance)) |
 | `MEDIA_DISK`, `MEDIA_IMAGE_DRIVER` | `local`, `gd` | Media module storage and image driver |
 | `API_RATE_LIMIT` | `60` | API module: requests per minute per token |
@@ -61,3 +74,9 @@ See the [Auth portal](/portals/auth) for how each is used.
 | `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_PHONE_NUMBER` | | Needed to actually send SMS codes |
 
 Without Twilio credentials, SMS sending fails quietly (logged) — fine locally, but phone verification can't work for real users until they're set.
+
+## Search
+
+| Var | Default | |
+|---|---|---|
+| `SCOUT_DRIVER` | `database` | `database` searches the tables directly; `meilisearch` for large tables — see [Search](/guide/search) |

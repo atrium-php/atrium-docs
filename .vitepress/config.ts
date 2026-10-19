@@ -18,8 +18,10 @@ export default defineConfig({
                 text: 'Guide',
                 items: [
                     { text: 'Getting Started', link: '/guide/getting-started' },
+                    { text: 'Modules', link: '/guide/modules' },
                     { text: 'Customising without forking', link: '/guide/customising' },
                     { text: 'Upgrading', link: '/guide/upgrading' },
+                    { text: 'Deploying', link: '/guide/deploying' },
                     { text: 'Build (and sell) a module', link: '/guide/build-a-module' },
                     { text: 'Single vs Multi Domain', link: '/guide/single-vs-multi-domain' },
                     { text: 'Cross-Subdomain SSO', link: '/guide/sso-sessions' },
@@ -27,6 +29,8 @@ export default defineConfig({
                     { text: 'Roles & Permissions', link: '/guide/roles-and-permissions' },
                     { text: 'Theming', link: '/guide/theming' },
                     { text: 'Error Pages', link: '/guide/error-pages' },
+                    { text: 'Search', link: '/guide/search' },
+                    { text: 'Troubleshooting & FAQ', link: '/guide/troubleshooting' },
                 ],
             },
             {

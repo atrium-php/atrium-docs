@@ -2,15 +2,37 @@
 
 | | |
 |---|---|
-| Package | `atrium-php/media` — module `media`, on by default (`MODULE_MEDIA`) |
+| Package | `atrium-php/media` — module `media`, on once installed |
 | Namespace | `Atrium\Media\` |
 | Depends on | core, Intervention Image |
 | Permissions | `media.view` (open the library, browse everyone's files), `media.manage` (edit or delete any file — everyone may edit and delete their own) |
 | Pages | Backoffice → Media Library (`/media`); the profile photo card on Account → Settings |
-| User model | uses `Atrium\Media\Concerns\HasMedia` (the skeleton's does) |
+| User model | uses `Atrium\Media\Concerns\HasMedia` — add it when you install it |
 | Config | `media` (below) |
+| Uninstall | backup **required**, files included |
 
 A WordPress-style media library: every upload lands in one central library, and models *use* library items through named collections. One image can be used in many places; removing it from a model never deletes the file. Built on Laravel's `Storage` disks plus [Intervention Image](https://image.intervention.io) for image sizes — no media-library package.
+
+## Install
+
+```bash
+php artisan module:install media
+```
+
+Or Backoffice → Modules → *Available* → *Install*. Then add the trait to your user model (it powers the profile photo):
+
+```php
+use Atrium\Media\Concerns\HasMedia;
+
+class User extends \Atrium\Core\Models\User
+{
+    use HasMedia;
+}
+```
+
+`.env`: `MEDIA_DISK` (default `local`), `MEDIA_IMAGE_DRIVER` (`gd` or `imagick`), and the `AWS_*` keys for S3-compatible storage — see [Storage](#storage).
+
+Uninstalling always backs up the library, its attachments **and the files** (policy **required**); after a restore, missing image sizes are regenerated. Remove `HasMedia` from your models before the module's code is removed.
 
 ## Backoffice → Media Library
 

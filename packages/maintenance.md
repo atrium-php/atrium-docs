@@ -2,12 +2,13 @@
 
 | | |
 |---|---|
-| Package | `atrium-php/maintenance` — module `maintenance`, on by default (`MODULE_MAINTENANCE`) |
+| Package | `atrium-php/maintenance` — module `maintenance`, on once installed |
 | Namespace | `Atrium\Maintenance\` |
 | Depends on | core |
 | Permissions | `maintenance.view`, `maintenance.update` |
 | Pages | Backoffice → Maintenance (`/maintenance`) |
 | Config | `maintenance` — `APP_MAINTENANCE`, `exempt_portals` |
+| Uninstall | backup optional |
 
 Two independent switches, both showing the same branded maintenance page (rendered like the [error pages](/guide/error-pages), with `"maintenance"` as the pseudo status code):
 
@@ -42,6 +43,16 @@ The global switch overrides every exemption.
                                            │                      │
                                   maintenance page          passes through
 ```
+
+## Install
+
+```bash
+php artisan module:install maintenance
+```
+
+Or Backoffice → Modules → *Available* → *Install*. `.env`: `APP_MAINTENANCE` (the global switch).
+
+Uninstalling offers a backup of the per-portal switches and messages (policy **optional**).
 
 ## How it's enforced
 

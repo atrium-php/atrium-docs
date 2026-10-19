@@ -2,14 +2,25 @@
 
 | | |
 |---|---|
-| Package | `atrium-php/currency` — module `currency`, on by default (`MODULE_CURRENCY`) |
+| Package | `atrium-php/currency` — module `currency`, on once installed |
 | Namespace | `Atrium\Currency\` |
 | Depends on | core |
 | Permissions | `currencies.view`; managing currencies uses core's `settings.edit` |
 | Pages | Backoffice → Currencies (`/currencies`); currency fields on Backoffice → Settings |
 | Schedule | exchange rates daily at 01:00 |
+| Uninstall | backup optional |
 
 Money handling (`Money`, `MoneyCast`) is in core; currencies, rates and their pages are this module. Everything stays out of the way until you activate a second currency.
+
+## Install
+
+```bash
+php artisan module:install currency
+```
+
+Or Backoffice → Modules → *Available* → *Install*. It seeds the currencies with USD active and primary. No `.env` keys.
+
+Uninstalling offers a backup (policy **optional**). Without the module, `Money` and `MoneyCast` keep working with plain formatting and no conversion.
 
 ## Money is always an integer
 

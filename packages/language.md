@@ -2,15 +2,26 @@
 
 | | |
 |---|---|
-| Package | `atrium-php/language` — module `language`, on by default (`MODULE_LANGUAGE`) |
+| Package | `atrium-php/language` — module `language`, on once installed |
 | Namespace | `Atrium\Language\` |
 | Depends on | core, spatie/laravel-translation-loader, mcamara/laravel-localization |
 | Permissions | `languages.view/create/edit/delete` (Super Admin only), `translations.landing`, `translations.portal`, `translations.common` (Super Admin only) |
 | Pages | Backoffice → Languages (`/languages`), Translations (`/translations/{scope?}`); URL mode and Google Translate key on Settings |
 | API | `languages:read`, `languages:write` endpoints when the [API module](/packages/api) is on |
 | Config | `translation-loader` (spatie's) |
+| Uninstall | backup **required** |
 
 Localization and RTL: multiple languages managed from the database — no lang files to edit to add a language, and invisible until a second language is active. (Timezones are [core](/packages/core#timezones).)
+
+## Install
+
+```bash
+php artisan module:install language
+```
+
+Or Backoffice → Modules → *Available* → *Install*. It adds your `APP_LOCALE` as the primary language. No `.env` keys; the URL mode and Google Translate key are on Backoffice → Settings.
+
+Uninstalling always backs up languages and translations first (policy **required**).
 
 ## Languages (Backoffice → Languages)
 

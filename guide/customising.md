@@ -46,4 +46,4 @@ Every copy you make (with `atrium:override` or `vendor:publish --tag=atrium-*`) 
 
 ## Public API
 
-Classes tagged `@api` are what projects (and modules) build on: `Platform`, `ModuleProvider`, the `Module` facade, the contracts, events, `Audit`/`Auditable`, `Brand`, the licensing classes, `Models\User`, `Role`, `Permission`, `AppSetting` and others. Everything tagged `@internal` may change in any release. The skeleton's own tests check that project code only uses `@api` classes.
+Classes tagged `@api` are what projects (and modules) build on: `Platform`, `ModuleProvider`, the `Module` facade, the contracts, events, `Audit`/`Auditable`, `Brand`, the licensing classes, `Models\User`, `Role`, `Permission`, `AppSetting` and others. Everything tagged `@internal` may change in any release. Atrium's own tests check that the skeleton — the code a project starts with — only uses `@api` classes; keep your project to them too.

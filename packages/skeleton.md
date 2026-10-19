@@ -4,7 +4,7 @@
 |---|---|
 | Package | `atrium-php/skeleton` (type `project`) |
 | Use | `composer create-project atrium-php/skeleton my-app` — see [Getting Started](/guide/getting-started) |
-| Requires | `atrium-php/core` and all eight modules, `livewire/flux-pro` ([Flux UI Pro](/reference/flux-ui)) |
+| Requires | `atrium-php/core` only, and `livewire/flux-pro` ([Flux UI Pro](/reference/flux-ui)). Modules are added later — see [Modules](/guide/modules) |
 
 The skeleton is a thin Laravel app. After `create-project` it's **your project** — Atrium itself stays in `vendor/atrium-php/*` and upgrades with `composer update` + `php artisan atrium:upgrade`.
 
@@ -12,12 +12,12 @@ The skeleton is a thin Laravel app. After `create-project` it's **your project**
 
 ```
 app/
-├── Models/User.php         extends Atrium\Core\Models\User; has what the API and Media modules need
+├── Models/User.php         extends Atrium\Core\Models\User; add what a module asks for when you install it
 ├── Providers/              your service providers — Platform::useUserModel(), overrides, bindings
 ├── Features/               feature flag classes (two examples)
 └── Modules/                your own modules (php artisan make:module)
 config/
-├── modules.php             MODULE_* switches for every module
+├── modules.php             module switches — empty; add an entry to control a module from .env
 └── …                       Laravel's config (Atrium's own config ships in its packages)
 resources/
 ├── css/, js/               each portal's Vite entry + theme.css and the edge design — copies, yours to edit
@@ -26,7 +26,7 @@ resources/
 routes/web.php              your routes — Atrium registers its portals itself
 atrium-overrides.json       every copy of an Atrium file and where it came from — commit it
 tests/                      a small suite: the portals answer, your user model is in use
-.env.example                SQLite, yourapp.test, modules, Atrium's env vars
+.env.example                SQLite, yourapp.test, Atrium's env vars (each module's are on its page here)
 ```
 
 ## Composer scripts

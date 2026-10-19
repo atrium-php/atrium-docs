@@ -19,7 +19,7 @@ features:
   - title: Upgradable, not forked
     details: Atrium lives in vendor/atrium-php/*. Change it through extension points; composer update + atrium:upgrade stays safe.
   - title: Modules
-    details: Activity log, API, backups, billing, currencies, languages, maintenance and media — switch each on or off, and write your own the same way.
+    details: Activity log, API, backups, billing, currencies, languages, maintenance and media — install the ones you need from the backoffice, uninstall with a backup, restore later. Write your own the same way.
   - title: Build and sell modules
     details: atrium:make-package scaffolds a standalone module package, with optional licensing hooks for paid modules.
 ---

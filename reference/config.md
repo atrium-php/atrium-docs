@@ -3,7 +3,7 @@
 Atrium's config ships inside its packages and is merged into your app. A new project has none of these files; Atrium's defaults apply. To change one, copy it into the project:
 
 ```bash
-php artisan vendor:publish --tag=atrium-config    # config/multidomain.php, rate-limits.php, health.php
+php artisan vendor:publish --tag=atrium-config    # config/multidomain.php, rate-limits.php, health.php, module-*.php
 ```
 
 or create a file of the same name with only the keys you change — **a project file wins** over Atrium's, key by key. Published copies are tracked in `atrium-overrides.json` (see [Customising](/guide/customising#your-copies-of-atrium-files)).
@@ -39,9 +39,30 @@ Per-route throttles: `login`, `register`, `downloads`, `links` — each `max` at
 
 `php artisan health:check` runs the checks from the command line; Backoffice → System health shows them.
 
+## `module-lifecycle` (core)
+
+| Key | Env | Default | |
+|---|---|---|---|
+| `remove_code` | `MODULE_REMOVE_CODE` | `true` | Uninstalling a module also runs `composer remove` for its package. `false` keeps packages installed — see [Deploying](/guide/deploying#modules-on-a-server) |
+| `composer` | `MODULE_COMPOSER` | `composer` | The Composer command the queue worker runs |
+| `composer_home` | `COMPOSER_HOME` | `storage/framework/composer` | Composer's home when the process has none |
+| `maintenance_window` | `MODULE_MAINTENANCE_WINDOW` | `true` | Maintenance mode, with a self-reloading page, while Composer rewrites `vendor/` |
+| `catalog` | — | `[]` | Other vendors' modules offered under *Available* on the Modules page — see [Modules](/guide/modules#other-modules) |
+
+## `module-backups` (core)
+
+The backups taken before a module is uninstalled and restored on reinstall — not the full-site backups of the [Backup module](/packages/backup).
+
+| Key | Env | Default | |
+|---|---|---|---|
+| `disk` | `MODULE_BACKUPS_DISK` | `FILESYSTEM_DISK` | Where `module-backups/{module}/{timestamp}.zip` go — use an off-site disk in production |
+| `password` | `MODULE_BACKUPS_PASSWORD` | `BACKUP_ARCHIVE_PASSWORD`, else derived from `APP_KEY` | Archives are always AES-256 encrypted; restoring needs the same password |
+| `keep` | `MODULE_BACKUPS_KEEP` | `1` | Newest backups kept per module |
+| `max_age_days` | `MODULE_BACKUPS_MAX_AGE_DAYS` | `90` | None older than this — they hold personal data |
+
 ## `modules` (your project)
 
-`config/modules.php` is yours: one `MODULE_*` switch per module. See [Modules](/packages/).
+`config/modules.php` is yours and starts empty. Add an entry to control an installed module from `.env` — `'media' => (bool) env('MODULE_MEDIA', true),` — or to register a project module's switch (`make:module` adds it). Without an entry a module follows its package's default. See [Modules](/guide/modules#enable-and-disable).
 
 ## Module config
 
