@@ -16,7 +16,8 @@ src/InvoicesServiceProvider.php     extends ModuleProvider
 routes/backoffice.php               its pages, inside Atrium's backoffice
 resources/views/livewire/⚡index     a first page
 database/migrations/
-tests/ManifestTest.php, phpunit.xml.dist, .github/workflows/tests.yml, README.md
+tests/TestCase.php, tests/Pest.php, tests/Feature/InvoicesTest.php   its test suite (below)
+phpunit.xml.dist, .github/workflows/tests.yml, README.md
 ```
 
 To develop it inside a project:
@@ -116,7 +117,11 @@ abstract class TestCase extends \Atrium\Core\Testing\TestCase
 }
 ```
 
-It finds modules among the packages Composer installed, so run the suite from a workspace or project that requires your package (with a path repository while developing). Helpers: `disableModules()`, `enableModules()`, and from `Platform::path('testing/helpers.php')` `superAdminActor()`, `adminActor()`, `staffUser()`, `backofficeUrl()`.
+`atrium:make-package` sets this up: run `composer install`, then `composer test` in the package. The scaffolded `tests/Feature/InvoicesTest.php` checks the module is found, seeds its permissions, registers its page, and registers nothing while switched off; add your tests next to it. The same suite runs in the package's GitHub workflow.
+
+Helpers: `disableModules()`, `enableModules()`, `rebootApplication()`, and from `Platform::path('testing/helpers.php')` (loaded by the scaffold's `tests/Pest.php`) `superAdminActor()`, `adminActor()`, `staffUser()`, `backofficeUrl()`.
+
+Atrium's pages render Flux components, so a test that renders a page needs Flux Pro in the package too: add `livewire/flux-pro` to `require-dev` and your Flux credentials (in CI, as secrets). Tests that don't render — models, services, jobs, permissions, routes — need nothing extra.
 
 ## Versions and the public API
 
