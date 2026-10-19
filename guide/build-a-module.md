@@ -44,6 +44,32 @@ Your provider extends `Atrium\Core\Support\Modules\ModuleProvider`:
 | `userNeeds()` | Traits/interfaces `App\Models\User` must have (checked by `atrium:doctor`) |
 | `licenseGate()`, `whenUnlicensed()` | Licensing (below) |
 
+## Sidebar links
+
+The app, backoffice and account portals share one shell: a sidebar that collapses to icons on desktop and becomes a drawer on mobile. Add your pages to it from `bootModule()`:
+
+```php
+Module::contribute('backoffice.nav', [
+    [
+        'label' => 'Invoices',                    // translated for you
+        'route' => 'backoffice.invoices.index',
+        'icon' => 'document-text',                // a Flux (Heroicons) name
+        'permission' => 'invoices.view',          // or a list: any of them
+        'order' => 40,
+        'group' => 'Billing',                     // a heading; leave out for "System"
+        'active' => 'backoffice.invoices.*',      // routes that mark it current
+    ],
+    [
+        'label' => 'Reports', 'icon' => 'chart-pie', 'children' => [   // an expandable sub-list
+            ['label' => 'Monthly', 'route' => 'backoffice.reports.monthly'],
+            ['label' => 'Yearly', 'route' => 'backoffice.reports.yearly'],
+        ],
+    ],
+]);
+```
+
+The same keys work for `account.nav` and `app.nav`, plus `'visible' => fn (?User $user) => bool` for anything a permission can't express. A link whose route doesn't exist, or that the user may not see, is left out; so is a parent with no visible child. In the backoffice, items without a `group` go under *System*; `'group' => null` puts one above every heading.
+
 ## Uninstall, backup and restore
 
 Projects can uninstall your module from Backoffice → Modules, which backs its data up, deletes it, and removes the package — and later restore it from that backup ([Modules](/guide/modules)). Atrium does the work; your provider declares what the module owns:

@@ -10,6 +10,8 @@ Self-service for every signed-in user, on `account.APP_MAIN_DOMAIN` (`/account` 
 
 End users and staff both use this portal — there's no `portal:*` restriction, unlike app and backoffice.
 
+![Account: profile page](/screenshots/account-profile.png)
+
 ## Profile
 
 `/` → `atrium::accounts.index`

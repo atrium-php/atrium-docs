@@ -27,6 +27,18 @@ Route::domain(config('multidomain.sub_domains.app'))->name('app.')
     });
 ```
 
+Put them in the sidebar from a service provider's `boot()` (the same extension point modules use):
+
+```php
+use Atrium\Core\Support\Modules\Module;
+
+Module::contribute('app.nav', [
+    ['label' => 'Projects', 'route' => 'app.projects', 'icon' => 'folder', 'order' => 10],
+]);
+```
+
+See [Build a module → Sidebar links](/guide/build-a-module#sidebar-links) for every key.
+
 In [single-domain mode](/guide/single-vs-multi-domain) add `->prefix('app')` (when `config('multidomain.single_domain')` is true) so your URLs sit next to Atrium's under `/app`.
 
 ## Access

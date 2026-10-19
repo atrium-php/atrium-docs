@@ -20,6 +20,8 @@ A module has two layers, and Atrium keeps track of both:
 
 ## Backoffice → Modules
 
+![Backoffice → Modules with available modules to install](/screenshots/backoffice-modules.png)
+
 Super Admin only (`modules.manage`). Every module the project has, plus Atrium's other modules as *Available*:
 
 - counts and a filter — all, enabled, disabled, not installed — and a search box;

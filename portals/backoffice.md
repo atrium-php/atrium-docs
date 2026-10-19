@@ -8,6 +8,10 @@ The staff area, on `backoffice.APP_MAIN_DOMAIN` (`/backoffice` in [single-domain
 | Layout | `atrium::layouts.backoffice` |
 | CSS / JS | `resources/css/backoffice.css`, `resources/js/backoffice.js` (your copies) |
 
+![The backoffice: sidebar with Access Control and System groups, dashboard](/screenshots/backoffice-dashboard.png)
+
+The app, backoffice and account portals share one shell: a fixed sidebar (collapse it to icons on desktop; a drawer on mobile), a header with the theme switch and your user menu (the only place to log out), and a full-width page. Staff switch portals from the top of the sidebar.
+
 ## Access
 
 Atrium wraps it in `['auth', 'phone.verified', 'email.grace', 'portal:staff']`. `portal:staff` sends non-staff to the app portal. Staff is decided by `$user->isStaff()` (the `privilege` column on Atrium's user model).

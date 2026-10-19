@@ -58,6 +58,8 @@ Every portal's host comes from `APP_MAIN_DOMAIN`:
 
 Point all of them at the project's `public/` folder (with Herd: `herd link yourapp` inside the project, plus `herd secure yourapp` for HTTPS), then sign in at `auth.yourapp.test` as the Super Admin.
 
+![The backoffice after install](/screenshots/backoffice-dashboard.png)
+
 Don't want subdomains? See [Single vs Multi Domain](/guide/single-vs-multi-domain).
 
 ## Run it
