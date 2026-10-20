@@ -5,12 +5,12 @@
 | Package | `atrium-php/currency` — module `currency`, on once installed |
 | Namespace | `Atrium\Currency\` |
 | Depends on | core |
-| Permissions | `currencies.view`; managing currencies uses core's `settings.edit` |
+| Permissions | `currencies.view`, `currencies.manage` (Super-Admin-only by default) |
 | Pages | Backoffice → Currencies (`/currencies`); Backoffice → Settings → Currencies |
 | Schedule | exchange rates daily at 01:00 |
 | Uninstall | backup optional |
 
-Money handling (`Money`, `MoneyCast`) is in core; currencies, rates and their pages are this module. Everything stays out of the way until you activate a second currency.
+Money handling (`Money`, `MoneyCast`) is in core; currencies, rates and their pages are this module. Everything stays out of the way until you enable a second currency.
 
 ## Install
 
@@ -18,7 +18,7 @@ Money handling (`Money`, `MoneyCast`) is in core; currencies, rates and their pa
 php artisan module:install currency
 ```
 
-Or Backoffice → Modules → *Available* → *Install*. It seeds the currencies with USD active and primary. No `.env` keys.
+Or Backoffice → Modules → *Available* → *Install*. It seeds the currencies with USD enabled and primary. No `.env` keys.
 
 Uninstalling offers a backup (policy **optional**). Without the module, `Money` and `MoneyCast` keep working with plain formatting and no conversion.
 
@@ -49,15 +49,22 @@ protected function casts(): array
 
 ## Currencies
 
-The module seeds 44 ISO 4217 currencies — code, name, symbol, `decimal_digits` (2 for most, 0 for JPY/KRW/VND, 3 for BHD/KWD/OMR/JOD), plus an exchange rate. Only **USD** ships active and primary.
+The module seeds 44 ISO 4217 currencies — code, name, symbol, `decimal_digits` (2 for most, 0 for JPY/KRW/VND, 3 for BHD/KWD/OMR/JOD), plus an exchange rate. Only **USD** ships enabled and primary.
 
-- **Backoffice → Currencies** (`currencies.view`) — read-only reference: every currency, its formatting and its rate against the primary currency.
-- **Backoffice → Settings → Currencies** (`settings.edit`) — which currencies are active and which is primary: pick one from the list and **Add**, remove with the tag's ×. The primary can't be removed until another is primary. Nothing is saved until the page's **Save**.
-- **Refresh rates** on the Settings page updates rates immediately.
+Only **enabled** currencies are used anywhere else: `Money` formatting and conversion, the exchange-rate refresh and the primary-currency picker. A disabled currency formats like an unknown code (the plain integer) and converts nothing.
+
+- **Backoffice → Currencies** (`currencies.view`) — every currency, its formatting and its rate against the primary currency. Filter All · Enabled · Disabled and search by code or name.
+  With `currencies.manage`, each row's **⋯** menu has **Enable** / **Disable** and **Make primary** (enabled rows only), and ticking rows shows **Enable selected** / **Disable selected**.
+  The primary currency can't be disabled — make another one primary first — so at least one currency is always enabled. A bulk disable skips it.
+- **Backoffice → Settings → Currencies** (`currencies.manage`) — the **Primary currency** among the enabled ones, and **Refresh rates** to update rates immediately.
+
+Making a currency primary recalculates the stored rates against it (each divided by its old rate), so conversions stay right before the next refresh. Every change lands in the [activity log](/packages/activity) when that module is on.
+
+`currencies.manage` is Super-Admin-only by default: Admin doesn't get it. Grant it to your own role from Roles → **Manage Permissions**.
 
 ## Exchange rates
 
-Rates come from [Frankfurter](https://frankfurter.dev) (free, ECB-based, no API key), relative to the primary currency. A scheduled job refreshes them daily at 01:00 — keep Laravel's scheduler running.
+Rates come from [Frankfurter](https://frankfurter.dev) (free, ECB-based, no API key), relative to the primary currency, for enabled currencies only. A scheduled job refreshes them daily at 01:00 — keep Laravel's scheduler running.
 
 Conversion uses the primary currency as the pivot and is for display and quoting only; it never changes amounts stored on other models.
 
