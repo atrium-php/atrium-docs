@@ -70,7 +70,7 @@ Each module owns its own (seeded whether the module is on or off, so role assign
 
 | Module | Permissions |
 |---|---|
-| activity | `activity.view`, `activity.comment` |
+| activity | `activity.view-all`, `activity.comment` (My Activity needs only sign-in) |
 | api | `api.manage` |
 | backup | `backups.manage` |
 | billing | `billing.view`, `billing.manage` |

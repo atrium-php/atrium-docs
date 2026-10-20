@@ -1,6 +1,6 @@
 # Search
 
-The search boxes on **Backoffice → Users** and **Backoffice → Activity Log** go through [Laravel Scout](https://laravel.com/docs/scout). By default it uses the `database` driver, which needs no extra service and no index:
+The search boxes on **Backoffice → Users** and **Backoffice → Activity** (and Account → My Activity) go through [Laravel Scout](https://laravel.com/docs/scout). By default it uses the `database` driver, which needs no extra service and no index:
 
 ```sh
 SCOUT_DRIVER=database
