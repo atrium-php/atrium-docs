@@ -39,7 +39,7 @@ Your provider extends `Atrium\Core\Support\Modules\ModuleProvider`:
 | `module()`, `label()`, `description()`, `icon()` | Identity on the Modules page |
 | `permissions()`, `superAdminOnlyPermissions()` | Spatie permissions, seeded even while the module is off |
 | `bootModule()`, `registerModule()`, `schedule()` | Only run while the module is on |
-| `Module::contribute(...)` | Nav links, settings fields, health checks, … |
+| `Module::contribute(...)` | Nav links, settings groups and fields ([Settings](/portals/backoffice#from-your-own-module)), health checks, … |
 | `seeders()`, `upgradeSteps()` | Data on install, one-off upgrade steps |
 | `userNeeds()` | Traits/interfaces `App\Models\User` must have (checked by `atrium:doctor`) |
 | `licenseGate()`, `whenUnlicensed()` | Licensing (below) |

@@ -15,7 +15,7 @@ An Atrium project never edits files under `vendor/atrium-php/`. That's what keep
 | `make:*` generator templates | `vendor:publish --tag=atrium-stubs` |
 | Portal CSS/JS, the logo | The copies in `resources/css`, `resources/js`, `resources/assets` (a new project starts with them) |
 | A service: SMS, currencies, languages | Bind the contract (`Atrium\Core\Contracts\SmsService`, …) in a project service provider |
-| Brand name, logo, favicon, colour, the "Powered by Atrium" credit | Backoffice → Settings |
+| Brand name, logo, favicon, colour, the "Powered by Atrium" credit | Backoffice → Settings → General |
 | Something new | A project module: `php artisan make:module Invoices`, in `app/Modules` |
 | React to Atrium | Its events: `AccountDeleting`, `UserAnonymized`, `Audited` |
 

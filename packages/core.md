@@ -16,7 +16,7 @@ Everything every Atrium project has, whichever modules are on.
 - **Sign-in** — login, registration, password reset, optional phone OTP, email verification with a grace period, TOTP two-factor with recovery codes.
 - **Account self-service** — profile, sessions, data export, account deletion with a 30-day cancel window and anonymisation.
 - **[Roles & Permissions](/guide/roles-and-permissions)** — Super Admin and Admin, portal roles, per-page permission checks.
-- **Settings** — Backoffice → Settings, built from a registry modules add fields to; white-label brand settings ([Theming](/guide/theming)).
+- **Settings** — Backoffice → Settings, one page per group, built from a registry modules add groups and fields to; date format, registration, support email, white-label brand ([Settings](/portals/backoffice#settings), [Theming](/guide/theming)).
 - **[Feature flags](#feature-flags)** and the **[health check](#health-checks)** contract.
 - **[Error pages](/guide/error-pages)**, the audit trail producer (`Auditable`, `Audit` — recorded by the [Activity module](/packages/activity)), [timezones](#timezones).
 - **The module system** — discovery, switches, the Modules page, licensing — see [Packages](/packages/) and [Build (and sell) a module](/guide/build-a-module).
@@ -39,7 +39,8 @@ Classes tagged `@api` are safe to build on within a major version; everything el
 | `Support\Features\*` | Feature flags |
 | `Support\Health\Check`, `Result`, `Status` | Health checks |
 | `Support\Licensing\*` | Licensing for paid modules |
-| `Support\Settings\SettingField` | Settings page fields |
+| `Support\Settings\SettingField`, `Settings` | Settings page fields, config-backed settings |
+| `Support\DisplayDate` | Dates in the user's timezone and the chosen format (also `->forUserDate()`, `->forUserTime()`, `->forUserDateTime()` on Carbon) |
 | `Support\Toast`, `Concerns\SortsTable`, `ThrottlesActions`, `Anonymizable` | UI and model helpers |
 
 ## Services you can swap

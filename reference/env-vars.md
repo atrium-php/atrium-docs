@@ -2,6 +2,8 @@
 
 Atrium's own variables, on top of Laravel's standard ones (database, mail, queue, …) in `.env.example`.
 
+Marked ⚙: can also be set on Backoffice → Settings, which wins over `.env` — see [Settings and `.env`](/portals/backoffice#settings-and-env).
+
 ## Portals
 
 | Var | Default | |
@@ -28,7 +30,7 @@ Atrium's own variables, on top of Laravel's standard ones (database, mail, queue
 | `MODULE_COMPOSER` | `composer` | The Composer command the queue worker runs |
 | `COMPOSER_HOME` | `storage/framework/composer` | Composer's home for the web server / queue worker |
 | `MODULE_MAINTENANCE_WINDOW` | `true` | Maintenance mode while Composer changes `vendor/` |
-| `MODULE_BACKUPS_DISK` | `FILESYSTEM_DISK` | Where module backups go |
+| `MODULE_BACKUPS_DISK` ⚙ | `FILESYSTEM_DISK` | Where module backups go |
 | `MODULE_BACKUPS_PASSWORD` | `BACKUP_ARCHIVE_PASSWORD`, else from `APP_KEY` | Module backup encryption |
 | `MODULE_BACKUPS_KEEP`, `MODULE_BACKUPS_MAX_AGE_DAYS` | `1`, `90` | Module backup retention |
 
@@ -39,12 +41,12 @@ Read only once the module is installed. Each module's page lists its own.
 | Var | Default | |
 |---|---|---|
 | `APP_MAINTENANCE` | `false` | Global maintenance switch — every portal, backoffice included ([Maintenance Mode](/packages/maintenance)) |
-| `MEDIA_DISK`, `MEDIA_IMAGE_DRIVER` | `local`, `gd` | Media module storage and image driver |
+| `MEDIA_DISK` ⚙, `MEDIA_IMAGE_DRIVER` | `local`, `gd` | Media module storage and image driver |
 | `API_RATE_LIMIT` | `60` | API module: requests per minute per token |
-| `BACKUP_ENABLED` | `false` | Backup module: actually run scheduled backups |
-| `BACKUP_DISKS`, `BACKUP_NOTIFY_MAIL`, `BACKUP_ARCHIVE_PASSWORD` | | Where backups go, who is told, archive encryption |
-| `STRIPE_KEY`, `STRIPE_SECRET`, `STRIPE_WEBHOOK_SECRET`, `CASHIER_CURRENCY` | | Billing module (Laravel Cashier) |
-| `BILLING_STARTER_PRICE`, `BILLING_PRO_PRICE`, `BILLING_TRIAL_DAYS` | | Billing module plans |
+| `BACKUP_ENABLED` ⚙ | `false` | Backup module: actually run scheduled backups |
+| `BACKUP_DISKS` ⚙, `BACKUP_NOTIFY_MAIL` ⚙, `BACKUP_MAX_STORAGE_MB` ⚙, `BACKUP_ARCHIVE_PASSWORD` | | Where backups go, who is told, archive encryption |
+| `STRIPE_KEY` ⚙, `STRIPE_SECRET` ⚙, `STRIPE_WEBHOOK_SECRET` ⚙, `CASHIER_CURRENCY` ⚙ | | Billing module (Laravel Cashier) |
+| `BILLING_STARTER_PRICE` ⚙, `BILLING_PRO_PRICE` ⚙, `BILLING_TRIAL_DAYS` ⚙ | | Billing module plans |
 
 ## Health
 

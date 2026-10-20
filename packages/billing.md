@@ -43,6 +43,10 @@ Locally, forward webhooks with `stripe listen --forward-to <your-local-url>/stri
 
 Backoffice → System health shows the module's check: failed while a Stripe key, secret or webhook secret is missing or no plan has a price id; a warning while subscriptions are past due.
 
+## Settings → Billing
+
+Super Admin can keep the Stripe keys out of `.env`: Backoffice → Settings → **Billing** takes the publishable key, the secret key and webhook signing secret (stored encrypted, never shown again), the currency, the free trial and each plan's price id and displayed price. A stored setting wins over `.env`; empty falls back to it.
+
 ## Plans
 
 Defined in the module's config (`billing.plans`) — two to start with:

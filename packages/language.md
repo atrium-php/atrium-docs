@@ -6,7 +6,7 @@
 | Namespace | `Atrium\Language\` |
 | Depends on | core, spatie/laravel-translation-loader, mcamara/laravel-localization |
 | Permissions | `languages.view/create/edit/delete` (Super Admin only), `translations.landing`, `translations.portal`, `translations.common` (Super Admin only) |
-| Pages | Backoffice → Languages (`/languages`), Translations (`/translations/{scope?}`); URL mode and Google Translate key on Settings |
+| Pages | Backoffice → Languages (`/languages`), Translations (`/translations/{scope?}`); URL mode and Google Translate key on Settings → Languages |
 | API | `languages:read`, `languages:write` endpoints when the [API module](/packages/api) is on |
 | Config | `translation-loader` (spatie's) |
 | Uninstall | backup **required** |
@@ -61,7 +61,7 @@ Guest-facing, so the URL decides. In order:
 
 ## URL mode
 
-Backoffice → Settings (`languages.edit`), one of:
+Backoffice → Settings → Languages (`languages.edit`), one of:
 
 | Mode | Shape | Notes |
 |---|---|---|
@@ -120,7 +120,7 @@ It never overwrites or deletes; an Admin without `translations.common` syncs onl
 
 ### Google Translate (optional)
 
-With a Google Translate API key set (Backoffice → Settings, stored encrypted, never shown again) and a language other than English selected, **Translate with Google** fills the blank rows of the current scope in one batch. Each result passes the same placeholder check — a translation that lost a `:token` is skipped. Existing translations are never overwritten, and nothing runs unless an admin clicks.
+With a Google Translate API key set (Backoffice → Settings → Languages, stored encrypted, never shown again) and a language other than English selected, **Translate with Google** fills the blank rows of the current scope in one batch. Each result passes the same placeholder check — a translation that lost a `:token` is skipped. Existing translations are never overwritten, and nothing runs unless an admin clicks.
 
 Get a key from the [Google Cloud Console](https://console.cloud.google.com/apis/credentials) after enabling the Cloud Translation API.
 

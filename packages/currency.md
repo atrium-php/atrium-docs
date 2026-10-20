@@ -6,7 +6,7 @@
 | Namespace | `Atrium\Currency\` |
 | Depends on | core |
 | Permissions | `currencies.view`; managing currencies uses core's `settings.edit` |
-| Pages | Backoffice → Currencies (`/currencies`); currency fields on Backoffice → Settings |
+| Pages | Backoffice → Currencies (`/currencies`); Backoffice → Settings → Currencies |
 | Schedule | exchange rates daily at 01:00 |
 | Uninstall | backup optional |
 
@@ -52,7 +52,7 @@ protected function casts(): array
 The module seeds 44 ISO 4217 currencies — code, name, symbol, `decimal_digits` (2 for most, 0 for JPY/KRW/VND, 3 for BHD/KWD/OMR/JOD), plus an exchange rate. Only **USD** ships active and primary.
 
 - **Backoffice → Currencies** (`currencies.view`) — read-only reference: every currency, its formatting and its rate against the primary currency.
-- **Backoffice → Settings** (`settings.edit`) — which currencies are active and which is primary: pick one from the list and **Add**, remove with the tag's ×. The primary can't be removed until another is primary. Nothing is saved until the page's **Save**.
+- **Backoffice → Settings → Currencies** (`settings.edit`) — which currencies are active and which is primary: pick one from the list and **Add**, remove with the tag's ×. The primary can't be removed until another is primary. Nothing is saved until the page's **Save**.
 - **Refresh rates** on the Settings page updates rates immediately.
 
 ## Exchange rates

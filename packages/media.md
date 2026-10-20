@@ -8,7 +8,7 @@
 | Permissions | `media.view` (open the library, browse everyone's files), `media.manage` (edit or delete any file — everyone may edit and delete their own) |
 | Pages | Backoffice → Media Library (`/media`); the profile photo card on Account → Settings |
 | User model | uses `Atrium\Media\Concerns\HasMedia` — add it when you install it |
-| Config | `media` (below) |
+| Config | `media` (below); disk, upload limit and image sizes also on Backoffice → Settings → Media (`media.manage`) |
 | Uninstall | backup **required**, files included |
 
 A WordPress-style media library: every upload lands in one central library, and models *use* library items through named collections. One image can be used in many places; removing it from a model never deletes the file. Built on Laravel's `Storage` disks plus [Intervention Image](https://image.intervention.io) for image sizes — no media-library package.
@@ -91,6 +91,8 @@ $media->conversion('thumb')->url();
 While the module is off every method is a no-op that behaves as if the model has no media (`addMedia()` returns `null`), so models can use the trait safely.
 
 ## Configuration
+
+Backoffice → Settings → **Media** (`media.manage`) sets the storage disk, the largest upload (MB) and which image sizes are made — a stored setting wins over `config/media.php` / `.env`; empty falls back to it.
 
 Create `config/media.php` in the project to change any of these (it wins over the module's):
 

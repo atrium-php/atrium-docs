@@ -23,7 +23,7 @@ Inside, every page and action checks its own permission, and the sidebar only li
 | Page | Path | Permission |
 |---|---|---|
 | Dashboard — users, staff, roles, permissions, newest users | `/` | staff |
-| Settings — timezone, brand, module settings | `/settings` | `settings.edit` |
+| Settings — one page per group: General, then each module's | `/settings/{group}` | per group (General: `settings.edit`) |
 | Modules — install, switch on and off, uninstall, back up and restore modules; licence keys ([Modules](/guide/modules)) | `/modules` | `modules.manage` (Super Admin) |
 
 ## Module pages
@@ -48,9 +48,49 @@ Each appears while its [module](/packages/) is on (users also get Account → Bi
 
 ## Settings
 
-One page for every app-wide setting, built from a registry: core's fields (default timezone, brand name, logo, favicon, accent colour, "Powered by Atrium") plus whatever enabled modules add (URL mode, Google Translate key, currencies, …). One **Save** for the whole page; secret fields are stored encrypted, never sent back to the page and never written to the activity log.
+**Settings** in the sidebar opens one page per group — **General** from core, then one per enabled module that has settings (Languages, Currencies, Media, Backups, Billing, …). A group only shows to someone allowed to change at least one thing in it; `/settings` opens the first such group.
 
-Your own modules add fields with `Module::contribute('settings.fields', [new SettingField(...)])` — see [Build (and sell) a module](/guide/build-a-module#the-module-contract).
+**General** (`settings.edit`):
+
+| Section | Settings |
+|---|---|
+| Region | Default timezone; **date format** (`Oct 19, 2026`, `19 Oct 2026`, `19/10/2026`, `10/19/2026`, `2026-10-19`) and **time format** (12 or 24 hours), used for dates across every portal and in emails |
+| Brand | Name, logo, favicon, accent colour, "Powered by Atrium" — see [Theming](/guide/theming) |
+| Registration | **Open** or **closed** (closed: no sign-up page, no "Create one" links — create accounts from the backoffice); a **portal role every new account gets** |
+| Contact | **Support email** — shown on error pages, and set as Reply-To on Atrium's emails |
+| Module backups (`modules.manage`) | The **disk** module backups go to |
+
+Each page has one **Save** for its fields, and saves only what you changed. Secret fields are stored encrypted, never sent back to the page and never written to the activity log.
+
+### Settings and `.env`
+
+Some settings replace a `.env` value — Media's disk, the Backup schedule, the Stripe keys, … A stored setting **wins over `.env`**; leave a field empty (or pick *As in .env*) to fall back to it — the page shows what `.env` currently gives. Values are applied when the app boots, so queue workers and the scheduler see them after their next restart. `php artisan config:cache` never writes them into the cache.
+
+### From your own module
+
+```php
+use Atrium\Core\Support\Modules\Module;
+use Atrium\Core\Support\Settings\SettingField;
+
+Module::contribute('settings.groups', [[
+    'key' => 'invoices', 'label' => 'Invoices', 'icon' => 'document-text',
+    'description' => 'Numbering and reminders.', 'order' => 70,
+]]);
+
+Module::contribute('settings.fields', [
+    fn () => new SettingField(
+        key: 'invoices_prefix',
+        type: SettingField::TYPE_TEXT,
+        label: __('Number prefix'),
+        permission: 'invoices.manage',
+        group: 'invoices',
+        section: __('Numbering'),       // optional heading inside the page
+        config: 'invoices.prefix',      // optional: the stored value overrides this config key
+    ),
+]);
+```
+
+Types: `TYPE_TEXT`, `TYPE_TEXTAREA`, `TYPE_NUMBER`, `TYPE_BOOLEAN`, `TYPE_SELECT`, `TYPE_RADIO`, `TYPE_CHECKBOXES`, `TYPE_EMAILS`, `TYPE_SECRET`, `TYPE_JSON`. With `config`, `toConfig: fn ($value, $current) => …` shapes the config value and `fromConfig: fn ($original) => …` labels the `.env` fallback; `Settings::original('invoices.prefix')` gives the value without the setting. A self-saving Livewire card goes into a group with `Module::contribute('backoffice.settings.cards', [['component' => 'invoices::settings', 'group' => 'invoices']])`.
 
 ## Adding your own pages
 

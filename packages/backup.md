@@ -52,6 +52,10 @@ BACKUP_ARCHIVE_PASSWORD=…      # encrypt the zip
 - **Download** and **delete** a backup.
 - The current settings (destinations, schedule, retention) at a glance.
 
+## Settings → Backups
+
+Super Admin can set the same things without `.env`: **nightly backups** on / off / *As in .env*, **destination disks**, **problem emails** and the **storage limit**. A stored setting wins over `.env`; empty falls back to it.
+
 ## Retention
 
 Spatie's default strategy: every backup for 7 days, one per day for 16 days, one per week for 8 weeks, one per month for 4 months, one per year for 2 years — and the oldest are deleted when backups use more than `BACKUP_MAX_STORAGE_MB` (5000).

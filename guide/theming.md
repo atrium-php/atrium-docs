@@ -4,7 +4,7 @@ Two ways to change the look: **Backoffice → Settings** for brand basics withou
 
 ## Brand settings (no code)
 
-Backoffice → Settings (`settings.edit`):
+Backoffice → Settings → General → *Brand* (`settings.edit`):
 
 - **Brand name** — page titles, headers, emails, SMS and the 2FA issuer (default: `APP_NAME`).
 - **Logo URL** and **favicon URL** — empty uses Atrium's logo (`resources/assets`) and no favicon.
