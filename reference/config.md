@@ -3,7 +3,7 @@
 Atrium's config ships inside its packages and is merged into your app. A new project has none of these files; Atrium's defaults apply. To change one, copy it into the project:
 
 ```bash
-php artisan vendor:publish --tag=atrium-config    # config/multidomain.php, rate-limits.php, module-*.php
+php artisan vendor:publish --tag=atrium-config    # config/multidomain.php, rate-limits.php, module-*.php, handover.php
 ```
 
 or create a file of the same name with only the keys you change — **a project file wins** over Atrium's, key by key. Published copies are tracked in `atrium-overrides.json` (see [Customising](/guide/customising#your-copies-of-atrium-files)).
@@ -38,6 +38,12 @@ Per-route throttles: `login`, `register`, `downloads`, `links` — each `max` at
 | `notify` | `HEALTH_NOTIFY_MAIL` | Who is emailed when a check fails |
 
 `php artisan health:check` runs the checks from the command line; Backoffice → System health shows them.
+
+## `handover` (core)
+
+| Key | Env | Default | |
+|---|---|---|---|
+| `permissions` | — | `[]` | Super-Admin-only permissions the Admin role gets (`['*']` = all). Backoffice → Access Control → Handover overrides it once changed there — see [Handover](/guide/roles-and-permissions#handover) |
 
 ## `module-lifecycle` (core)
 

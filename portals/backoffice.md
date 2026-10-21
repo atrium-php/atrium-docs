@@ -35,6 +35,7 @@ Each appears while its [module](/packages/) is on (users also get Account → Bi
 | [Roles](/packages/access-control), each role's permissions | `/roles`, `/roles/{role}/permissions` | access-control (always installed) |
 | [Permissions catalog](/packages/access-control) | `/permissions` | access-control |
 | [Users](/packages/access-control) and their roles | `/users` | access-control |
+| [Handover](/guide/roles-and-permissions#handover) (Super Admin only) | `/handover` | access-control |
 | [Activity log](/packages/activity) | `/activity` | activity |
 | [Languages](/packages/language), [Translations](/packages/language#translations) | `/languages`, `/translations/{scope?}` | language |
 | [Currencies](/packages/currency) | `/currencies` | currency |

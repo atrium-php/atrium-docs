@@ -9,7 +9,7 @@ Built on `spatie/laravel-permission`, with two permanent system roles, a `slug`/
 | Role | Slug | Can |
 |---|---|---|
 | Super Admin | `super-admin` | Everything, always — see [Gate bypass](#gate-bypass) |
-| Admin | `admin` | Everything except the [Super-Admin-only permissions](#super-admin-only-permissions) and editing portal or system roles |
+| Admin | `admin` | Everything except the [Super-Admin-only permissions](#super-admin-only-permissions) not [handed over](#handover), and editing portal or system roles |
 
 Both are **locked**: nobody, Super Admin included, can edit or delete them. That's a hard rule in the Roles page, not a permission, so it can't be granted away.
 
@@ -52,7 +52,7 @@ A role is a portal role when its slug is a key of `config('multidomain.sub_domai
 - **Grant a permission it doesn't hold itself** — the permission page only lists what the acting user has, so an Admin-made role can't be escalated.
 - Anything [Super-Admin-only](#super-admin-only-permissions).
 
-The Super Admin role itself is hidden from everyone but Super Admins, in the Roles list and in user role assignment, and the server re-checks submitted role ids so it can't be smuggled in.
+Super Admin is the developer, and the client never sees it: the role is hidden from everyone but Super Admins in the Roles list and in user role assignment (the server re-checks submitted role ids so it can't be smuggled in), and Super Admin **accounts** are left out of the Users list and the dashboard's user counts for everyone else (`User::visibleTo($viewer)`).
 
 ## Permissions
 
@@ -83,9 +83,39 @@ Each module owns its own (seeded whether the module is on or off, so role assign
 
 ### Super-Admin-only permissions
 
-Admin's seeded set leaves out `permissions.create/edit/delete`, `modules.manage`, and whatever modules declare Super-Admin-only: `api.manage`, `backups.manage`, `billing.manage`, `currencies.manage`, `languages.*`, `translations.common` and `media.delete`. Your modules do the same with `superAdminOnlyPermissions()` in their provider.
+Admin's seeded set leaves out `permissions.create/edit/delete`, `modules.manage`, and whatever modules declare Super-Admin-only: `api.manage`, `backups.manage`, `billing.manage`, `currencies.manage`, `languages.*`, `translations.common` and `media.delete` — until they are [handed over](#handover). Your modules do the same with `superAdminOnlyPermissions()` in their provider.
 
 Each backoffice page checks its permissions on load and on every action, and the sidebar only shows links the user can open.
+
+## Handover
+
+Super-Admin-only permissions belong to the developer until they are **handed over** to the client's Admin role. Admin can then pass them on to other roles as usual. They reach other roles **only** through Admin — Roles → Manage Permissions doesn't list a permission that isn't handed over, for Super Admin either — so taking one back can remove it everywhere.
+
+**Before installing**, list what Admin gets in `config/handover.php` (`php artisan vendor:publish --tag=atrium-config`):
+
+```php
+return [
+    'permissions' => ['currencies.manage', 'backups.manage'],   // or ['*'] for all of them
+];
+```
+
+A fresh install, `module:install` and `atrium:upgrade` grant exactly that.
+
+**Afterwards**, Super Admin changes it on Backoffice → Access Control → **Handover** (shown to Super Admin only): one switch per Super-Admin-only permission, grouped by module.
+
+- On: Admin has it and can grant it to other roles.
+- Off: taken back from Admin **and from every role it was passed on to** — the switch lists those roles and asks first.
+- A change there is stored and wins over `config/handover.php`; **Reset to config** goes back to the file. **Hand over all** gives Admin everything, the Modules page and the permission catalog included.
+- Names in the config that aren't Super-Admin-only permissions are ignored, and the screen warns about them.
+- Each change is in the activity log as a sentence ("handed currencies.manage over to role Admin"), one grouped entry per save.
+
+Every `atrium:upgrade` re-applies the handover: a Super-Admin-only permission that isn't handed over is removed from every role but Super Admin, even if it was added in the database directly.
+
+::: warning The handover is a line inside the app
+Whoever can write to the database or the server (`.env`, code) controls the app — they could put themselves in the Super Admin role. Keep database, SSH and hosting-panel access with the developer while you run the project; once the client hosts it, the handover only governs what their staff can do in the backoffice.
+:::
+
+In code: `Atrium\Core\Support\Handover` (`handedOver()`, `adminMay($permission)`, `update([...])`, `reset()`).
 
 ## Assigning permissions to a role
 

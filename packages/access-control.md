@@ -6,7 +6,7 @@
 | Namespace | `Atrium\AccessControl\` |
 | Depends on | core |
 | Permissions | `roles.view`, `roles.create`, `roles.edit`, `roles.delete`, `roles.assign-permissions`, `permissions.view`, `users.view`, `users.assign-roles`; Super Admin only: `permissions.create`, `permissions.edit`, `permissions.delete` |
-| Pages | Backoffice → Roles (`/roles`, `/roles/{role}/permissions`), Permissions (`/permissions`), Users (`/users`) |
+| Pages | Backoffice → Roles (`/roles`, `/roles/{role}/permissions`), Permissions (`/permissions`), Users (`/users`), Handover (`/handover`, Super Admin only) |
 | Uninstall | never — it's required |
 
 The backoffice pages for roles, permissions and users. Every project has it: `atrium-php/skeleton` requires it, it has no on/off switch on the Modules page, and it can't be uninstalled — the whole backoffice is gated by the permissions it manages.
@@ -17,7 +17,8 @@ What stays in [core](/packages/core): the `User`, `Role` and `Permission` models
 
 - **Roles** — create, rename and delete roles; the two system roles (Super Admin, Admin) are locked. Each role's permissions are toggled on their own page, grouped by module.
 - **Permissions** — the catalog. Anyone with `permissions.view` can browse it; only Super Admin may create, rename or delete a permission, so Admin can't mint one and grant it to a role it made.
-- **Users** — search by name, email or id; assign roles. Super Admin is hidden from anyone who isn't one.
+- **Users** — search by name, email or id; assign roles. Super Admin accounts and the role are hidden from anyone who isn't one.
+- **Handover** (Super Admin only) — which Super-Admin-only permissions the client's Admin gets; see [Handover](/guide/roles-and-permissions#handover). A role's permission page only lists Super-Admin-only permissions once they're handed over.
 
 Replace a page with your own like any Atrium page: `Platform::component('access-control::users', App\Livewire\Users::class)` — see [Customising](/guide/customising).
 
