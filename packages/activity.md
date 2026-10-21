@@ -116,6 +116,7 @@ class Invoice extends Model
 | `auditModelLabel()` | the class name in lower case: *invoice* |
 | `auditSubjectLabel()` | `ACTIVITY_LABEL` constant, else `name` |
 | `auditRedact($values)` (protected) | nothing — blank values that must never be stored |
+| `shouldAudit($event)` (protected) | `true` — return `false` to keep some records off the trail (generated rows, private files) |
 
 The hooks are read when an entry is shown, so rewording them rewords old entries too. `:subject` and `:model` are filled in; sentences go through `__()`, so they can be translated.
 

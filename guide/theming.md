@@ -7,7 +7,7 @@ Two ways to change the look: **Backoffice → Settings** for brand basics withou
 Backoffice → Settings → General → *Brand* (`settings.edit`):
 
 - **Brand name** — page titles, headers, emails, SMS and the 2FA issuer (default: `APP_NAME`).
-- **Logo URL** and **favicon URL** — empty uses Atrium's logo (`resources/assets`) and no favicon.
+- **Logo URL** and **favicon URL** — empty uses Atrium's logo (`resources/assets`) and no favicon. With the [Media](/packages/media) module, **Choose from library** fills in an image's permanent link (it keeps working after the image is edited; save the settings to use it).
 - **Accent colour** — recolours the brand blue (buttons, links, accents) in every portal.
 - **"Powered by Atrium"** credit — on by default, switch it off here.
 
