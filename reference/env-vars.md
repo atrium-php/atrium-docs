@@ -43,7 +43,7 @@ Read only once the module is installed. Each module's page lists its own.
 | `APP_MAINTENANCE` | `false` | Global maintenance switch — every portal, backoffice included ([Maintenance Mode](/packages/maintenance)) |
 | `MEDIA_DISK` ⚙, `MEDIA_PRIVATE_DISK`, `MEDIA_IMAGE_DRIVER` | `local`, `local`, `gd` | Media module storage (shared files, private files) and image driver |
 | `NOTIFICATIONS_PRUNE_READ_DAYS` ⚙, `NOTIFICATIONS_PRUNE_ALL_DAYS` ⚙, `NOTIFICATIONS_POLL_SECONDS` | `90`, `365`, `60` | Notifications module: how long notifications are kept, how often the bell checks without live updates |
-| `BROADCAST_CONNECTION`, `REVERB_*`, `VITE_REVERB_*` | `log` | Live updates for the notification bell ([Notifications → Live updates](/packages/notifications#live-updates)) |
+| `BROADCAST_CONNECTION`, `REVERB_*` / `PUSHER_*` | `log` | Live updates for the notification bell ([Notifications → Live updates](/packages/notifications#live-updates)) |
 | `API_RATE_LIMIT` | `60` | API module: requests per minute per token |
 | `BACKUP_ENABLED` ⚙ | `false` | Backup module: actually run scheduled backups |
 | `BACKUP_DISKS` ⚙, `BACKUP_NOTIFY_MAIL` ⚙, `BACKUP_MAX_STORAGE_MB` ⚙, `BACKUP_ARCHIVE_PASSWORD` | | Where backups go, who is told, archive encryption |

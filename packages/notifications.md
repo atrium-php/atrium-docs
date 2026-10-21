@@ -62,7 +62,7 @@ This is a one-off message to people's inboxes. Banners and pop-ups shown inside 
 
 With a broadcasting connection set up, every in-app notification is also broadcast on the recipient's private channel (`App.Models.User.{id}`) and the bell updates instantly. The module authorizes that channel and registers `/broadcasting/auth` (unless your app already did with `withBroadcasting()`).
 
-With [Laravel Reverb](https://reverb.laravel.com):
+With [Laravel Reverb](https://reverb.laravel.com), in a project that has this module:
 
 ```bash
 composer require laravel/reverb
@@ -76,13 +76,15 @@ REVERB_APP_SECRET=…
 REVERB_HOST=localhost
 REVERB_PORT=8080
 REVERB_SCHEME=http
-VITE_REVERB_APP_KEY="${REVERB_APP_KEY}"
-VITE_REVERB_HOST="${REVERB_HOST}"
-VITE_REVERB_PORT="${REVERB_PORT}"
-VITE_REVERB_SCHEME="${REVERB_SCHEME}"
 ```
 
-Then `php artisan reverb:start` (keep it running, like the queue worker) and rebuild assets (`npm run build`). The portals' JavaScript (`resources/js/echo.js`, imported by `app.js` and `backoffice.js`) starts Laravel Echo only when `VITE_REVERB_APP_KEY` is set. Any Pusher-protocol server (Pusher, Ably, Soketi) works too — set `BROADCAST_CONNECTION` and adjust `echo.js`.
+Then `php artisan reverb:start` (keep it running, like the queue worker). `REVERB_HOST` / `REVERB_PORT` / `REVERB_SCHEME` must be what the browser reaches (behind a proxy: the public host, `443`, `https`).
+
+No npm step: the module ships its own copy of [Laravel Echo](https://github.com/laravel/echo) 2.6.1 and [pusher-js](https://github.com/pusher/pusher-js) 8.6.0 (both MIT, licences alongside in `resources/dist`), served from `/notifications-assets/` and loaded only on pages with the bell, only while live updates are on — they leave with the module. The browser settings come from the broadcasting connection, so there are no `VITE_*` keys. A project that already sets up `window.Echo` itself keeps its own.
+
+[Pusher](https://pusher.com) works the same way (`BROADCAST_CONNECTION=pusher`, `PUSHER_APP_KEY`, `PUSHER_APP_CLUSTER`…); Pusher-compatible servers (Soketi…) through the `reverb` or `pusher` connection's host and port.
+
+`laravel/reverb` isn't required by the module or the skeleton on purpose: Reverb 1.12 needs Guzzle's psr7 2, and requiring it would downgrade Guzzle 8 → 7 in every project. Add it only where you want live updates (`composer require laravel/reverb -W` if Composer reports that conflict).
 
 `BROADCAST_CONNECTION=log` or `null` (a new project's default) = no live updates; the bell polls. Shared hosting needs nothing.
 
