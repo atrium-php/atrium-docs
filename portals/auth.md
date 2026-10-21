@@ -45,10 +45,10 @@ Phone verification (OTP over SMS) and the email-verification grace period are op
 
 Only with phone verification on; when it's off, the whole flow is skipped everywhere and phones count as verified.
 
-- 6-digit code by SMS (Twilio), resend and "edit number" each limited to 2 attempts.
+- 6-digit code by SMS (the `PhoneCode` notification on the `sms` channel), resend and "edit number" each limited to 2 attempts.
 - Then the 2FA challenge if enabled, otherwise the user's portal.
 
-Without Twilio credentials (`TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_PHONE_NUMBER`) sending fails quietly (logged, not thrown). To use another SMS provider, bind your own `Atrium\Core\Contracts\SmsService`.
+Atrium ships no SMS gateway: until you bind one, codes are written to the log (`LogSmsService`) — fine locally, but phone verification can't work for real users. Bind your provider to `Atrium\Core\Contracts\SmsService` (one method, `send($to, $message)`) — see [Core → Services you can swap](/packages/core#services-you-can-swap).
 
 ### Code rules
 

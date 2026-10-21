@@ -50,6 +50,7 @@ export default defineConfig({
                     { text: 'Language', link: '/packages/language' },
                     { text: 'Maintenance', link: '/packages/maintenance' },
                     { text: 'Media', link: '/packages/media' },
+                    { text: 'Notifications', link: '/packages/notifications' },
                 ],
             },
             {

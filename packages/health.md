@@ -9,7 +9,7 @@
 | Pages | Backoffice → System health (`/system-health`) |
 | Endpoint | `GET /health` on every host |
 | Command | `php artisan health:check` |
-| Schedule | scheduler heartbeat (every minute), status-change check (every five minutes, when `HEALTH_NOTIFY_MAIL` is set) |
+| Schedule | scheduler heartbeat (every minute), status-change check (every five minutes, when `HEALTH_NOTIFY_MAIL` is set or the [Notifications](/packages/notifications) module is on) |
 | Config | `health` |
 | Uninstall | no module backup (policy **none**) — it keeps nothing but a cached report |
 
@@ -64,6 +64,8 @@ php artisan health:check --json     # the full report, for scripts
 ## Status emails
 
 `HEALTH_NOTIFY_MAIL=ops@example.com,dev@example.com` gets an email whenever the overall status changes (ok → failed, failed → ok, …). The scheduler runs `health:check --notify` every five minutes, so cron must run `schedule:run`.
+
+With the [Notifications](/packages/notifications) module on, users with `health.view` also get an in-app notification of each change (they can switch it to email, or off, in their preferences).
 
 ## Environment
 

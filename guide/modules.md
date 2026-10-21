@@ -15,6 +15,7 @@ Atrium's optional features are **modules**: each its own Composer package, insta
 | [Languages](/packages/language) | `atrium-php/language` | Languages, RTL, URL locales and database translations |
 | [Maintenance](/packages/maintenance) | `atrium-php/maintenance` | Per-portal maintenance mode |
 | [Media](/packages/media) | `atrium-php/media` | Media library with uploads, image sizes and attachments |
+| [Notifications](/packages/notifications) | `atrium-php/notifications` | Notification bell and inbox, channel preferences per user, messages from the backoffice |
 
 A module has two layers, and Atrium keeps track of both:
 

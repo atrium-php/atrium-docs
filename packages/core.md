@@ -5,7 +5,7 @@
 | Package | `atrium-php/core` |
 | Namespace | `Atrium\Core\` |
 | Always on | yes — not a module, can't be switched off |
-| Depends on | Laravel 13, Livewire 4, Flux (free), spatie/laravel-permission, Laravel Pennant, Laravel Scout, google2fa, Twilio SDK |
+| Depends on | Laravel 13, Livewire 4, Flux (free), spatie/laravel-permission, Laravel Pennant, Laravel Scout, google2fa |
 | Config | `multidomain`, `rate-limits`, `module-backups`, `module-lifecycle` — see [Config Reference](/reference/config) |
 
 Everything every Atrium project has, whichever modules are on.
@@ -31,7 +31,8 @@ Classes tagged `@api` are safe to build on within a major version; everything el
 | `Platform` | `useUserModel()`, `component()`, `page()`, `routeMiddleware()` |
 | `Models\User`, `Role`, `Permission`, `AppSetting` | Base user model and the permission models |
 | `Support\Modules\Module`, `ModuleProvider` | The module system |
-| `Contracts\Currencies`, `Languages`, `SmsService`, `LicenseGate`, `UpgradeStep` | Swap or implement services |
+| `Contracts\Currencies`, `Languages`, `SmsService`, `NotificationPreferences`, `LicenseGate`, `UpgradeStep` | Swap or implement services |
+| `Contracts\NotificationType`, `Notifications\Concerns\RespectsPreferences`, `Support\Notifications\NotificationChannels`, `NotificationTypes` | Notifications users can choose channels for ([Notifications](/packages/notifications#sending-your-own-notifications)) |
 | `Events\AccountDeleting`, `UserAnonymized`, `Audited` | React to Atrium |
 | `Concerns\Auditable`, `Support\Audit` | Put things on the audit trail |
 | `Support\Money`, `Casts\MoneyCast` | Money as integers ([Currency](/packages/currency)) |
@@ -49,12 +50,25 @@ Core resolves these through contracts; bind your own in a service provider:
 
 | Contract | Default | Replaced by |
 |---|---|---|
-| `SmsService` | Twilio | — |
+| `SmsService` | `LogSmsService`: writes the message to the log, sends nothing | your gateway |
+| `NotificationPreferences` | each notification's default channels, minus in-app | the [Notifications module](/packages/notifications) (the user's choices) |
 | `Currencies` | plain `USD 30.00` formatting, no conversion | the [Currency module](/packages/currency) |
 | `Languages` | the app locale only | the [Language module](/packages/language) |
 
 ```php
 $this->app->bind(\Atrium\Core\Contracts\SmsService::class, \App\Services\MySms::class);
+```
+
+An SMS gateway implements one method; core's `sms` notification channel (phone codes, and any notification with `toSms()`) calls it:
+
+```php
+class MySms implements \Atrium\Core\Contracts\SmsService
+{
+    public function send(string $to, string $message): bool
+    {
+        // $to is E.164 (+919876543210). Return whether the gateway accepted it.
+    }
+}
 ```
 
 ## Timezones
