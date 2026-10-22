@@ -12,6 +12,7 @@ Atrium's optional features are **modules**: each its own Composer package, insta
 | [Currencies](/packages/currency) | `atrium-php/currency` | Currencies, exchange rates and money formatting |
 | [Feature flags](/packages/feature-flags) | `atrium-php/feature-flags` | The backoffice page to switch feature flags |
 | [System health](/packages/health) | `atrium-php/health` | `/health` endpoint for monitors, System health page, status-change emails |
+| [Impersonation](/packages/impersonation) | `atrium-php/impersonation` | "Log in as" a user — audited, time-limited, sensitive actions blocked |
 | [Invitations](/packages/invitations) | `atrium-php/invitations` | Invitations by email with a role, invite-only sign-up |
 | [Languages](/packages/language) | `atrium-php/language` | Languages, RTL, URL locales and database translations |
 | [Maintenance](/packages/maintenance) | `atrium-php/maintenance` | Per-portal maintenance mode |

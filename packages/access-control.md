@@ -38,7 +38,7 @@ Module::contribute('access-control.user.actions', [[
 ]]);
 ```
 
-An action whose `href` returns `null` is left out for that user.
+An action whose `href` returns `null` is left out for that user. Instead of `href`, `'dispatch' => 'event-name'` makes the button dispatch that Livewire event with `{ id: user id }` — for a modal of your own in the page header (below); [Impersonation](/packages/impersonation)'s *Log in as* works that way.
 
 ## Adding to the Users page
 

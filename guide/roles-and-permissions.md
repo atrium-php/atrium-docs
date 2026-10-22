@@ -84,13 +84,15 @@ Each module owns its own (seeded whether the module is on or off, so role assign
 | currency | `currencies.view`, `currencies.manage` |
 | feature-flags | `feature-flags.manage` |
 | health | `health.view` |
+| impersonation | `users.impersonate` (Super Admin only) |
+| invitations | `invitations.manage` |
 | language | `languages.view/create/edit/delete`, `translations.landing`, `translations.portal`, `translations.common` |
 | maintenance | `maintenance.view`, `maintenance.update` |
 | media | `media.view`, `media.manage`, `media.delete` (Super Admin only) |
 
 ### Super-Admin-only permissions
 
-Admin's seeded set leaves out `permissions.create/edit/delete`, `modules.manage`, and whatever modules declare Super-Admin-only: `api.manage`, `backups.manage`, `billing.manage`, `currencies.manage`, `languages.*`, `translations.common` and `media.delete` — until they are [handed over](#handover). Your modules do the same with `superAdminOnlyPermissions()` in their provider.
+Admin's seeded set leaves out `permissions.create/edit/delete`, `modules.manage`, and whatever modules declare Super-Admin-only: `api.manage`, `backups.manage`, `billing.manage`, `currencies.manage`, `languages.*`, `translations.common`, `media.delete`, `notifications.broadcast` and `users.impersonate` — until they are [handed over](#handover). Your modules do the same with `superAdminOnlyPermissions()` in their provider.
 
 Each backoffice page checks its permissions on load and on every action, and the sidebar only shows links the user can open.
 

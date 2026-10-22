@@ -47,6 +47,7 @@ export default defineConfig({
                     { text: 'Currency', link: '/packages/currency' },
                     { text: 'Feature Flags', link: '/packages/feature-flags' },
                     { text: 'Health', link: '/packages/health' },
+                    { text: 'Impersonation', link: '/packages/impersonation' },
                     { text: 'Invitations', link: '/packages/invitations' },
                     { text: 'Language', link: '/packages/language' },
                     { text: 'Maintenance', link: '/packages/maintenance' },
