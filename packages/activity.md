@@ -58,7 +58,7 @@ Models put their own attribute changes on the trail with `Atrium\Core\Concerns\A
 
 | Model | Recorded attributes |
 |---|---|
-| User | `name`, `email`, `privilege` |
+| User | `name`, `email` |
 | Role | `name`, `slug`, `locked` |
 | Permission | `name` |
 | AppSetting (Backoffice → Settings) | `key`, `value` — secret values are blanked before storing |

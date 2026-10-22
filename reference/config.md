@@ -88,7 +88,7 @@ Modules bring their own config the same way — merged under the module's name, 
 The `portal` middleware and the post-sign-in redirect rely on two methods of the user model, both on `Atrium\Core\Models\User`:
 
 ```php
-$user->isStaff(): bool       // backoffice vs app
+$user->isStaff(): bool       // backoffice vs app — can('backoffice.access')
 $user->redirect(): string    // where to send this user
 ```
 
@@ -102,6 +102,6 @@ Override them in `App\Models\User` to plug in your own rules.
 | `portal:{staff\|user\|key}` | Portal access — see [Roles & Permissions](/guide/roles-and-permissions#gate-bypass) | |
 | `phone.verified` | Requires a verified phone (passes while phone verification is off) | |
 | `email.grace` | Blocks after the email-verification grace period | |
-| `staff` | Staff only | |
+| `staff` | Staff only (`isStaff()`) | |
 | `licensed:{module}` | Requires a valid licence for a paid module — see [Build (and sell) a module](/guide/build-a-module#selling-it) | |
 | `ability`, `abilities` | Sanctum token abilities | api module |

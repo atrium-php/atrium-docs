@@ -145,7 +145,7 @@ abstract class TestCase extends \Atrium\Core\Testing\TestCase
 
 `atrium:make-package` sets this up: run `composer install`, then `composer test` in the package. The scaffolded `tests/Feature/InvoicesTest.php` checks the module is found, seeds its permissions, registers its page, and registers nothing while switched off; add your tests next to it. The same suite runs in the package's GitHub workflow.
 
-Helpers: `disableModules()`, `enableModules()`, `rebootApplication()`, and from `Platform::path('testing/helpers.php')` (loaded by the scaffold's `tests/Pest.php`) `superAdminActor()`, `adminActor()`, `staffUser()`, `backofficeUrl()`.
+Helpers: `disableModules()`, `enableModules()`, `rebootApplication()`, and from `Platform::path('testing/helpers.php')` (loaded by the scaffold's `tests/Pest.php`) `superAdminActor()`, `adminActor()`, `staffUser()`, `backofficeUrl()`. `User::factory()->staff()` makes a user who may enter the backoffice.
 
 Atrium's pages render Flux components, so a test that renders a page needs Flux Pro in the package too: add `livewire/flux-pro` to `require-dev` and your Flux credentials (in CI, as secrets). Tests that don't render — models, services, jobs, permissions, routes — need nothing extra.
 

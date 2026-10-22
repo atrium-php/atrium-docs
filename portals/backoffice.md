@@ -14,7 +14,7 @@ The app, backoffice and account portals share one shell: a fixed sidebar (collap
 
 ## Access
 
-Atrium wraps it in `['auth', 'phone.verified', 'email.grace', 'portal:staff']`. `portal:staff` sends non-staff to the app portal. Staff is decided by `$user->isStaff()` (the `privilege` column on Atrium's user model).
+Atrium wraps it in `['auth', 'phone.verified', 'email.grace', 'portal:staff']`. `portal:staff` sends non-staff to the app portal. Staff is decided by `$user->isStaff()`: holding the `backoffice.access` permission through a role (Super Admin, Admin, Staff or one of your own) — see [Backoffice access](/guide/roles-and-permissions#backoffice-access).
 
 Inside, every page and action checks its own permission, and the sidebar only lists pages the user can open (see [Roles & Permissions](/guide/roles-and-permissions)).
 

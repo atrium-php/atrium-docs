@@ -1,17 +1,18 @@
 # Roles & Permissions
 
-Built on `spatie/laravel-permission`, with two permanent system roles, a `slug`/`name` split on every role, and real per-page permission checks across the backoffice.
+Built on `spatie/laravel-permission`, with three permanent system roles, a `slug`/`name` split on every role, and real per-page permission checks across the backoffice.
 
 ## System roles
 
-`atrium:install` seeds two roles:
+`atrium:install` seeds three roles:
 
 | Role | Slug | Can |
 |---|---|---|
 | Super Admin | `super-admin` | Everything, always — see [Gate bypass](#gate-bypass) |
 | Admin | `admin` | Everything except the [Super-Admin-only permissions](#super-admin-only-permissions) not [handed over](#handover), and editing portal or system roles |
+| Staff | `staff` | Enter the backoffice (`backoffice.access`) — nothing else; give staff their pages with a second role |
 
-Both are **locked**: nobody, Super Admin included, can edit or delete them. That's a hard rule in the Roles page, not a permission, so it can't be granted away.
+All three are **locked**: nobody, Super Admin included, can edit or delete them. That's a hard rule in the Roles page, not a permission, so it can't be granted away.
 
 The first Super Admin user comes from `ADMIN_NAME` / `ADMIN_EMAIL` / `ADMIN_PASSWORD` in `.env` (an empty password is generated and printed once by `atrium:install`).
 
@@ -24,7 +25,7 @@ Atrium registers, in order:
 
 Everyone else falls through to Spatie, which resolves any ability string to `hasPermissionTo()` — so there are no `Gate::define()` calls for permissions. Use them as usual: `Gate::allows('roles.edit')`, `@can('roles.edit')`, `can:roles.edit` middleware, `$this->authorize(...)`.
 
-Portal access is separate from the Gate. The `portal:{key}` middleware lets a user in when they are Super Admin, or:
+Portal access is checked by the `portal:{key}` middleware. It lets a user in when they are Super Admin, or:
 
 ```php
 match ($portal) {
@@ -35,6 +36,12 @@ match ($portal) {
 ```
 
 Anyone else is redirected to their own portal (`$user->redirect()`).
+
+## Backoffice access
+
+Who may enter the backoffice is a permission, **`backoffice.access`**, held through roles like any other: `$user->isStaff()` is `$user->can('backoffice.access')`. Super Admin, Admin and Staff have it; add it to a role of your own on the Roles page to make that role's users staff. To make someone staff, give them a role that has it (Users → *Assign roles*) — Staff if they only need to get in, then a role with the pages they work on.
+
+Staff stay out of the App portal (it's for end users) — Super Admin can open both. In a query, `User::query()->staff()` finds the same users as `isStaff()`.
 
 ## Portal roles: `slug` vs `name`
 
@@ -59,7 +66,7 @@ Super Admin is the developer, and the client never sees it: the role is hidden f
 Permissions are `module.action` strings. Core and the required Access Control module own:
 
 ```
-settings.edit        modules.manage
+backoffice.access    settings.edit        modules.manage
 roles.view           roles.create         roles.edit             roles.delete
 roles.assign-permissions
 permissions.view     permissions.create   permissions.edit       permissions.delete
