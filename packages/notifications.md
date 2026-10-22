@@ -47,6 +47,7 @@ Account → Settings → **Notifications**: one row per kind of notification the
 | Messages from the team ([Send notification](#send-notification)) | General | in-app + email | everyone |
 | A module restore you started finished | System | email + in-app | `modules.manage` |
 | System health status changed ([Health](/packages/health)) | System | in-app | `health.view` |
+| Someone accepted your invitation ([Invitations](/packages/invitations)) | Users | email + in-app | `invitations.manage` |
 
 No stored choice means the defaults — and going back to the defaults removes the stored row, so a later change to a default applies.
 

@@ -57,7 +57,7 @@ Each appears while its [module](/packages/) is on (users also get Account → Bi
 |---|---|
 | Region | Default timezone; **date format** (`Oct 19, 2026`, `19 Oct 2026`, `19/10/2026`, `10/19/2026`, `2026-10-19`) and **time format** (12 or 24 hours), used for dates across every portal and in emails |
 | Brand | Name, logo, favicon, accent colour, "Powered by Atrium" — see [Theming](/guide/theming) |
-| Registration | **Open** or **closed** (closed: no sign-up page, no "Create one" links — create accounts from the backoffice); a **portal role every new account gets** |
+| Registration | **Open**, **invite only** (with [Invitations](/packages/invitations)) or **closed** (no sign-up page, no "Create one" links); a **portal role every new account gets**; with Invitations, how long invitation links work |
 | Contact | **Support email** — shown on error pages, and set as Reply-To on Atrium's emails |
 | Module backups (`modules.manage`) | The **disk** module backups go to |
 

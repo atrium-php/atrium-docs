@@ -29,6 +29,7 @@ Phone verification (OTP over SMS) and the email-verification grace period are op
 - Name, email, password and confirmation.
 - **"Select the user type"** appears only when `registerable_portals` lists portals (see [make:subdomain](/guide/make-subdomain-command#self-registration)); picking one assigns that portal's role.
 - **Phone number** only with phone verification on.
+- Shown while Settings → General → Registration is **Open** — or **Invite only** with an [invitation](/packages/invitations) opened in the session; 404 otherwise. From an invitation the email is filled in and locked, "Select the user type" is hidden (the invitation brings the role) and the email counts as verified.
 
 ## Forgot / reset password
 

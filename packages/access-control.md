@@ -40,6 +40,18 @@ Module::contribute('access-control.user.actions', [[
 
 An action whose `href` returns `null` is left out for that user.
 
+## Adding to the Users page
+
+Livewire components go in the page header, next to the search (the [Invitations](/packages/invitations) module's *Invite user* button is one):
+
+```php
+Module::contribute('access-control.users.header', [[
+    'component' => 'invitations::invite',
+    'permission' => 'invitations.manage',   // optional: any of a list
+    'order' => 10,                          // optional
+]]);
+```
+
 ## Upgrading a project from an earlier alpha
 
 Projects created before Access Control was a module don't have the package: add it, then upgrade.

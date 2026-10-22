@@ -19,6 +19,7 @@ And eleven optional modules — each its own package of type `atrium-module`. A 
 | `currency` | [`atrium-php/currency`](/packages/currency) | Currencies, exchange rates and money formatting | yes |
 | `feature-flags` | [`atrium-php/feature-flags`](/packages/feature-flags) | The backoffice page to switch feature flags per portal or user | yes |
 | `health` | [`atrium-php/health`](/packages/health) | `/health` endpoint, System health page, `health:check`, status-change emails | yes |
+| `invitations` | [`atrium-php/invitations`](/packages/invitations) | Invitations by email with a role, invite-only sign-up | yes |
 | `language` | [`atrium-php/language`](/packages/language) | Languages, RTL, URL locales and database translations | yes |
 | `maintenance` | [`atrium-php/maintenance`](/packages/maintenance) | Per-portal maintenance mode with a branded page | yes |
 | `media` | [`atrium-php/media`](/packages/media) | Media library: uploads, image sizes, attachments to any model | yes |
