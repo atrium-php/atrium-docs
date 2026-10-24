@@ -6,7 +6,7 @@
 | Namespace | `Atrium\Backup\` |
 | Depends on | core, spatie/laravel-backup |
 | Permissions | `backups.manage` (Super Admin only — a backup is the whole database) |
-| Pages | Backoffice → Backups (`/backups`) |
+| Pages | Backoffice → Backups (`/backups`); a last-backup card on the Backoffice dashboard (Super Admin) |
 | Schedule | clean 01:00, back up 01:30, monitor 09:00 (daily) |
 | Config | `backup` (spatie's, preset by Atrium) |
 | Uninstall | no module backup (policy **none**) — the backups on your disks are not touched |

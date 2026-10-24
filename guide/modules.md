@@ -6,6 +6,7 @@ Atrium's optional features are **modules**: each its own Composer package, insta
 |---|---|---|
 | [Access Control](/packages/access-control) | `atrium-php/access-control` | Roles, permissions and the users list — **required**: always installed, always on |
 | [Activity](/packages/activity) | `atrium-php/activity` | Audit trail of who changed what, with comments and reactions |
+| [Analytics](/packages/analytics) | `atrium-php/analytics` | Signups, active users and logins on the dashboard, with a detailed Analytics page |
 | [API](/packages/api) | `atrium-php/api` | Token-authenticated JSON API with a Super Admin access policy |
 | [Backups](/packages/backup) | `atrium-php/backup` | Scheduled database and file backups |
 | [Billing](/packages/billing) | `atrium-php/billing` | Stripe subscriptions |

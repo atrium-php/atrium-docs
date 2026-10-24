@@ -83,5 +83,5 @@ A component is matched by its name and by whatever replaced it with `Platform::c
 ## For module authors
 
 - `Atrium\Core\Contracts\Impersonation` — `active()`, `impersonator()`, `stop()`; `NullImpersonation` without this module. Use it to skip things for impersonated sessions (a login history should ignore them).
-- Events `Atrium\Impersonation\Events\ImpersonationStarted` (impersonator, user, reason) and `ImpersonationStopped` (impersonator, user, why). Laravel's `Login` event also fires on each switch.
+- Events `Atrium\Impersonation\Events\ImpersonationStarted` (impersonator, user, reason) and `ImpersonationStopped` (impersonator, user, why). Laravel's `Login` event also fires on each switch — `active()` is already true inside it, on starting and on stopping, so a `Login` listener can skip both (the [Analytics](/packages/analytics) module does).
 - Core points this module uses: `shell.banners` (components above every page), `audit.context` (properties on every audit entry), `impersonation.blocked`; and Access Control's `access-control.user.actions` with `dispatch` and `access-control.users.header`.

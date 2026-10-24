@@ -6,7 +6,7 @@
 | Namespace | `Atrium\Billing\` |
 | Depends on | core, Laravel Cashier (Stripe) |
 | Permissions | `billing.view`, `billing.manage` (Super Admin only — it moves real money) |
-| Pages | Account → Billing (`/billing`, every user); Backoffice → Billing (`/billing`) |
+| Pages | Account → Billing (`/billing`, every user); Backoffice → Billing (`/billing`); an active-subscriptions card on the Backoffice dashboard |
 | Routes | `stripe/webhook` and `stripe/payment/{id}` (Cashier's, any host) |
 | Config | `billing` (plans), `cashier` |
 | Uninstall | backup **required**; blocked while subscriptions are active, trialing, past due or in their grace period |

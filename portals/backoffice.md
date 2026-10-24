@@ -22,7 +22,7 @@ Inside, every page and action checks its own permission, and the sidebar only li
 
 | Page | Path | Permission |
 |---|---|---|
-| Dashboard — users, staff, roles, permissions, newest users | `/` | staff |
+| Dashboard — widgets from installed modules ([Analytics](/packages/analytics), Health, Backup, Billing, Media), then users, staff, roles, permissions, newest users | `/` | staff |
 | Settings — one page per group: General, then each module's | `/settings/{group}` | per group (General: `settings.edit`) |
 | Modules — install, switch on and off, uninstall, back up and restore modules; licence keys ([Modules](/guide/modules)) | `/modules` | `modules.manage` (Super Admin) |
 

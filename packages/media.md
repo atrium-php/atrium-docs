@@ -6,7 +6,7 @@
 | Namespace | `Atrium\Media\` |
 | Depends on | core, Intervention Image |
 | Permissions | `media.view` (open the library, browse everyone's shared files), `media.manage` (edit any shared file: title, alt text, image editor), `media.delete` (**Super Admin only** — move anyone's unused file to the Trash, delete permanently, empty the Trash). Everyone may edit, trash and restore their own uploads. |
-| Pages | Backoffice → Media Library (`/media`, with a Trash); the profile photo card on Account → Settings; *Choose from library* for the logo and favicon on Settings → General |
+| Pages | Backoffice → Media Library (`/media`, with a Trash); the profile photo card on Account → Settings; *Choose from library* for the logo and favicon on Settings → General; a storage-used card on the Backoffice dashboard |
 | User model | uses `Atrium\Media\Concerns\HasMedia` — add it when you install it |
 | Config | `media` (below); disk, upload limit and image sizes also on Backoffice → Settings → Media (`media.manage`) |
 | Uninstall | backup **required**, files included |

@@ -6,7 +6,7 @@
 | Namespace | `Atrium\Health\` |
 | Depends on | core |
 | Permissions | `health.view` |
-| Pages | Backoffice → System health (`/system-health`) |
+| Pages | Backoffice → System health (`/system-health`); a status card on the Backoffice dashboard |
 | Endpoint | `GET /health` on every host |
 | Command | `php artisan health:check` |
 | Schedule | scheduler heartbeat (every minute), status-change check (every five minutes, when `HEALTH_NOTIFY_MAIL` is set or the [Notifications](/packages/notifications) module is on) |
