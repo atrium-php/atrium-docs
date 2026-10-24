@@ -56,6 +56,7 @@ export default defineConfig({
                     { text: 'Media', link: '/packages/media' },
                     { text: 'Notifications', link: '/packages/notifications' },
                     { text: 'Teams', link: '/packages/teams' },
+                    { text: 'Webhooks', link: '/packages/webhooks' },
                 ],
             },
             {

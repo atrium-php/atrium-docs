@@ -113,4 +113,5 @@ With [Impersonation](/packages/impersonation) on, creating teams and every actio
 
 - `Atrium\Core\Contracts\CurrentTeam` (null object `NullCurrentTeam`) and `Atrium\Core\Concerns\BelongsToTeam` live in core — use them without depending on this module.
 - Core point **`shell.sidebar.header`** — Livewire components under the sidebar brand of the signed-in portals, `[component, portals, order]`, each given `:portal`. The switcher uses it.
+- Events `Atrium\Teams\Events\MemberJoined` (team, user, role) and `MemberLeft` (team, user) — also sent as [webhooks](/packages/webhooks) `team.member_joined` / `team.member_left`.
 - Billing stays per user; billing per team is a later item.

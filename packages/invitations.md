@@ -86,6 +86,7 @@ Next to it, **Invitation links work for (days)** — 7 by default, 1 to 90 (`INV
 - Core asks `Atrium\Core\Contracts\Invitations` whether invitations exist and which one the visitor opened (`pending()` → `PendingInvitation` with `email` and `roleName`); `NullInvitations` without this module. `AppSetting::registrationMode()` returns `open`, `invite-only` or `closed`.
 - Access Control's Users page takes header components from the `access-control.users.header` extension point (see [Access Control](/packages/access-control#adding-to-the-users-page)).
 - `Atrium\Invitations\Services\InvitationService` (`invite()`, `resend()`, `revoke()`, `accept()`) for inviting from your own code.
+- Event `Atrium\Invitations\Events\InvitationAccepted` (invitation, user) — also sent as the [webhook](/packages/webhooks) `invitation.accepted`.
 
 ## Deleting
 

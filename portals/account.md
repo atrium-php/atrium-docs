@@ -59,6 +59,10 @@ From [Profile](#profile), with the current password.
 
 With the [Teams](/packages/teams) module: **Teams** lists the teams you're in, creates new ones, and opens each team's page — members, adding people, roles, transfer, leave, delete.
 
+## Webhooks
+
+With the [Webhooks](/packages/webhooks) module, when Settings → Webhooks lets you: **Webhooks** adds your own endpoints for events about your account.
+
 ## Settings
 
 `/settings` → `atrium::accounts.settings`

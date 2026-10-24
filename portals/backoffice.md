@@ -48,6 +48,7 @@ Each appears while its [module](/packages/) is on (users also get Account → Bi
 | [API Access](/packages/api) | `/api` | api |
 | [Announcements](/packages/announcements), What's new | `/announcements`, `/whats-new` | announcements |
 | [Teams](/packages/teams) | `/teams` | teams |
+| [Webhooks](/packages/webhooks) | `/webhooks` | webhooks |
 
 ## Settings
 
