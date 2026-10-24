@@ -15,6 +15,7 @@ Atrium's optional features are **modules**: each its own Composer package, insta
 | [Feature flags](/packages/feature-flags) | `atrium-php/feature-flags` | The backoffice page to switch feature flags |
 | [System health](/packages/health) | `atrium-php/health` | `/health` endpoint for monitors, System health page, status-change emails |
 | [Impersonation](/packages/impersonation) | `atrium-php/impersonation` | "Log in as" a user — audited, time-limited, sensitive actions blocked |
+| [Import / Export](/packages/import-export) | `atrium-php/import-export` | CSV / XLSX exports of every table, user imports with a dry run |
 | [Invitations](/packages/invitations) | `atrium-php/invitations` | Invitations by email with a role, invite-only sign-up |
 | [Languages](/packages/language) | `atrium-php/language` | Languages, RTL, URL locales and database translations |
 | [Email templates](/packages/mail-templates) | `atrium-php/mail-templates` | Reword every mail per language and restyle them all, with variables, preview and test sends |

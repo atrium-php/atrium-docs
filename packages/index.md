@@ -22,6 +22,7 @@ And eighteen optional modules — each its own package of type `atrium-module`. 
 | `feature-flags` | [`atrium-php/feature-flags`](/packages/feature-flags) | The backoffice page to switch feature flags per portal or user | yes |
 | `health` | [`atrium-php/health`](/packages/health) | `/health` endpoint, System health page, `health:check`, status-change emails | yes |
 | `impersonation` | [`atrium-php/impersonation`](/packages/impersonation) | "Log in as" a user: audited, time-limited, sensitive actions blocked | yes |
+| `import-export` | [`atrium-php/import-export`](/packages/import-export) | CSV / XLSX exports of every Backoffice table in the background, user imports with mapping and a dry run | yes |
 | `invitations` | [`atrium-php/invitations`](/packages/invitations) | Invitations by email with a role, invite-only sign-up | yes |
 | `language` | [`atrium-php/language`](/packages/language) | Languages, RTL, URL locales and database translations | yes |
 | `mail-templates` | [`atrium-php/mail-templates`](/packages/mail-templates) | Reword every mail per language and restyle them all: variables, live preview, test sends | yes |

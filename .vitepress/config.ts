@@ -50,6 +50,7 @@ export default defineConfig({
                     { text: 'Feature Flags', link: '/packages/feature-flags' },
                     { text: 'Health', link: '/packages/health' },
                     { text: 'Impersonation', link: '/packages/impersonation' },
+                    { text: 'Import / Export', link: '/packages/import-export' },
                     { text: 'Invitations', link: '/packages/invitations' },
                     { text: 'Language', link: '/packages/language' },
                     { text: 'Email templates', link: '/packages/mail-templates' },
