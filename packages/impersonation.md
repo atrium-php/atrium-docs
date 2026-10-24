@@ -43,7 +43,7 @@ While viewing as someone these are refused with *"Not while viewing as someone e
 | | |
 |---|---|
 | Account | changing email or phone, verification codes, deleting the account (or cancelling it), password, signing out sessions, two-factor setup (page closed), data export and its download |
-| Backoffice | Settings, Modules, Roles, Permissions, Handover, assigning roles on Users, inviting / resending / revoking ([Invitations](/packages/invitations)), saving / publishing / duplicating / deleting [Announcements](/packages/announcements), managing [Teams](/packages/teams), [Webhooks](/packages/webhooks) |
+| Backoffice | Settings, Modules, Roles, Permissions, Handover, assigning roles on Users, inviting / resending / revoking ([Invitations](/packages/invitations)), saving / publishing / duplicating / deleting [Announcements](/packages/announcements), managing [Teams](/packages/teams), [Webhooks](/packages/webhooks), unlocking accounts ([Security](/packages/security)) |
 | Modules | Billing (both pages), API tokens and the API access policy, logging in as someone again |
 
 Everything else works — browsing, forms, the app's own actions — so problems can be reproduced.

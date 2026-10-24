@@ -55,6 +55,7 @@ export default defineConfig({
                     { text: 'Maintenance', link: '/packages/maintenance' },
                     { text: 'Media', link: '/packages/media' },
                     { text: 'Notifications', link: '/packages/notifications' },
+                    { text: 'Security', link: '/packages/security' },
                     { text: 'Teams', link: '/packages/teams' },
                     { text: 'Webhooks', link: '/packages/webhooks' },
                 ],
