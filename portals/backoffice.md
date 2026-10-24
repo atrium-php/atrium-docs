@@ -46,6 +46,7 @@ Each appears while its [module](/packages/) is on (users also get Account → Bi
 | [System health](/packages/health) | `/system-health` | health |
 | [Billing](/packages/billing) | `/billing` | billing |
 | [API Access](/packages/api) | `/api` | api |
+| [Announcements](/packages/announcements), What's new | `/announcements`, `/whats-new` | announcements |
 
 ## Settings
 

@@ -8,12 +8,13 @@ Atrium is a set of Composer packages, released together under one version number
 | [`atrium-php/access-control`](/packages/access-control) | The Roles, Permissions and Users pages — a required module | always installed |
 | [`atrium-php/skeleton`](/packages/skeleton) | The app a new project starts from (`composer create-project`) | your project |
 
-And fourteen optional modules — each its own package of type `atrium-module`. A new project has **none of them**: install the ones you need from Backoffice → Modules or with `php artisan module:install` — see [Modules](/guide/modules).
+And fifteen optional modules — each its own package of type `atrium-module`. A new project has **none of them**: install the ones you need from Backoffice → Modules or with `php artisan module:install` — see [Modules](/guide/modules).
 
 | Module | Package | What it adds | On once installed |
 |---|---|---|---|
 | `activity` | [`atrium-php/activity`](/packages/activity) | Activity log: who changed what, with comments and reactions | yes |
 | `analytics` | [`atrium-php/analytics`](/packages/analytics) | Signups, active users and logins on the dashboard, an Analytics page with comparison and CSV export | yes |
+| `announcements` | [`atrium-php/announcements`](/packages/announcements) | Banners, one-time modals and a What's new page per portal and role, scheduled, per language | yes |
 | `api` | [`atrium-php/api`](/packages/api) | Versioned JSON API with Sanctum tokens and an access policy | no |
 | `backup` | [`atrium-php/backup`](/packages/backup) | Scheduled database and file backups, on-demand runs and downloads | yes (runs once `BACKUP_ENABLED=true`) |
 | `billing` | [`atrium-php/billing`](/packages/billing) | Stripe subscriptions: plans, Checkout, Billing Portal, webhooks | no |

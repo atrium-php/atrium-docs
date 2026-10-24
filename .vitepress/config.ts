@@ -42,6 +42,7 @@ export default defineConfig({
                     { text: 'Access Control', link: '/packages/access-control' },
                     { text: 'Activity', link: '/packages/activity' },
                     { text: 'Analytics', link: '/packages/analytics' },
+                    { text: 'Announcements', link: '/packages/announcements' },
                     { text: 'API', link: '/packages/api' },
                     { text: 'Backup', link: '/packages/backup' },
                     { text: 'Billing', link: '/packages/billing' },

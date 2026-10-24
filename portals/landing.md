@@ -12,6 +12,10 @@ The public entry point, on `APP_MAIN_DOMAIN` itself (no subdomain). No sign-in r
 
 A hero and a feature grid describing Atrium. Sign-in and create-account buttons show when those routes exist. It's a placeholder for your product's marketing page — replace it (see [Replacing a portal page](#replacing-a-portal-page)).
 
+## Banners
+
+Under the header, modules can show notices to every visitor through `landing.banners` — the [Announcements](/packages/announcements) module puts its landing banners there.
+
 ## Language switcher
 
 In the header, `<x-language::locale-switcher />` — hidden until two languages are active. Landing follows the URL's language (`?lang=` or `/xx`, whichever [URL mode](/packages/language#url-mode) is on), even for signed-in visitors. See [Localization & RTL](/packages/language).

@@ -39,7 +39,7 @@ Your provider extends `Atrium\Core\Support\Modules\ModuleProvider`:
 | `module()`, `label()`, `description()`, `icon()` | Identity on the Modules page |
 | `permissions()`, `superAdminOnlyPermissions()` | Spatie permissions, seeded even while the module is off |
 | `bootModule()`, `registerModule()`, `schedule()` | Only run while the module is on |
-| `Module::contribute(...)` | Nav links, settings groups and fields ([Settings](/portals/backoffice#from-your-own-module)), health checks, header actions (`shell.header.actions`), dashboard cards ([`dashboard.widgets`](/packages/analytics#dashboard-widgets)), banners above every page (`shell.banners`), properties on every audit entry (`audit.context`), actions refused while support views as someone ([`impersonation.blocked`](/packages/impersonation#blocking-your-own-actions)), notification types and channels ([Notifications](/packages/notifications#sending-your-own-notifications)), … |
+| `Module::contribute(...)` | Nav links, settings groups and fields ([Settings](/portals/backoffice#from-your-own-module)), health checks, header actions (`shell.header.actions`), dashboard cards ([`dashboard.widgets`](/packages/analytics#dashboard-widgets)), banners above every page (`shell.banners`) and on the landing page ([`landing.banners`](/packages/announcements#for-module-authors)), properties on every audit entry (`audit.context`), actions refused while support views as someone ([`impersonation.blocked`](/packages/impersonation#blocking-your-own-actions)), notification types and channels ([Notifications](/packages/notifications#sending-your-own-notifications)), … |
 | `seeders()`, `upgradeSteps()` | Data on install, one-off upgrade steps |
 | `userNeeds()` | Traits/interfaces `App\Models\User` must have (checked by `atrium:doctor`) |
 | `licenseGate()`, `whenUnlicensed()` | Licensing (below) |
@@ -68,7 +68,7 @@ Module::contribute('backoffice.nav', [
 ]);
 ```
 
-The same keys work for `account.nav` and `app.nav`, plus `'visible' => fn (?User $user) => bool` for anything a permission can't express. A link whose route doesn't exist, or that the user may not see, is left out; so is a parent with no visible child. In the backoffice, items without a `group` go under *System*; `'group' => null` puts one above every heading.
+The same keys work for `account.nav` and `app.nav`, plus `'visible' => fn (?User $user) => bool` for anything a permission can't express. Any item can carry `'badge' => fn (?User $user) => ...` — a count or short text next to the label; `null`, `''` or `0` shows none. A link whose route doesn't exist, or that the user may not see, is left out; so is a parent with no visible child. In the backoffice, items without a `group` go under *System*; `'group' => null` puts one above every heading.
 
 ## Uninstall, backup and restore
 
