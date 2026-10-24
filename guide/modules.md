@@ -17,6 +17,7 @@ Atrium's optional features are **modules**: each its own Composer package, insta
 | [Impersonation](/packages/impersonation) | `atrium-php/impersonation` | "Log in as" a user — audited, time-limited, sensitive actions blocked |
 | [Invitations](/packages/invitations) | `atrium-php/invitations` | Invitations by email with a role, invite-only sign-up |
 | [Languages](/packages/language) | `atrium-php/language` | Languages, RTL, URL locales and database translations |
+| [Email templates](/packages/mail-templates) | `atrium-php/mail-templates` | Reword every mail per language and restyle them all, with variables, preview and test sends |
 | [Maintenance](/packages/maintenance) | `atrium-php/maintenance` | Per-portal maintenance mode |
 | [Media](/packages/media) | `atrium-php/media` | Media library with uploads, image sizes and attachments |
 | [Notifications](/packages/notifications) | `atrium-php/notifications` | Notification bell and inbox, channel preferences per user, messages from the backoffice |

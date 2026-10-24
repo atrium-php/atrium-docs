@@ -52,6 +52,7 @@ export default defineConfig({
                     { text: 'Impersonation', link: '/packages/impersonation' },
                     { text: 'Invitations', link: '/packages/invitations' },
                     { text: 'Language', link: '/packages/language' },
+                    { text: 'Email templates', link: '/packages/mail-templates' },
                     { text: 'Maintenance', link: '/packages/maintenance' },
                     { text: 'Media', link: '/packages/media' },
                     { text: 'Notifications', link: '/packages/notifications' },

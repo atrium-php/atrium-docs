@@ -24,6 +24,7 @@ And eighteen optional modules — each its own package of type `atrium-module`. 
 | `impersonation` | [`atrium-php/impersonation`](/packages/impersonation) | "Log in as" a user: audited, time-limited, sensitive actions blocked | yes |
 | `invitations` | [`atrium-php/invitations`](/packages/invitations) | Invitations by email with a role, invite-only sign-up | yes |
 | `language` | [`atrium-php/language`](/packages/language) | Languages, RTL, URL locales and database translations | yes |
+| `mail-templates` | [`atrium-php/mail-templates`](/packages/mail-templates) | Reword every mail per language and restyle them all: variables, live preview, test sends | yes |
 | `maintenance` | [`atrium-php/maintenance`](/packages/maintenance) | Per-portal maintenance mode with a branded page | yes |
 | `media` | [`atrium-php/media`](/packages/media) | Media library: uploads, image sizes, attachments to any model | yes |
 | `notifications` | [`atrium-php/notifications`](/packages/notifications) | Notification bell and inbox, per-user channel preferences, messages from the backoffice | yes |
