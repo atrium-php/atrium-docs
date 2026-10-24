@@ -20,6 +20,7 @@ Atrium's optional features are **modules**: each its own Composer package, insta
 | [Maintenance](/packages/maintenance) | `atrium-php/maintenance` | Per-portal maintenance mode |
 | [Media](/packages/media) | `atrium-php/media` | Media library with uploads, image sizes and attachments |
 | [Notifications](/packages/notifications) | `atrium-php/notifications` | Notification bell and inbox, channel preferences per user, messages from the backoffice |
+| [Teams](/packages/teams) | `atrium-php/teams` | Workspaces with team roles, a team switcher, App data scoped to the current team |
 
 A module has two layers, and Atrium keeps track of both:
 

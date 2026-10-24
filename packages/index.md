@@ -8,7 +8,7 @@ Atrium is a set of Composer packages, released together under one version number
 | [`atrium-php/access-control`](/packages/access-control) | The Roles, Permissions and Users pages — a required module | always installed |
 | [`atrium-php/skeleton`](/packages/skeleton) | The app a new project starts from (`composer create-project`) | your project |
 
-And fifteen optional modules — each its own package of type `atrium-module`. A new project has **none of them**: install the ones you need from Backoffice → Modules or with `php artisan module:install` — see [Modules](/guide/modules).
+And sixteen optional modules — each its own package of type `atrium-module`. A new project has **none of them**: install the ones you need from Backoffice → Modules or with `php artisan module:install` — see [Modules](/guide/modules).
 
 | Module | Package | What it adds | On once installed |
 |---|---|---|---|
@@ -27,6 +27,7 @@ And fifteen optional modules — each its own package of type `atrium-module`. A
 | `maintenance` | [`atrium-php/maintenance`](/packages/maintenance) | Per-portal maintenance mode with a branded page | yes |
 | `media` | [`atrium-php/media`](/packages/media) | Media library: uploads, image sizes, attachments to any model | yes |
 | `notifications` | [`atrium-php/notifications`](/packages/notifications) | Notification bell and inbox, per-user channel preferences, messages from the backoffice | yes |
+| `teams` | [`atrium-php/teams`](/packages/teams) | Workspaces with owner / admin / member roles, a team switcher, invitations, App data scoped to the current team | yes |
 
 Every module depends only on core — never on another module — and core never depends on a module.
 

@@ -55,6 +55,10 @@ From [Profile](#profile), with the current password.
 - **Manage** — show or hide recovery codes, regenerate them, reconfigure, or turn 2FA off.
 - Recovery codes are used up at the [2FA challenge](/portals/auth#two-factor-authentication).
 
+## Teams
+
+With the [Teams](/packages/teams) module: **Teams** lists the teams you're in, creates new ones, and opens each team's page — members, adding people, roles, transfer, leave, delete.
+
 ## Settings
 
 `/settings` → `atrium::accounts.settings`

@@ -47,6 +47,7 @@ Each appears while its [module](/packages/) is on (users also get Account → Bi
 | [Billing](/packages/billing) | `/billing` | billing |
 | [API Access](/packages/api) | `/api` | api |
 | [Announcements](/packages/announcements), What's new | `/announcements`, `/whats-new` | announcements |
+| [Teams](/packages/teams) | `/teams` | teams |
 
 ## Settings
 
