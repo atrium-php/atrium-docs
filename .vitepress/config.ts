@@ -46,6 +46,7 @@ export default defineConfig({
                     { text: 'API', link: '/packages/api' },
                     { text: 'Backup', link: '/packages/backup' },
                     { text: 'Billing', link: '/packages/billing' },
+                    { text: 'Command palette', link: '/packages/command-palette' },
                     { text: 'Currency', link: '/packages/currency' },
                     { text: 'Feature Flags', link: '/packages/feature-flags' },
                     { text: 'Health', link: '/packages/health' },

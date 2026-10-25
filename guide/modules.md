@@ -11,6 +11,7 @@ Atrium's optional features are **modules**: each its own Composer package, insta
 | [API](/packages/api) | `atrium-php/api` | Token-authenticated JSON API with a Super Admin access policy |
 | [Backups](/packages/backup) | `atrium-php/backup` | Scheduled database and file backups |
 | [Billing](/packages/billing) | `atrium-php/billing` | Stripe subscriptions |
+| [Command palette](/packages/command-palette) | `atrium-php/command-palette` | Ctrl/⌘ + K to jump to any page, find records and run quick actions |
 | [Currencies](/packages/currency) | `atrium-php/currency` | Currencies, exchange rates and money formatting |
 | [Feature flags](/packages/feature-flags) | `atrium-php/feature-flags` | The backoffice page to switch feature flags |
 | [System health](/packages/health) | `atrium-php/health` | `/health` endpoint for monitors, System health page, status-change emails |

@@ -8,7 +8,7 @@ Atrium is a set of Composer packages, released together under one version number
 | [`atrium-php/access-control`](/packages/access-control) | The Roles, Permissions and Users pages — a required module | always installed |
 | [`atrium-php/skeleton`](/packages/skeleton) | The app a new project starts from (`composer create-project`) | your project |
 
-And eighteen optional modules — each its own package of type `atrium-module`. A new project has **none of them**: install the ones you need from Backoffice → Modules or with `php artisan module:install` — see [Modules](/guide/modules).
+And twenty-one optional modules — each its own package of type `atrium-module`. A new project has **none of them**: install the ones you need from Backoffice → Modules or with `php artisan module:install` — see [Modules](/guide/modules).
 
 | Module | Package | What it adds | On once installed |
 |---|---|---|---|
@@ -18,6 +18,7 @@ And eighteen optional modules — each its own package of type `atrium-module`. 
 | `api` | [`atrium-php/api`](/packages/api) | Versioned JSON API with Sanctum tokens and an access policy | no |
 | `backup` | [`atrium-php/backup`](/packages/backup) | Scheduled database and file backups, on-demand runs and downloads | yes (runs once `BACKUP_ENABLED=true`) |
 | `billing` | [`atrium-php/billing`](/packages/billing) | Stripe subscriptions: plans, Checkout, Billing Portal, webhooks | no |
+| `command-palette` | [`atrium-php/command-palette`](/packages/command-palette) | Ctrl/⌘ + K in every portal: jump to pages, find records, run quick actions | yes |
 | `currency` | [`atrium-php/currency`](/packages/currency) | Currencies, exchange rates and money formatting | yes |
 | `feature-flags` | [`atrium-php/feature-flags`](/packages/feature-flags) | The backoffice page to switch feature flags per portal or user | yes |
 | `health` | [`atrium-php/health`](/packages/health) | `/health` endpoint, System health page, `health:check`, status-change emails | yes |
