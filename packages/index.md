@@ -8,7 +8,7 @@ Atrium is a set of Composer packages, released together under one version number
 | [`atrium-php/access-control`](/packages/access-control) | The Roles, Permissions and Users pages — a required module | always installed |
 | [`atrium-php/skeleton`](/packages/skeleton) | The app a new project starts from (`composer create-project`) | your project |
 
-And twenty-one optional modules — each its own package of type `atrium-module`. A new project has **none of them**: install the ones you need from Backoffice → Modules or with `php artisan module:install` — see [Modules](/guide/modules).
+And twenty-two optional modules — each its own package of type `atrium-module`. A new project has **none of them**: install the ones you need from Backoffice → Modules or with `php artisan module:install` — see [Modules](/guide/modules).
 
 | Module | Package | What it adds | On once installed |
 |---|---|---|---|
@@ -30,6 +30,7 @@ And twenty-one optional modules — each its own package of type `atrium-module`
 | `maintenance` | [`atrium-php/maintenance`](/packages/maintenance) | Per-portal maintenance mode with a branded page | yes |
 | `media` | [`atrium-php/media`](/packages/media) | Media library: uploads, image sizes, attachments to any model | yes |
 | `notifications` | [`atrium-php/notifications`](/packages/notifications) | Notification bell and inbox, per-user channel preferences, messages from the backoffice | yes |
+| `pages` | [`atrium-php/pages`](/packages/pages) | Public landing pages per language: revisions, header / footer links, SEO and sharing tags, sitemap | yes |
 | `security` | [`atrium-php/security`](/packages/security) | Sign-in history, new-device alerts, lockout, required 2FA, password policy, idle timeout and session limits, Backoffice IP allowlist | yes |
 | `teams` | [`atrium-php/teams`](/packages/teams) | Workspaces with owner / admin / member roles, a team switcher, invitations, App data scoped to the current team | yes |
 | `webhooks` | [`atrium-php/webhooks`](/packages/webhooks) | Signed outgoing webhooks for app events: app and user endpoints, retries, delivery log, SSRF guard | yes |
