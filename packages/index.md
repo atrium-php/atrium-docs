@@ -32,6 +32,7 @@ And twenty-two optional modules — each its own package of type `atrium-module`
 | `notifications` | [`atrium-php/notifications`](/packages/notifications) | Notification bell and inbox, per-user channel preferences, messages from the backoffice | yes |
 | `pages` | [`atrium-php/pages`](/packages/pages) | Public landing pages per language: revisions, header / footer links, SEO and sharing tags, sitemap | yes |
 | `security` | [`atrium-php/security`](/packages/security) | Sign-in history, new-device alerts, lockout, required 2FA, password policy, idle timeout and session limits, Backoffice IP allowlist | yes |
+| `support` | [`atrium-php/support`](/packages/support) | Contact form and Account → Support feed a Backoffice ticket inbox: replies, assignment, internal notes, canned replies | yes |
 | `teams` | [`atrium-php/teams`](/packages/teams) | Workspaces with owner / admin / member roles, a team switcher, invitations, App data scoped to the current team | yes |
 | `webhooks` | [`atrium-php/webhooks`](/packages/webhooks) | Signed outgoing webhooks for app events: app and user endpoints, retries, delivery log, SSRF guard | yes |
 

@@ -60,6 +60,7 @@ export default defineConfig({
                     { text: 'Notifications', link: '/packages/notifications' },
                     { text: 'Pages', link: '/packages/pages' },
                     { text: 'Security', link: '/packages/security' },
+                    { text: 'Support', link: '/packages/support' },
                     { text: 'Teams', link: '/packages/teams' },
                     { text: 'Webhooks', link: '/packages/webhooks' },
                 ],
