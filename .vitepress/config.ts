@@ -59,6 +59,7 @@ export default defineConfig({
                     { text: 'Media', link: '/packages/media' },
                     { text: 'Notifications', link: '/packages/notifications' },
                     { text: 'Pages', link: '/packages/pages' },
+                    { text: 'Scheduled tasks', link: '/packages/scheduler' },
                     { text: 'Security', link: '/packages/security' },
                     { text: 'Support', link: '/packages/support' },
                     { text: 'Teams', link: '/packages/teams' },

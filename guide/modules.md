@@ -24,6 +24,7 @@ Atrium's optional features are **modules**: each its own Composer package, insta
 | [Media](/packages/media) | `atrium-php/media` | Media library with uploads, image sizes and attachments |
 | [Notifications](/packages/notifications) | `atrium-php/notifications` | Notification bell and inbox, channel preferences per user, messages from the backoffice |
 | [Pages](/packages/pages) | `atrium-php/pages` | Public landing pages per language, with revisions, header / footer links, SEO metadata and a sitemap |
+| [Scheduled tasks](/packages/scheduler) | `atrium-php/scheduler` | Every scheduled task with its last run, duration, result and next run |
 | [Security](/packages/security) | `atrium-php/security` | Sign-in history, new-device alerts, lockout, required 2FA, password policy, session limits, Backoffice IP allowlist |
 | [Support](/packages/support) | `atrium-php/support` | A contact form and in-app help that feed a Backoffice ticket inbox |
 | [Teams](/packages/teams) | `atrium-php/teams` | Workspaces with team roles, a team switcher, App data scoped to the current team |
