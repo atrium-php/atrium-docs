@@ -19,6 +19,7 @@ And twenty-two optional modules — each its own package of type `atrium-module`
 | `backup` | [`atrium-php/backup`](/packages/backup) | Scheduled database and file backups, on-demand runs and downloads | yes (runs once `BACKUP_ENABLED=true`) |
 | `billing` | [`atrium-php/billing`](/packages/billing) | Stripe subscriptions: plans, Checkout, Billing Portal, webhooks | no |
 | `command-palette` | [`atrium-php/command-palette`](/packages/command-palette) | Ctrl/⌘ + K in every portal: jump to pages, find records, run quick actions | yes |
+| `consent` | [`atrium-php/consent`](/packages/consent) | Consent banner with categories, proof log, gated scripts, Account → Privacy | yes |
 | `currency` | [`atrium-php/currency`](/packages/currency) | Currencies, exchange rates and money formatting | yes |
 | `feature-flags` | [`atrium-php/feature-flags`](/packages/feature-flags) | The backoffice page to switch feature flags per portal or user | yes |
 | `health` | [`atrium-php/health`](/packages/health) | `/health` endpoint, System health page, `health:check`, status-change emails | yes |

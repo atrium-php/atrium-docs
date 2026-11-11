@@ -47,6 +47,7 @@ export default defineConfig({
                     { text: 'Backup', link: '/packages/backup' },
                     { text: 'Billing', link: '/packages/billing' },
                     { text: 'Command palette', link: '/packages/command-palette' },
+                    { text: 'Cookie consent', link: '/packages/consent' },
                     { text: 'Currency', link: '/packages/currency' },
                     { text: 'Feature Flags', link: '/packages/feature-flags' },
                     { text: 'Health', link: '/packages/health' },
