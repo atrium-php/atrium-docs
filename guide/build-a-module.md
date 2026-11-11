@@ -197,3 +197,7 @@ class InvoicesLicense implements \Atrium\Core\Contracts\LicenseGate
 Clients can also manage keys with `php artisan atrium:license invoices <key>`, `--check` and `--forget`.
 
 **Flux Pro:** Atrium's UI uses Flux Pro, which is licensed per project. Your clients need their own Flux Pro licence too.
+
+## Translations
+
+Write user-facing text as literal `__('English text')` calls. Backoffice → Translations → **Sync now** scans every installed module package, switched on or off, so your strings get a row to translate with no extra step. A Livewire component takes the scope of the portal your `routes/{portal}.php` mounts it in; the rest of your module is **common**. Dynamic keys (`__($variable)`) can't be found.

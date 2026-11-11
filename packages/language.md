@@ -110,11 +110,12 @@ One language at a time: pick a language at the top ("Editing language: English �
 
 Cards above the list: **Total strings**, **Missing translations** (rows missing an active language), **Active languages**, **Pending sync** — `__('...')` calls in the code with no row yet.
 
-**Sync now** scans for literal `__('...')` calls in your project (`app/`, `resources/views/`) and in Atrium core, and creates the missing rows with their scope from the folder they're in:
+**Sync now** scans for literal `__('...')` calls in your project (`app/`, `resources/views/`), in Atrium core and in **every installed module package** (Atrium's and third-party, switched on or off, so their text is ready when a module is switched on). It creates the missing rows with their scope from where the string is found:
 
 - pages and layouts of landing and auth → **landing**
 - pages and layouts of app, account, backoffice → **portal**
-- everything else → **common**
+- a module's Livewire component takes the scope of the portal its `routes/{portal}.php` mounts it in (`landing` or `auth` → **landing**; `app`, `account`, `backoffice` → **portal**); mounted in both → **common**
+- everything else, including a module's `src/` and Blade components → **common**
 
 It never overwrites or deletes; an Admin without `translations.common` syncs only landing and portal strings. Dynamic keys (`__($variable)`) can't be found by a scan.
 
