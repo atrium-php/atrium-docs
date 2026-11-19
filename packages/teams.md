@@ -8,7 +8,7 @@
 | Permissions | `teams.manage` — Backoffice → Teams (Admin has it). Team roles are separate, see below |
 | Pages | Team switcher in the App sidebar; Account → Teams and each team's page; Backoffice → Teams; the emailed invitation link (auth portal); Backoffice → Settings → Teams |
 | Config | `teams` (below); both values also on Settings → Teams |
-| Uninstall | backup **required** — `teams`, `team_user`, `team_invitations`. Blocked while any team has members besides its owner |
+| Uninstall | backup **required** — `teams`, `team_user`, `team_invitations`. Blocked while any team has members besides its owner, or (with Billing) while a team still pays |
 
 Workspaces your users belong to — a company, a household, a project group. Each person works in one **current team** at a time and switches from the App sidebar; your App-portal data is scoped to it.
 
@@ -85,7 +85,7 @@ app(CurrentTeam::class)->id();      // null when there is none
 app(CurrentTeam::class)->name();
 ```
 
-Rows of a deleted team aren't touched — listen to `Atrium\Teams\Models\Team`'s `deleted` event if your app should clean them up.
+Rows of a deleted team aren't touched — listen to core's `Atrium\Core\Events\TeamDeleting` (fired just before, with the team as a `TeamInfo`) if your app should clean them up.
 
 ## Backoffice → Teams
 
@@ -94,6 +94,10 @@ Rows of a deleted team aren't touched — listen to `Atrium\Teams\Models\Team`'s
 ## Account deletion
 
 When an account is deleted, each team it owned goes to its longest-standing admin (else member); teams nobody else is in, and its personal team, are deleted.
+
+## Billing per team
+
+With [Billing](/packages/billing#billing-per-team) installed and set to bill **each team**, Account → Billing shows the plan of the team the person is working in; only the team's owner manages it. A team that still renews can't be deleted (cancel it first), and this module can't be uninstalled while any team pays.
 
 ## Configuration
 
@@ -112,6 +116,9 @@ With [Impersonation](/packages/impersonation) on, creating teams and every actio
 ## For module authors
 
 - `Atrium\Core\Contracts\CurrentTeam` (null object `NullCurrentTeam`) and `Atrium\Core\Concerns\BelongsToTeam` live in core — use them without depending on this module.
+- `Atrium\Core\Contracts\TeamDirectory` (null object `NullTeamDirectory`: no teams) answers in any portal: `available()`, `current(User)` (the team they work in), `find(id)`, `roleOf(teamId, User)` (`TeamDirectory::OWNER` / `ADMIN` / `MEMBER`), `closingWith(User)` (team ids deleted with that account), `search(term)`. Teams come back as `Atrium\Core\Support\TeamInfo` (`id`, `name`, `ownerId`, `personal`, `disabled`, `owner()`).
+- Core events `Atrium\Core\Events\TeamDeleting` (`team`, `withAccount`) just before a team is deleted, and `TeamOwnerChanged` (`team`, `owner`, `previous`) after a transfer or a hand-on at account deletion.
+- Core point **`teams.deletion.blockers`** — closures `fn (int $teamId) => ?string`; a reason refuses *Delete team* and is shown on the team's page.
 - Core point **`shell.sidebar.header`** — Livewire components under the sidebar brand of the signed-in portals, `[component, portals, order]`, each given `:portal`. The switcher uses it.
 - Events `Atrium\Teams\Events\MemberJoined` (team, user, role) and `MemberLeft` (team, user) — also sent as [webhooks](/packages/webhooks) `team.member_joined` / `team.member_left`.
-- Billing stays per user; billing per team is a later item.
+- Billing per team: see [Billing](/packages/billing#billing-per-team).

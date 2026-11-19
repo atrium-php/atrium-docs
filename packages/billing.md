@@ -8,10 +8,10 @@
 | Permissions | `billing.view`, `billing.manage` (Super Admin only — it moves real money) |
 | Pages | Account → Billing (`/billing`, every user); Backoffice → Billing (`/billing`); an active-subscriptions card on the Backoffice dashboard |
 | Routes | `stripe/webhook` and `stripe/payment/{id}` (Cashier's, any host) |
-| Config | `billing` (plans), `cashier` |
+| Config | `billing` (plans, who pays), `cashier` |
 | Uninstall | backup **required**; blocked while subscriptions are active, trialing, past due or in their grace period |
 
-Subscriptions through Stripe Checkout and the Stripe Billing Portal, on Laravel Cashier. Stripe customers live in their own `billing_customers` table (`BillingCustomer`, one per user) instead of columns on `users`, so the user model stays untouched.
+Subscriptions through Stripe Checkout and the Stripe Billing Portal, on Laravel Cashier. Stripe customers live in their own `billing_customers` table (`BillingCustomer`, one per user — or per team, see [Billing per team](#billing-per-team)) instead of columns on `users`, so the user model stays untouched.
 
 ## Install
 
@@ -67,6 +67,35 @@ What each user sees:
 
 The Stripe customer is only created when the user subscribes, never by just opening the page.
 
+## Billing per team
+
+With the [Teams](/packages/teams) module on, subscriptions can belong to teams instead of people: set `BILLING_PER=team` in `.env`, or Backoffice → Settings → Billing → **Who pays** → *Each team* — one switch for the whole app, not per team (the Team billing settings only show while Teams is on; a stored setting wins over `.env`). Without Teams, billing is per person whatever the setting says.
+
+- **Account → Billing** is about the team the person is working in (the one the App sidebar switcher shows): *Billing for Acme*. Someone in no team is told to create or join one.
+- **Who manages** (`BILLING_TEAM_MANAGERS`, Settings → *Who manages a team's plan*): `owner` (default) — only the team's owner subscribes, cancels, resumes and opens *Payment & invoices*; `admins` — the owner and team admins; `members` — anyone in the team. The others see the plan and its status, read-only. These are team roles: staff always manage every subscription on Backoffice → Billing. Receipts and payment mails go to the owner; after a transfer, the Stripe customer's email moves to the new owner.
+- **Deleting a team that still pays** (`BILLING_TEAM_DELETION`, Settings → *Deleting a team that still pays*): `block` (default) — refused until the plan is cancelled, then it runs out; `cancel_at_period_end` — deleting cancels the plan, which runs to the end of the paid period; `cancel_now` — deleting ends it in Stripe at once, without a refund. If a team is deleted with its owner's account, its subscription is always cancelled immediately, like the owner's own.
+- **Uninstalling Teams** is refused while any team still pays.
+- **Changing who pays** is refused while any subscription is running, so nobody loses sight of a plan they're still charged for. Cancel them first, or leave it.
+- Backoffice → Billing marks team customers with a *Team* badge and their owner; search finds them by team name or owner.
+- Outgoing webhooks keep `user_id` (the team's owner) and add `team_id`.
+
+| Key | `.env` | Default | |
+|---|---|---|---|
+| `billing.per` | `BILLING_PER` | `user` | `user` or `team` |
+| `billing.team_managers` | `BILLING_TEAM_MANAGERS` | `owner` | `owner`, `admins` or `members` |
+| `billing.team_deletion` | `BILLING_TEAM_DELETION` | `block` | `block`, `cancel_at_period_end` or `cancel_now` |
+
+Each one is also on Backoffice → Settings → Billing → *Team billing*; a stored setting wins over `.env`, empty falls back to it. For anything else, bind your own subclass of `Atrium\Billing\Services\Billables` in a service provider (`customerFor()`, `canManage()`).
+
+In code, ask `Atrium\Billing\Services\Billables` rather than `BillingCustomer::for()` so your check follows the setting:
+
+```php
+use Atrium\Billing\Services\Billables;
+
+$customer = app(Billables::class)->customerFor($user); // theirs, or their current team's
+$customer?->subscribed(config('billing.subscription'));
+```
+
 ## Backoffice → Billing
 
 - Counts: active, trialing, cancelling (grace period), past due.
@@ -75,7 +104,7 @@ The Stripe customer is only created when the user subscribes, never by just open
 
 ## Account deletion
 
-- When a deletion is carried out, the user's subscriptions are **cancelled immediately** first; if that fails, the deletion waits and retries.
+- When a deletion is carried out, the user's subscriptions are **cancelled immediately** first — with billing per team, also those of the teams deleted with the account (their personal team, teams nobody else is in); teams handed to another member keep theirs. If that fails, the deletion waits and retries.
 - On anonymisation the stored card brand and last four digits are cleared — even while the module is switched off, since that's still personal data.
 
 ## In code
