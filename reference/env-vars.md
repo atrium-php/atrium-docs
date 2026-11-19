@@ -49,6 +49,8 @@ Read only once the module is installed. Each module's page lists its own.
 | `BACKUP_DISKS` ⚙, `BACKUP_NOTIFY_MAIL` ⚙, `BACKUP_MAX_STORAGE_MB` ⚙, `BACKUP_ARCHIVE_PASSWORD` | | Where backups go, who is told, archive encryption |
 | `STRIPE_KEY` ⚙, `STRIPE_SECRET` ⚙, `STRIPE_WEBHOOK_SECRET` ⚙, `CASHIER_CURRENCY` ⚙ | | Billing module (Laravel Cashier) |
 | `BILLING_STARTER_PRICE` ⚙, `BILLING_PRO_PRICE` ⚙, `BILLING_TRIAL_DAYS` ⚙ | | Billing module plans |
+| `SUPPORT_CAPTCHA` ⚙, `SUPPORT_CAPTCHA_SITE_KEY` ⚙, `SUPPORT_CAPTCHA_SECRET` ⚙ | `none` | Support module: captcha on the contact form (`turnstile` or `hcaptcha`) and its keys ([Support → Spam protection](/packages/support#spam-protection)) |
+| `SUPPORT_SLA_HOURS` | `24` | Support module: when a waiting ticket's age badge turns red |
 
 ## Health
 
