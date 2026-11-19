@@ -73,6 +73,7 @@ With the [Webhooks](/packages/webhooks) module, when Settings → Webhooks lets 
 
 - **Preferred language** — with the Language module on and two or more active languages. It decides the language on app, account and backoffice, overriding the URL (see [Localization & RTL](/packages/language)). Saving reloads the page so direction and everything else update.
 - **Timezone** — always shown. Dates across the app display in it; empty uses the app's default timezone.
+- **Appearance** — always shown (`atrium::accounts.appearance`). Round swatches for the user's own Flux accent colour and base gray, saved on click and applied at once in every portal, plus Flux's light / dark / system control. See [Theming](/guide/theming#theme-colours-each-user-s-own).
 
 ## Scheduled cleanup
 
