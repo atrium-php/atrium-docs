@@ -60,7 +60,7 @@ php artisan module:install media
 php artisan module:install acme/invoices --constraint=^1.2    # another vendor's module, by package name
 ```
 
-While Composer rewrites `vendor/` (a few seconds to a minute), the site is in maintenance mode with a page that says *A module is being installed or removed* and reloads by itself — requests in that window would otherwise fail.
+While Composer rewrites `vendor/` (a few seconds to a minute), the site is in maintenance mode — requests in that window would otherwise fail. Visitors see a calm page in your brand's name that says what's happening (*Adding Activity*, *Removing Media*), with a running timer, and goes back to the page they asked for as soon as it's done. It's self-contained (no build assets needed); publish `resources/views/vendor/atrium/errors/updating.blade.php` to change it. The admin who started it stays on the Modules page instead: a locked dialog (no close button; clicking outside or pressing Escape does nothing) shows the same message and timer, waits out the maintenance window, and reloads the page once Composer is done.
 
 Some modules need something on your user model — the page and `atrium:doctor` say what. Today: [API](/packages/api#install) (Sanctum's `HasApiTokens`) and [Media](/packages/media#install) (`HasMedia`).
 

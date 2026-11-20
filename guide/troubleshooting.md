@@ -4,13 +4,15 @@
 
 Nothing processes the queue. Installs, uninstalls, restores and backups wait until a worker picks them up. Locally run `composer dev` (it includes a worker) or `php artisan queue:work`; on a server, run a worker under Supervisor or similar — see [Deploying](/guide/deploying#queue-worker-and-scheduler).
 
-### The site says "A module is being installed or removed"
+### The site says "Adding …" / "Removing …" / "Updating …"
 
-Composer is changing `vendor/`; the page reloads by itself and the site comes back when it's done (seconds to a minute). If it stays, the Composer run was interrupted: check `storage/logs/laravel.log`, finish or undo the change (`composer install`), then `php artisan up`.
+Composer is changing `vendor/`; the page goes back to the app by itself when it's done (seconds to a minute). If it stays, the Composer run was interrupted: check `storage/logs/laravel.log`, finish or undo the change (`composer install`), then `php artisan up`.
 
 ### Installing a module fails with a Composer error
 
 The queue worker runs Composer, so it needs what you need on the command line: Composer on its `PATH` (or `MODULE_COMPOSER`), write access to `vendor/`, `composer.json`, `composer.lock`, and the Flux Pro / private repository credentials. The error from Composer is on the Modules page under *Recent activity* and in the log.
+
+`The 'https://composer.fluxui.dev/packages.json' URL required authentication (HTTP 401)` means the worker can't see your Flux Pro licence. It runs Composer with its own home (`COMPOSER_HOME`, default `storage/framework/composer`), so credentials saved with `composer config --global` on your user account don't reach it. Put an `auth.json` next to the project's `composer.json` (git-ignored: `composer config http-basic.composer.fluxui.dev "<licence-email>" "<licence-key>"` in the project), or set `COMPOSER_AUTH` / `COMPOSER_HOME` for the worker, then restart it.
 
 ### I uninstalled a module but its code came back after a deploy
 
