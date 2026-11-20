@@ -14,14 +14,21 @@ Atrium is in internal testing and isn't on Packagist yet. The steps below are ho
 
 ## Install
 
+With the [Laravel installer](https://laravel.com/docs/installation#creating-a-laravel-project), as a starter kit:
+
+```bash
+laravel new my-app --using=atrium-php/skeleton
+```
+
+Or with Composer:
+
 ```bash
 composer create-project atrium-php/skeleton my-app
 cd my-app
-php artisan atrium:install          # --demo for demo accounts
 npm install && npm run build
 ```
 
-`create-project` asks for your Flux Pro credentials the first time (see [Flux UI Pro](/reference/flux-ui)). A new project uses SQLite; switch `DB_CONNECTION` in `.env` for MySQL or PostgreSQL.
+Either way you get a clean starter: core, Access Control and the portals, no demo code. Creating the project asks for your Flux Pro credentials the first time (see [Flux UI Pro](/reference/flux-ui)) and ends by running `php artisan atrium:install`. A new project uses SQLite; to use MySQL or PostgreSQL, set `DB_CONNECTION` in `.env` and run `php artisan atrium:install` again (`--demo` adds demo accounts for every portal).
 
 `atrium:install` migrates, seeds the roles and the **Super Admin** (`ADMIN_EMAIL`, default `admin@example.com`) and prints the generated password once. It's safe to run again.
 

@@ -134,6 +134,10 @@ A **module backup** holds one module's data — its rows, linked rows in shared 
 - Retention: the newest backup per module is kept, none older than 90 days — they hold personal data (`MODULE_BACKUPS_KEEP`, `MODULE_BACKUPS_MAX_AGE_DAYS`, `--prune`).
 - Encrypted with `MODULE_BACKUPS_PASSWORD`, else `BACKUP_ARCHIVE_PASSWORD`, else a key derived from `APP_KEY` — restoring needs the same one.
 
+::: warning Set a backup password in production
+Without `MODULE_BACKUPS_PASSWORD` (or `BACKUP_ARCHIVE_PASSWORD`) the password comes from `APP_KEY`, so **rotating `APP_KEY` makes every existing module backup unreadable**. Set one of them, keep it with your other secrets, and keep it when you rotate the app key.
+:::
+
 **Restore** brings an uninstalled module back from a backup: *Install & restore* (or *Restore* on a backup) on the Modules page, or:
 
 ```bash
@@ -143,6 +147,8 @@ php artisan module:restore media --backup=2026-10-03-142500
 ```
 
 The module is migrated to exactly the backup's version, its rows come back with their ids, and newer migrations run on them — a backup from an older release is upgraded like a live install. References to records that are gone (a deleted user) become empty, or the row is skipped. Permissions go back to the roles that still exist. Secrets encrypted under another `APP_KEY` are dropped, and tables the module never restores (API tokens) stay empty. Derived data — search indexes, image sizes — is rebuilt. A backup from a newer release is refused, and a failed restore leaves the module uninstalled, never half restored.
+
+A restore only puts back what belongs to the module: its own tables, settings, feature values and permissions, rows in shared tables that point at its models, and files in its storage folders or named by its own rows. Anything else an archive contains is skipped and listed in the report, and an archive with any entry that isn't encrypted with the backup password is refused — so a file changed on the backups disk can't be used to write into other tables.
 
 ## Other modules
 
